@@ -13,6 +13,8 @@ part 'database.g.dart';
 
 
 
+
+
 class TradeDatas extends Table {
   IntColumn get id => integer().autoIncrement()();
 
@@ -70,13 +72,6 @@ class TradeDatas extends Table {
 }
 
 
-
-
-
-
-
-
-
 class Tags extends Table {
   IntColumn get id => integer().autoIncrement()(); 
   //schema 15?
@@ -89,12 +84,6 @@ class Tags extends Table {
 }
 
 
-
-
-
-
-
-
 //tagとtradeDataとの関係のため。
 class TaggedTradeDatas extends Table {
   IntColumn get tradeDataId => integer().customConstraint('REFERENCES trade_datas(id) ON DELETE CASCADE')();
@@ -103,12 +92,6 @@ class TaggedTradeDatas extends Table {
   @override
   Set<Column> get primaryKey => {tradeDataId, tagId};
 }
-
-
-
-
-
-
 
 // タグ属性を定義するテーブル
 class TagAttributes extends Table {
@@ -128,13 +111,6 @@ class TagAttributeValues extends Table {
   Set<Column> get primaryKey => {tagId, attributeId};
 }
 
-
-
-
-
-
-
-
 //テーブルの設定を保存しておく
 class Settings extends Table {
   IntColumn get id => integer().unique().clientDefault(() => 0 ) ();
@@ -143,53 +119,6 @@ class Settings extends Table {
   TextColumn get databaseName => text().clientDefault(() => "データベース1")();
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -210,7 +139,6 @@ class MyDatabase extends _$MyDatabase {
        await m.createAll();
      },
 
-
      onUpgrade: (Migrator m, int from, int to) async {
        
      },
@@ -219,270 +147,7 @@ class MyDatabase extends _$MyDatabase {
    );
  }
 
-
-
-  //TODO TradeDatasに関して
-
-  /*
-  Future<int> insertTradeData(TradeDatasCompanion data) {
-    return into(tradeDatas).insert(data);
-  }
-
-  Future<int> deleteTradeData(int id) {
-    return (delete(tradeDatas)..where((tbl) => tbl.id.equals(id))).go();
-  }
-
-  Future<bool> updateTradeData(TradeDatasCompanion data) {
-    return update(tradeDatas).replace(data);
-  }
-
-
-  Future<TradeData?> getTradeDataById(int id) {
-    return (select(tradeDatas)..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
-  }
-
-  Stream<List<TradeData>> watchAllTradeDatas() {
-    return select(tradeDatas).watch();
-  }
-
-  Future<List<TradeData>> getAllTradeDatas() {
-    return select(tradeDatas).get();
-  }
-
-  Stream<List<TradeData>> watchTradeDatasByCurrencyPair(String currencyPair) {
-    return (select(tradeDatas)..where((tbl) => tbl.currencyPair.equals(currencyPair))).watch();
-  }
-
-  Future<List<TradeData>> getTradeDatasByCurrencyPair(String currencyPair) {
-    return (select(tradeDatas)..where((tbl) => tbl.currencyPair.equals(currencyPair))).get();
-  }
-
-
-  Future<List<TradeData>> getFilteredTradeDatas({
-  String? currencyPair,
-  List<String>? tags,
-  bool useAndForTags = false,
-  String? premise,
-  bool? isBuy,
-  DateTime? startDate,
-  DateTime? endDate,
-}) {
-  return (select(tradeDatas)
-    ..where((tbl) {
-      var predicates = <Expression<bool>>[];
-      
-      if (currencyPair != null) {
-        predicates.add(tbl.currencyPair.equals(currencyPair));
-      }
-      
-      if (premise != null) {
-        predicates.add(tbl.premise.equals(premise));
-      }
-      
-      if (isBuy != null) {
-        predicates.add(tbl.isBuy.equals(isBuy));
-      }
-      
-      if (tags != null && tags.isNotEmpty) {
-        final tagConditions = tags.map((tag) => 
-          tbl.tags.like('%"$tag"%')
-        ).toList();
-        
-        if (useAndForTags) {
-          predicates.add(tagConditions.reduce((value, element) => value & element));
-        } else {
-          predicates.add(tagConditions.reduce((value, element) => value | element));
-        }
-      }
-      
-      if (startDate != null) {
-        predicates.add(tbl.createdAt.isBiggerOrEqualValue(startDate));
-      }
-      
-      if (endDate != null) {
-        predicates.add(tbl.createdAt.isSmallerOrEqualValue(endDate));
-      }
-      
-      return predicates.isEmpty 
-        ? const Constant(true) 
-        : predicates.reduce((value, element) => value & element);
-    }))
-    .get();
-}
-
-
-
-
-Future<Map<String, dynamic>> getTradeStatsInDateRange(DateTime start, DateTime end) async {
-  final query = select(tradeDatas)
-    ..where((tbl) => tbl.createdAt.isBetween(start, end));
-
-  final results = await query.get();
-
-  int totalTrades = results.length;
-  int winningTrades = results.where((trade) => trade.pips != null && trade.pips! > 0).length;
-  int losingTrades = results.where((trade) => trade.pips != null && trade.pips! < 0).length;
-  double totalPips = results.fold(0, (sum, trade) => sum + (trade.pips ?? 0));
-  double totalMoney = results.fold(0, (sum, trade) => sum + (trade.money ?? 0));
-
-  return {
-    'totalTrades': totalTrades,
-    'winningTrades': winningTrades,
-    'losingTrades': losingTrades,
-    'winRate': totalTrades > 0 ? winningTrades / totalTrades : 0,
-    'totalPips': totalPips,
-    'totalMoney': totalMoney,
-    'averagePipsPerTrade': totalTrades > 0 ? totalPips / totalTrades : 0,
-    'averageMoneyPerTrade': totalTrades > 0 ? totalMoney / totalTrades : 0,
-  };
-}
-   */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //TODO Tagsに関して
-
-  
-
-
-
-  //TODO TaggedTradeDatasに関して
-  /*
-  // トレードデータにタグを追加
-Future<void> addTagToTradeData(int tradeDataId, int tagId) {
-  return into(taggedTradeDatas).insert(
-    TaggedTradeDatasCompanion.insert(tradeDataId: tradeDataId, tagId: tagId)
-  );
-}
-
-// トレードデータからタグを削除
-Future<int> removeTagFromTradeData(int tradeDataId, int tagId) {
-  return (delete(taggedTradeDatas)
-    ..where((ttd) => ttd.tradeDataId.equals(tradeDataId) & ttd.tagId.equals(tagId)))
-    .go();
-}
-
-// トレードデータに関連するすべてのタグを取得
-Future<List<Tag>> getTagsForTradeData(int tradeDataId) {
-  final query = select(tags).join([
-    innerJoin(taggedTradeDatas, taggedTradeDatas.tagId.equalsExp(tags.id))
-  ])
-  ..where(taggedTradeDatas.tradeDataId.equals(tradeDataId));
-  
-  return query.map((row) => row.readTable(tags)).get();
-}
-
-// 特定のタグを持つすべてのトレードデータを取得
-Future<List<TradeData>> getTradeDatasByTag(int tagId) {
-  final query = select(tradeDatas).join([
-    innerJoin(taggedTradeDatas, taggedTradeDatas.tradeDataId.equalsExp(tradeDatas.id))
-  ])
-  ..where(taggedTradeDatas.tagId.equals(tagId));
-  
-  return query.map((row) => row.readTable(tradeDatas)).get();
-}
-   */
-
-
-
-
-
-
-
-
-
-//TODO TagAttributesに関して
-
-/*
-// 新しいタグ属性を追加
-Future<int> insertTagAttribute(TagAttributesCompanion attribute) {
-  return into(tagAttributes).insert(attribute);
-}
-
-// タグ属性を更新
-Future<bool> updateTagAttribute(TagAttributesCompanion attribute) {
-  return update(tagAttributes).replace(attribute);
-}
-
-// タグ属性を削除
-Future<int> deleteTagAttribute(int id) {
-  return (delete(tagAttributes)..where((ta) => ta.id.equals(id))).go();
-}
-
-// タグに属性値を設定
-Future<void> setTagAttributeValue(int tagId, int attributeId, String value) {
-  return into(tagAttributeValues).insert(
-    TagAttributeValuesCompanion.insert(
-      tagId: tagId,
-      attributeId: attributeId,
-      value: value,
-    ),
-    mode: InsertMode.insertOrReplace,
-  );
-}
-
-// タグの属性値を取得
-Future<List<TagAttributeValue>> getTagAttributeValues(int tagId) {
-  return (select(tagAttributeValues)..where((tav) => tav.tagId.equals(tagId))).get();
-}
- */
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-  
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
+ //TODO 関数についてはextensionsにある。
 
 
 
