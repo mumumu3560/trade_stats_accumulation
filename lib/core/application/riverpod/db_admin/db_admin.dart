@@ -1,5 +1,5 @@
 
-import 'package:trade_stats_accumulation/database/drift/database_1/database.dart';
+import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/database.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'db_admin.g.dart';

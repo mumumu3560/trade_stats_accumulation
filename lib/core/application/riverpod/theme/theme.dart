@@ -1,6 +1,6 @@
-import 'package:trade_stats_accumulation/riverpod/db_admin/db_admin.dart';
+import 'package:trade_stats_accumulation/core/application/riverpod/db_admin/db_admin.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:trade_stats_accumulation/database/drift/database_1/extensions/extensions_importer.dart';
+import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/extensions/extensions_importer.dart';
 
 part 'theme.g.dart';
 

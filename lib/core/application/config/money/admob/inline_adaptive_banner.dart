@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:trade_stats_accumulation/env/env.dart';
+import 'package:trade_stats_accumulation/core/application/config/env/env.dart';
 /*
 
 

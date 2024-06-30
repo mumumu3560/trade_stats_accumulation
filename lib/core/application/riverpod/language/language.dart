@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:trade_stats_accumulation/language/i18n/strings.g.dart';
+import 'package:trade_stats_accumulation/core/application/config/locale/language/i18n/strings.g.dart';
 
 part 'language.g.dart';
 //ここで言語を指定する。

@@ -1,5 +1,5 @@
-import 'package:trade_stats_accumulation/env/env.dart';
-import 'package:trade_stats_accumulation/riverpod/theme/theme.dart';
+import 'package:trade_stats_accumulation/core/application/config/env/env.dart';
+import 'package:trade_stats_accumulation/core/application/riverpod/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -68,7 +68,7 @@ class _GridNativeAdWidgetState extends ConsumerState<GridNativeAdWidget> {
 
   Future<void> _loadNativeAd(WidgetRef ref) async{
     //ここでテーマモードのintを取得したい。
-    final themeInt = ref.read(themeModeSwitcherNotifierProvider);
+    final themeInt = ref.read(themeModeNotifierProvider);
 
     String factoryIdNow =  themeInt == const AsyncValue.data(0) ? 'gridLight' : 'gridDark';
 

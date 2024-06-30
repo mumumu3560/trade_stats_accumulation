@@ -823,11 +823,12 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
   }
 }
 
-class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
+class $TradeTagsTable extends TradeTags
+    with TableInfo<$TradeTagsTable, TradeTag> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TagsTable(this.attachedDatabase, [this._alias]);
+  $TradeTagsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -875,9 +876,9 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'tags';
+  static const String $name = 'trade_tags';
   @override
-  VerificationContext validateIntegrity(Insertable<Tag> instance,
+  VerificationContext validateIntegrity(Insertable<TradeTag> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -908,9 +909,9 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Tag map(Map<String, dynamic> data, {String? tablePrefix}) {
+  TradeTag map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Tag(
+    return TradeTag(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       tagName: attachedDatabase.typeMapping
@@ -925,18 +926,18 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
   }
 
   @override
-  $TagsTable createAlias(String alias) {
-    return $TagsTable(attachedDatabase, alias);
+  $TradeTagsTable createAlias(String alias) {
+    return $TradeTagsTable(attachedDatabase, alias);
   }
 }
 
-class Tag extends DataClass implements Insertable<Tag> {
+class TradeTag extends DataClass implements Insertable<TradeTag> {
   final int id;
   final String tagName;
   final DateTime createdAt;
   final int useCount;
   final String genre;
-  const Tag(
+  const TradeTag(
       {required this.id,
       required this.tagName,
       required this.createdAt,
@@ -953,8 +954,8 @@ class Tag extends DataClass implements Insertable<Tag> {
     return map;
   }
 
-  TagsCompanion toCompanion(bool nullToAbsent) {
-    return TagsCompanion(
+  TradeTagsCompanion toCompanion(bool nullToAbsent) {
+    return TradeTagsCompanion(
       id: Value(id),
       tagName: Value(tagName),
       createdAt: Value(createdAt),
@@ -963,10 +964,10 @@ class Tag extends DataClass implements Insertable<Tag> {
     );
   }
 
-  factory Tag.fromJson(Map<String, dynamic> json,
+  factory TradeTag.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Tag(
+    return TradeTag(
       id: serializer.fromJson<int>(json['id']),
       tagName: serializer.fromJson<String>(json['tagName']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -986,13 +987,13 @@ class Tag extends DataClass implements Insertable<Tag> {
     };
   }
 
-  Tag copyWith(
+  TradeTag copyWith(
           {int? id,
           String? tagName,
           DateTime? createdAt,
           int? useCount,
           String? genre}) =>
-      Tag(
+      TradeTag(
         id: id ?? this.id,
         tagName: tagName ?? this.tagName,
         createdAt: createdAt ?? this.createdAt,
@@ -1001,7 +1002,7 @@ class Tag extends DataClass implements Insertable<Tag> {
       );
   @override
   String toString() {
-    return (StringBuffer('Tag(')
+    return (StringBuffer('TradeTag(')
           ..write('id: $id, ')
           ..write('tagName: $tagName, ')
           ..write('createdAt: $createdAt, ')
@@ -1016,7 +1017,7 @@ class Tag extends DataClass implements Insertable<Tag> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Tag &&
+      (other is TradeTag &&
           other.id == this.id &&
           other.tagName == this.tagName &&
           other.createdAt == this.createdAt &&
@@ -1024,27 +1025,27 @@ class Tag extends DataClass implements Insertable<Tag> {
           other.genre == this.genre);
 }
 
-class TagsCompanion extends UpdateCompanion<Tag> {
+class TradeTagsCompanion extends UpdateCompanion<TradeTag> {
   final Value<int> id;
   final Value<String> tagName;
   final Value<DateTime> createdAt;
   final Value<int> useCount;
   final Value<String> genre;
-  const TagsCompanion({
+  const TradeTagsCompanion({
     this.id = const Value.absent(),
     this.tagName = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.useCount = const Value.absent(),
     this.genre = const Value.absent(),
   });
-  TagsCompanion.insert({
+  TradeTagsCompanion.insert({
     this.id = const Value.absent(),
     required String tagName,
     this.createdAt = const Value.absent(),
     this.useCount = const Value.absent(),
     this.genre = const Value.absent(),
   }) : tagName = Value(tagName);
-  static Insertable<Tag> custom({
+  static Insertable<TradeTag> custom({
     Expression<int>? id,
     Expression<String>? tagName,
     Expression<DateTime>? createdAt,
@@ -1060,13 +1061,13 @@ class TagsCompanion extends UpdateCompanion<Tag> {
     });
   }
 
-  TagsCompanion copyWith(
+  TradeTagsCompanion copyWith(
       {Value<int>? id,
       Value<String>? tagName,
       Value<DateTime>? createdAt,
       Value<int>? useCount,
       Value<String>? genre}) {
-    return TagsCompanion(
+    return TradeTagsCompanion(
       id: id ?? this.id,
       tagName: tagName ?? this.tagName,
       createdAt: createdAt ?? this.createdAt,
@@ -1098,7 +1099,7 @@ class TagsCompanion extends UpdateCompanion<Tag> {
 
   @override
   String toString() {
-    return (StringBuffer('TagsCompanion(')
+    return (StringBuffer('TradeTagsCompanion(')
           ..write('id: $id, ')
           ..write('tagName: $tagName, ')
           ..write('createdAt: $createdAt, ')
@@ -1966,7 +1967,7 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(e);
   _$MyDatabaseManager get managers => _$MyDatabaseManager(this);
   late final $TradeDatasTable tradeDatas = $TradeDatasTable(this);
-  late final $TagsTable tags = $TagsTable(this);
+  late final $TradeTagsTable tradeTags = $TradeTagsTable(this);
   late final $TaggedTradeDatasTable taggedTradeDatas =
       $TaggedTradeDatasTable(this);
   late final $TagAttributesTable tagAttributes = $TagAttributesTable(this);
@@ -1979,45 +1980,12 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
         tradeDatas,
-        tags,
+        tradeTags,
         taggedTradeDatas,
         tagAttributes,
         tagAttributeValues,
         settings
       ];
-  @override
-  StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
-        [
-          WritePropagation(
-            on: TableUpdateQuery.onTableName('trade_datas',
-                limitUpdateKind: UpdateKind.delete),
-            result: [
-              TableUpdate('tagged_trade_datas', kind: UpdateKind.delete),
-            ],
-          ),
-          WritePropagation(
-            on: TableUpdateQuery.onTableName('tags',
-                limitUpdateKind: UpdateKind.delete),
-            result: [
-              TableUpdate('tagged_trade_datas', kind: UpdateKind.delete),
-            ],
-          ),
-          WritePropagation(
-            on: TableUpdateQuery.onTableName('tags',
-                limitUpdateKind: UpdateKind.delete),
-            result: [
-              TableUpdate('tag_attribute_values', kind: UpdateKind.delete),
-            ],
-          ),
-          WritePropagation(
-            on: TableUpdateQuery.onTableName('tag_attributes',
-                limitUpdateKind: UpdateKind.delete),
-            result: [
-              TableUpdate('tag_attribute_values', kind: UpdateKind.delete),
-            ],
-          ),
-        ],
-      );
 }
 
 typedef $$TradeDatasTableInsertCompanionBuilder = TradeDatasCompanion Function({
@@ -2269,20 +2237,6 @@ class $$TradeDatasTableFilterComposer
       column: $state.table.endPriceResult,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
-
-  ComposableFilter taggedTradeDatasRefs(
-      ComposableFilter Function($$TaggedTradeDatasTableFilterComposer f) f) {
-    final $$TaggedTradeDatasTableFilterComposer composer =
-        $state.composerBuilder(
-            composer: this,
-            getCurrentColumn: (t) => t.id,
-            referencedTable: $state.db.taggedTradeDatas,
-            getReferencedColumn: (t) => t.tradeDataId,
-            builder: (joinBuilder, parentComposers) =>
-                $$TaggedTradeDatasTableFilterComposer(ComposerState($state.db,
-                    $state.db.taggedTradeDatas, joinBuilder, parentComposers)));
-    return f(composer);
-  }
 }
 
 class $$TradeDatasTableOrderingComposer
@@ -2379,14 +2333,14 @@ class $$TradeDatasTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $$TagsTableInsertCompanionBuilder = TagsCompanion Function({
+typedef $$TradeTagsTableInsertCompanionBuilder = TradeTagsCompanion Function({
   Value<int> id,
   required String tagName,
   Value<DateTime> createdAt,
   Value<int> useCount,
   Value<String> genre,
 });
-typedef $$TagsTableUpdateCompanionBuilder = TagsCompanion Function({
+typedef $$TradeTagsTableUpdateCompanionBuilder = TradeTagsCompanion Function({
   Value<int> id,
   Value<String> tagName,
   Value<DateTime> createdAt,
@@ -2394,24 +2348,25 @@ typedef $$TagsTableUpdateCompanionBuilder = TagsCompanion Function({
   Value<String> genre,
 });
 
-class $$TagsTableTableManager extends RootTableManager<
+class $$TradeTagsTableTableManager extends RootTableManager<
     _$MyDatabase,
-    $TagsTable,
-    Tag,
-    $$TagsTableFilterComposer,
-    $$TagsTableOrderingComposer,
-    $$TagsTableProcessedTableManager,
-    $$TagsTableInsertCompanionBuilder,
-    $$TagsTableUpdateCompanionBuilder> {
-  $$TagsTableTableManager(_$MyDatabase db, $TagsTable table)
+    $TradeTagsTable,
+    TradeTag,
+    $$TradeTagsTableFilterComposer,
+    $$TradeTagsTableOrderingComposer,
+    $$TradeTagsTableProcessedTableManager,
+    $$TradeTagsTableInsertCompanionBuilder,
+    $$TradeTagsTableUpdateCompanionBuilder> {
+  $$TradeTagsTableTableManager(_$MyDatabase db, $TradeTagsTable table)
       : super(TableManagerState(
           db: db,
           table: table,
           filteringComposer:
-              $$TagsTableFilterComposer(ComposerState(db, table)),
+              $$TradeTagsTableFilterComposer(ComposerState(db, table)),
           orderingComposer:
-              $$TagsTableOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) => $$TagsTableProcessedTableManager(p),
+              $$TradeTagsTableOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$TradeTagsTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
             Value<int> id = const Value.absent(),
             Value<String> tagName = const Value.absent(),
@@ -2419,7 +2374,7 @@ class $$TagsTableTableManager extends RootTableManager<
             Value<int> useCount = const Value.absent(),
             Value<String> genre = const Value.absent(),
           }) =>
-              TagsCompanion(
+              TradeTagsCompanion(
             id: id,
             tagName: tagName,
             createdAt: createdAt,
@@ -2433,7 +2388,7 @@ class $$TagsTableTableManager extends RootTableManager<
             Value<int> useCount = const Value.absent(),
             Value<String> genre = const Value.absent(),
           }) =>
-              TagsCompanion.insert(
+              TradeTagsCompanion.insert(
             id: id,
             tagName: tagName,
             createdAt: createdAt,
@@ -2443,21 +2398,21 @@ class $$TagsTableTableManager extends RootTableManager<
         ));
 }
 
-class $$TagsTableProcessedTableManager extends ProcessedTableManager<
+class $$TradeTagsTableProcessedTableManager extends ProcessedTableManager<
     _$MyDatabase,
-    $TagsTable,
-    Tag,
-    $$TagsTableFilterComposer,
-    $$TagsTableOrderingComposer,
-    $$TagsTableProcessedTableManager,
-    $$TagsTableInsertCompanionBuilder,
-    $$TagsTableUpdateCompanionBuilder> {
-  $$TagsTableProcessedTableManager(super.$state);
+    $TradeTagsTable,
+    TradeTag,
+    $$TradeTagsTableFilterComposer,
+    $$TradeTagsTableOrderingComposer,
+    $$TradeTagsTableProcessedTableManager,
+    $$TradeTagsTableInsertCompanionBuilder,
+    $$TradeTagsTableUpdateCompanionBuilder> {
+  $$TradeTagsTableProcessedTableManager(super.$state);
 }
 
-class $$TagsTableFilterComposer
-    extends FilterComposer<_$MyDatabase, $TagsTable> {
-  $$TagsTableFilterComposer(super.$state);
+class $$TradeTagsTableFilterComposer
+    extends FilterComposer<_$MyDatabase, $TradeTagsTable> {
+  $$TradeTagsTableFilterComposer(super.$state);
   ColumnFilters<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -2482,42 +2437,11 @@ class $$TagsTableFilterComposer
       column: $state.table.genre,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
-
-  ComposableFilter taggedTradeDatasRefs(
-      ComposableFilter Function($$TaggedTradeDatasTableFilterComposer f) f) {
-    final $$TaggedTradeDatasTableFilterComposer composer =
-        $state.composerBuilder(
-            composer: this,
-            getCurrentColumn: (t) => t.id,
-            referencedTable: $state.db.taggedTradeDatas,
-            getReferencedColumn: (t) => t.tagId,
-            builder: (joinBuilder, parentComposers) =>
-                $$TaggedTradeDatasTableFilterComposer(ComposerState($state.db,
-                    $state.db.taggedTradeDatas, joinBuilder, parentComposers)));
-    return f(composer);
-  }
-
-  ComposableFilter tagAttributeValuesRefs(
-      ComposableFilter Function($$TagAttributeValuesTableFilterComposer f) f) {
-    final $$TagAttributeValuesTableFilterComposer composer = $state
-        .composerBuilder(
-            composer: this,
-            getCurrentColumn: (t) => t.id,
-            referencedTable: $state.db.tagAttributeValues,
-            getReferencedColumn: (t) => t.tagId,
-            builder: (joinBuilder, parentComposers) =>
-                $$TagAttributeValuesTableFilterComposer(ComposerState(
-                    $state.db,
-                    $state.db.tagAttributeValues,
-                    joinBuilder,
-                    parentComposers)));
-    return f(composer);
-  }
 }
 
-class $$TagsTableOrderingComposer
-    extends OrderingComposer<_$MyDatabase, $TagsTable> {
-  $$TagsTableOrderingComposer(super.$state);
+class $$TradeTagsTableOrderingComposer
+    extends OrderingComposer<_$MyDatabase, $TradeTagsTable> {
+  $$TradeTagsTableOrderingComposer(super.$state);
   ColumnOrderings<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -2616,57 +2540,29 @@ class $$TaggedTradeDatasTableProcessedTableManager
 class $$TaggedTradeDatasTableFilterComposer
     extends FilterComposer<_$MyDatabase, $TaggedTradeDatasTable> {
   $$TaggedTradeDatasTableFilterComposer(super.$state);
-  $$TradeDatasTableFilterComposer get tradeDataId {
-    final $$TradeDatasTableFilterComposer composer = $state.composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.tradeDataId,
-        referencedTable: $state.db.tradeDatas,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder, parentComposers) =>
-            $$TradeDatasTableFilterComposer(ComposerState($state.db,
-                $state.db.tradeDatas, joinBuilder, parentComposers)));
-    return composer;
-  }
+  ColumnFilters<int> get tradeDataId => $state.composableBuilder(
+      column: $state.table.tradeDataId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
 
-  $$TagsTableFilterComposer get tagId {
-    final $$TagsTableFilterComposer composer = $state.composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.tagId,
-        referencedTable: $state.db.tags,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder, parentComposers) => $$TagsTableFilterComposer(
-            ComposerState(
-                $state.db, $state.db.tags, joinBuilder, parentComposers)));
-    return composer;
-  }
+  ColumnFilters<int> get tagId => $state.composableBuilder(
+      column: $state.table.tagId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
 class $$TaggedTradeDatasTableOrderingComposer
     extends OrderingComposer<_$MyDatabase, $TaggedTradeDatasTable> {
   $$TaggedTradeDatasTableOrderingComposer(super.$state);
-  $$TradeDatasTableOrderingComposer get tradeDataId {
-    final $$TradeDatasTableOrderingComposer composer = $state.composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.tradeDataId,
-        referencedTable: $state.db.tradeDatas,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder, parentComposers) =>
-            $$TradeDatasTableOrderingComposer(ComposerState($state.db,
-                $state.db.tradeDatas, joinBuilder, parentComposers)));
-    return composer;
-  }
+  ColumnOrderings<int> get tradeDataId => $state.composableBuilder(
+      column: $state.table.tradeDataId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  $$TagsTableOrderingComposer get tagId {
-    final $$TagsTableOrderingComposer composer = $state.composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.tagId,
-        referencedTable: $state.db.tags,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder, parentComposers) => $$TagsTableOrderingComposer(
-            ComposerState(
-                $state.db, $state.db.tags, joinBuilder, parentComposers)));
-    return composer;
-  }
+  ColumnOrderings<int> get tagId => $state.composableBuilder(
+      column: $state.table.tagId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
 typedef $$TagAttributesTableInsertCompanionBuilder = TagAttributesCompanion
@@ -2753,23 +2649,6 @@ class $$TagAttributesTableFilterComposer
       column: $state.table.dataType,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
-
-  ComposableFilter tagAttributeValuesRefs(
-      ComposableFilter Function($$TagAttributeValuesTableFilterComposer f) f) {
-    final $$TagAttributeValuesTableFilterComposer composer = $state
-        .composerBuilder(
-            composer: this,
-            getCurrentColumn: (t) => t.id,
-            referencedTable: $state.db.tagAttributeValues,
-            getReferencedColumn: (t) => t.attributeId,
-            builder: (joinBuilder, parentComposers) =>
-                $$TagAttributeValuesTableFilterComposer(ComposerState(
-                    $state.db,
-                    $state.db.tagAttributeValues,
-                    joinBuilder,
-                    parentComposers)));
-    return f(composer);
-  }
 }
 
 class $$TagAttributesTableOrderingComposer
@@ -2869,68 +2748,39 @@ class $$TagAttributeValuesTableProcessedTableManager
 class $$TagAttributeValuesTableFilterComposer
     extends FilterComposer<_$MyDatabase, $TagAttributeValuesTable> {
   $$TagAttributeValuesTableFilterComposer(super.$state);
+  ColumnFilters<int> get tagId => $state.composableBuilder(
+      column: $state.table.tagId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get attributeId => $state.composableBuilder(
+      column: $state.table.attributeId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
   ColumnFilters<String> get value => $state.composableBuilder(
       column: $state.table.value,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
-
-  $$TagsTableFilterComposer get tagId {
-    final $$TagsTableFilterComposer composer = $state.composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.tagId,
-        referencedTable: $state.db.tags,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder, parentComposers) => $$TagsTableFilterComposer(
-            ComposerState(
-                $state.db, $state.db.tags, joinBuilder, parentComposers)));
-    return composer;
-  }
-
-  $$TagAttributesTableFilterComposer get attributeId {
-    final $$TagAttributesTableFilterComposer composer = $state.composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.attributeId,
-        referencedTable: $state.db.tagAttributes,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder, parentComposers) =>
-            $$TagAttributesTableFilterComposer(ComposerState($state.db,
-                $state.db.tagAttributes, joinBuilder, parentComposers)));
-    return composer;
-  }
 }
 
 class $$TagAttributeValuesTableOrderingComposer
     extends OrderingComposer<_$MyDatabase, $TagAttributeValuesTable> {
   $$TagAttributeValuesTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get tagId => $state.composableBuilder(
+      column: $state.table.tagId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get attributeId => $state.composableBuilder(
+      column: $state.table.attributeId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
   ColumnOrderings<String> get value => $state.composableBuilder(
       column: $state.table.value,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
-
-  $$TagsTableOrderingComposer get tagId {
-    final $$TagsTableOrderingComposer composer = $state.composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.tagId,
-        referencedTable: $state.db.tags,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder, parentComposers) => $$TagsTableOrderingComposer(
-            ComposerState(
-                $state.db, $state.db.tags, joinBuilder, parentComposers)));
-    return composer;
-  }
-
-  $$TagAttributesTableOrderingComposer get attributeId {
-    final $$TagAttributesTableOrderingComposer composer =
-        $state.composerBuilder(
-            composer: this,
-            getCurrentColumn: (t) => t.attributeId,
-            referencedTable: $state.db.tagAttributes,
-            getReferencedColumn: (t) => t.id,
-            builder: (joinBuilder, parentComposers) =>
-                $$TagAttributesTableOrderingComposer(ComposerState($state.db,
-                    $state.db.tagAttributes, joinBuilder, parentComposers)));
-    return composer;
-  }
 }
 
 typedef $$SettingsTableInsertCompanionBuilder = SettingsCompanion Function({
@@ -3047,7 +2897,8 @@ class _$MyDatabaseManager {
   _$MyDatabaseManager(this._db);
   $$TradeDatasTableTableManager get tradeDatas =>
       $$TradeDatasTableTableManager(_db, _db.tradeDatas);
-  $$TagsTableTableManager get tags => $$TagsTableTableManager(_db, _db.tags);
+  $$TradeTagsTableTableManager get tradeTags =>
+      $$TradeTagsTableTableManager(_db, _db.tradeTags);
   $$TaggedTradeDatasTableTableManager get taggedTradeDatas =>
       $$TaggedTradeDatasTableTableManager(_db, _db.taggedTradeDatas);
   $$TagAttributesTableTableManager get tagAttributes =>
