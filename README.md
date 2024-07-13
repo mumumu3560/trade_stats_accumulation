@@ -1,16 +1,9 @@
 # trade_stats_accumulation
 
-A new Flutter project.
+FXや株などにおけるトレードの根拠家勝率などを保存するためのツール。
 
-## Getting Started
+DB→Drift、Supabaseを使ってみるのもあり
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+アーキテクチャはわからなくて、以下のオニオンアーキテクチャを参考にしたがまだしっくりこない。
+https://www.youtube.com/watch?v=UMpInO2giz4
+どちらかというとfeatures寄りだが

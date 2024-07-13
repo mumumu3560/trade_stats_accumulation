@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:trade_stats_accumulation/core/infra/database/drift/type_converter.dart';
 
-class TradeDatas extends Table {
+class DriftTradeDatas extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   //どの通貨ペアか
@@ -28,10 +28,16 @@ class TradeDatas extends Table {
 
   // urlTextカラムに.unique()を追加して、この値がユニークであることを保証する
   //urlは例えばtradingviewのurlを保存するためのもの
-  TextColumn get urlText => text().unique()();
+  
+  TextColumn get urlText => text().nullable()();
+
+
   
   DateTimeColumn get createdAt => dateTime().clientDefault(() => DateTime.now())();
   DateTimeColumn get updatedAt => dateTime().clientDefault(() => DateTime.now())();
+
+  DateTimeColumn get entriedAt => dateTime().nullable() ();
+  DateTimeColumn get exitedAt => dateTime().nullable() ();
 
   // TagListConverterを使用してタグリストを保存する
   TextColumn get tags => text().map(const TagListConverter()).nullable()();

@@ -3,27 +3,27 @@ import 'package:drift/drift.dart';
 import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/database.dart';
 
 
-extension TagAttributesOperations on MyDatabase{
+extension DriftTagAttributesOperations on MyDatabase{
   
   
-Future<int> insertTagAttribute(TagAttribute attribute) {
-  return into(tagAttributes).insert(attribute);
+Future<int> insertDriftTagAttribute(DriftTagAttribute attribute) {
+  return into(driftTagAttributes).insert(attribute);
 }
 
 // タグ属性を更新
-Future<bool> updateTagAttribute(TagAttribute attribute) {
-  return update(tagAttributes).replace(attribute);
+Future<bool> updateDriftTagAttribute(DriftTagAttribute attribute) {
+  return update(driftTagAttributes).replace(attribute);
 }
 
 // タグ属性を削除
-Future<int> deleteTagAttribute(int id) {
-  return (delete(tagAttributes)..where((ta) => ta.id.equals(id))).go();
+Future<int> deleteDriftTagAttribute(int id) {
+  return (delete(driftTagAttributes)..where((ta) => ta.id.equals(id))).go();
 }
 
 // タグに属性値を設定
-Future<void> setTagAttributeValue(int tagId, int attributeId, String value) {
-  return into(tagAttributeValues).insert(
-    TagAttributeValuesCompanion.insert(
+Future<void> setDriftTagAttributeValue(int tagId, int attributeId, String value) {
+  return into(driftTagAttributeValues).insert(
+    DriftTagAttributeValuesCompanion.insert(
       tagId: tagId,
       attributeId: attributeId,
       value: value,
@@ -33,8 +33,8 @@ Future<void> setTagAttributeValue(int tagId, int attributeId, String value) {
 }
 
 // タグの属性値を取得
-Future<List<TagAttributeValue>> getTagAttributeValues(int tagId) {
-  return (select(tagAttributeValues)..where((tav) => tav.tagId.equals(tagId))).get();
+Future<List<DriftTagAttributeValue>> getDriftTagAttributeValues(int tagId) {
+  return (select(driftTagAttributeValues)..where((tav) => tav.tagId.equals(tagId))).get();
 }
   
 }

@@ -1,7 +1,7 @@
 // 各タグの属性値を保存するテーブル
 import 'package:drift/drift.dart';
 
-class TagAttributeValues extends Table {
+class DriftTagAttributeValues extends Table {
   //IntColumn get id => integer().autoIncrement()();
   IntColumn get tagId => integer().customConstraint('REFERENCES tags(id) ON DELETE CASCADE')();
   IntColumn get attributeId => integer().customConstraint('REFERENCES tag_attributes(id) ON DELETE CASCADE')();

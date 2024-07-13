@@ -1,3 +1,5 @@
+//database.dart
+
 import 'dart:io';
 import 'package:trade_stats_accumulation/core/infra/database/drift/tables/tables_importer.dart';
 import 'package:drift/drift.dart';
@@ -12,12 +14,12 @@ part 'database.g.dart';
 
 
 // 両方のテーブルを含める
-@DriftDatabase(tables: [TradeDatas, TradeTags, TaggedTradeDatas, TagAttributes, TagAttributeValues,Settings])
+@DriftDatabase(tables: [DriftTradeDatas, DriftTradeTags, DriftTaggedTradeDatas, DriftTagAttributes, DriftTagAttributeValues, DriftSettings, DriftTradingAssetDatas])
 class MyDatabase extends _$MyDatabase {
   final String dbName;
   MyDatabase({required this.dbName}) : super(_openConnection(dbName));
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 4;
 
 
   @override
@@ -28,6 +30,24 @@ class MyDatabase extends _$MyDatabase {
      },
 
      onUpgrade: (Migrator m, int from, int to) async {
+
+        if (from < 3) {
+          await m.addColumn(driftTradeDatas, driftTradeDatas.entriedAt);
+          await m.addColumn(driftTradeDatas, driftTradeDatas.exitedAt);
+        }
+
+        if(from < 4){
+          await m.createTable(driftTradingAssetDatas);
+        }
+
+        if(from < 5){
+          //tradingAssetsTableのnameコラムをuniqueへ変更したのでそのマイグレーション
+          await m.alterTable(TableMigration(driftTradingAssetDatas));
+        }
+
+        
+
+
        
      },
 

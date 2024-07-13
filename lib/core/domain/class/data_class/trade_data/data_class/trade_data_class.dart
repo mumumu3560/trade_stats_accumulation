@@ -25,10 +25,10 @@ class TradeData with _$TradeData {
 
 
     //値幅
-    required int pips,
+    required int? pips,
 
     //結果得られた金額
-    required double money,
+    required double? money,
 
     //取引数量
     required double lot,
@@ -42,6 +42,9 @@ class TradeData with _$TradeData {
     required DateTime createdAt,
 
     required DateTime updatedAt,
+
+    required DateTime? entriedAt,
+    required DateTime? exitedAt,
 
     //ここにトレードの条件を入れる
     required List<String>? tags,

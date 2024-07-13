@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-class TradeTags extends Table {
+class DriftTradeTags extends Table {
   IntColumn get id => integer().autoIncrement()(); 
   //schema 15?
   TextColumn get tagName => text().unique()(); 

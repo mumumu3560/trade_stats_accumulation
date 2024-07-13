@@ -5,10 +5,10 @@ import 'package:trade_stats_accumulation/core/domain/class/data_class/tag_attrib
 
 abstract class TagAttributeRepository {
   // タグ属性を追加
-  Future<int> insertTagAttribute(TagAttribute attribute);
+  Future<int> insertTagAttribute(TagAttributeData attribute);
 
   // タグ属性を更新
-  Future<bool> updateTagAttribute(TagAttribute attribute);
+  Future<bool> updateTagAttribute(TagAttributeData attribute);
 
   // タグ属性を削除
   Future<int> deleteTagAttribute(int id);
@@ -17,5 +17,5 @@ abstract class TagAttributeRepository {
   Future<void> setTagAttributeValue(int tagId, int attributeId, String value);
 
   // タグの属性値を取得
-  Future<List<TagAttributeValue>> getTagAttributeValues(int tagId);
+  Future<List<TagAttributeValueData>> getTagAttributeValues(int tagId);
 }

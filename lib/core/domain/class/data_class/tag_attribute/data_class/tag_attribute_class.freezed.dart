@@ -15,29 +15,29 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$TagAttribute {
+mixin _$TagAttributeData {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get dataType => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $TagAttributeCopyWith<TagAttribute> get copyWith =>
+  $TagAttributeDataCopyWith<TagAttributeData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TagAttributeCopyWith<$Res> {
-  factory $TagAttributeCopyWith(
-          TagAttribute value, $Res Function(TagAttribute) then) =
-      _$TagAttributeCopyWithImpl<$Res, TagAttribute>;
+abstract class $TagAttributeDataCopyWith<$Res> {
+  factory $TagAttributeDataCopyWith(
+          TagAttributeData value, $Res Function(TagAttributeData) then) =
+      _$TagAttributeDataCopyWithImpl<$Res, TagAttributeData>;
   @useResult
   $Res call({int id, String name, String dataType});
 }
 
 /// @nodoc
-class _$TagAttributeCopyWithImpl<$Res, $Val extends TagAttribute>
-    implements $TagAttributeCopyWith<$Res> {
-  _$TagAttributeCopyWithImpl(this._value, this._then);
+class _$TagAttributeDataCopyWithImpl<$Res, $Val extends TagAttributeData>
+    implements $TagAttributeDataCopyWith<$Res> {
+  _$TagAttributeDataCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -69,22 +69,22 @@ class _$TagAttributeCopyWithImpl<$Res, $Val extends TagAttribute>
 }
 
 /// @nodoc
-abstract class _$$TagAttributeImplCopyWith<$Res>
-    implements $TagAttributeCopyWith<$Res> {
-  factory _$$TagAttributeImplCopyWith(
-          _$TagAttributeImpl value, $Res Function(_$TagAttributeImpl) then) =
-      __$$TagAttributeImplCopyWithImpl<$Res>;
+abstract class _$$TagAttributeDataImplCopyWith<$Res>
+    implements $TagAttributeDataCopyWith<$Res> {
+  factory _$$TagAttributeDataImplCopyWith(_$TagAttributeDataImpl value,
+          $Res Function(_$TagAttributeDataImpl) then) =
+      __$$TagAttributeDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int id, String name, String dataType});
 }
 
 /// @nodoc
-class __$$TagAttributeImplCopyWithImpl<$Res>
-    extends _$TagAttributeCopyWithImpl<$Res, _$TagAttributeImpl>
-    implements _$$TagAttributeImplCopyWith<$Res> {
-  __$$TagAttributeImplCopyWithImpl(
-      _$TagAttributeImpl _value, $Res Function(_$TagAttributeImpl) _then)
+class __$$TagAttributeDataImplCopyWithImpl<$Res>
+    extends _$TagAttributeDataCopyWithImpl<$Res, _$TagAttributeDataImpl>
+    implements _$$TagAttributeDataImplCopyWith<$Res> {
+  __$$TagAttributeDataImplCopyWithImpl(_$TagAttributeDataImpl _value,
+      $Res Function(_$TagAttributeDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -94,7 +94,7 @@ class __$$TagAttributeImplCopyWithImpl<$Res>
     Object? name = null,
     Object? dataType = null,
   }) {
-    return _then(_$TagAttributeImpl(
+    return _then(_$TagAttributeDataImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -113,8 +113,8 @@ class __$$TagAttributeImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TagAttributeImpl implements _TagAttribute {
-  const _$TagAttributeImpl(
+class _$TagAttributeDataImpl implements _TagAttributeData {
+  const _$TagAttributeDataImpl(
       {required this.id, required this.name, required this.dataType});
 
   @override
@@ -126,14 +126,14 @@ class _$TagAttributeImpl implements _TagAttribute {
 
   @override
   String toString() {
-    return 'TagAttribute(id: $id, name: $name, dataType: $dataType)';
+    return 'TagAttributeData(id: $id, name: $name, dataType: $dataType)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TagAttributeImpl &&
+            other is _$TagAttributeDataImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.dataType, dataType) ||
@@ -146,15 +146,16 @@ class _$TagAttributeImpl implements _TagAttribute {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$TagAttributeImplCopyWith<_$TagAttributeImpl> get copyWith =>
-      __$$TagAttributeImplCopyWithImpl<_$TagAttributeImpl>(this, _$identity);
+  _$$TagAttributeDataImplCopyWith<_$TagAttributeDataImpl> get copyWith =>
+      __$$TagAttributeDataImplCopyWithImpl<_$TagAttributeDataImpl>(
+          this, _$identity);
 }
 
-abstract class _TagAttribute implements TagAttribute {
-  const factory _TagAttribute(
+abstract class _TagAttributeData implements TagAttributeData {
+  const factory _TagAttributeData(
       {required final int id,
       required final String name,
-      required final String dataType}) = _$TagAttributeImpl;
+      required final String dataType}) = _$TagAttributeDataImpl;
 
   @override
   int get id;
@@ -164,6 +165,6 @@ abstract class _TagAttribute implements TagAttribute {
   String get dataType;
   @override
   @JsonKey(ignore: true)
-  _$$TagAttributeImplCopyWith<_$TagAttributeImpl> get copyWith =>
+  _$$TagAttributeDataImplCopyWith<_$TagAttributeDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

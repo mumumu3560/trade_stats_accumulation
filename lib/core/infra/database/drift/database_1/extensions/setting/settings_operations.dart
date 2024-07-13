@@ -6,8 +6,8 @@ import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/da
 extension SettingsOperations on MyDatabase{
 
   Future<int> insertTheme() async{
-    return into(settings).insert(
-      const SettingsCompanion(
+    return into(driftSettings).insert(
+      const DriftSettingsCompanion(
         themeMode: Value(1),
       )
     );
@@ -16,7 +16,7 @@ extension SettingsOperations on MyDatabase{
 Future<int?> getTheme() async {
   try {
     // settingsテーブルからIDが0のレコードを取得
-    final themeMode = await (select(settings)..where((s) => s.id.equals(0))).getSingleOrNull();
+    final themeMode = await (select(driftSettings)..where((s) => s.id.equals(0))).getSingleOrNull();
     // themeModeがnullの場合、デフォルト値として1を返す
     if (themeMode == null) {
 
@@ -33,8 +33,8 @@ Future<int?> getTheme() async {
 
 
   Future<int> updateTheme(int themeMode) async{
-    return (update(settings)..where((s) => s.id.equals(0))).write(
-      SettingsCompanion(
+    return (update(driftSettings)..where((s) => s.id.equals(0))).write(
+      DriftSettingsCompanion(
         themeMode: Value(themeMode),
       ),
     );

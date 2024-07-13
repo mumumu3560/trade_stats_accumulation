@@ -5,37 +5,37 @@ import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/da
 extension TagsOperations on MyDatabase{
   
   // 新しいタグを追加
-  Future<int> insertTag(TradeTag tag) {
-    return into(tradeTags).insert(tag);
+  Future<int> insertTag(DriftTradeTag tag) {
+    return into(driftTradeTags).insert(tag);
   }
 
   // タグを更新
-  Future<bool> updateTag(TradeTag tag) {
-    return update(tradeTags).replace(tag);
+  Future<bool> updateTag(DriftTradeTag tag) {
+    return update(driftTradeTags).replace(tag);
   }
 
   // タグを削除
   Future<int> deleteTag(int id) {
-    return (delete(tradeTags)..where((t) => t.id.equals(id))).go();
+    return (delete(driftTradeTags)..where((t) => t.id.equals(id))).go();
   }
 
-  Future<TradeTag?> getTagById(int id) {
-    return (select(tradeTags)..where((t) => t.id.equals(id))).getSingleOrNull();
+  Future<DriftTradeTag?> getTagById(int id) {
+    return (select(driftTradeTags)..where((t) => t.id.equals(id))).getSingleOrNull();
   } 
 
   // すべてのタグを取得
-  Future<List<TradeTag>> getAllTags() {
-    return select(tradeTags).get();
+  Future<List<DriftTradeTag>> getAllTags() {
+    return select(driftTradeTags).get();
   }
 
   // ジャンルごとにタグを取得
-  Future<List<TradeTag>> getTagsByGenre(String genre) {
-    return (select(tradeTags)..where((t) => t.genre.equals(genre))).get();
+  Future<List<DriftTradeTag>> getTagsByGenre(String genre) {
+    return (select(driftTradeTags)..where((t) => t.genre.equals(genre))).get();
   }
 
   // 名前でタグを検索
-  Future<List<TradeTag>> searchTagsByName(String query) {
-    return (select(tradeTags)..where((t) => t.tagName.like('%$query%'))).get();
+  Future<List<DriftTradeTag>> searchTagsByName(String query) {
+    return (select(driftTradeTags)..where((t) => t.tagName.like('%$query%'))).get();
   }
   
 }

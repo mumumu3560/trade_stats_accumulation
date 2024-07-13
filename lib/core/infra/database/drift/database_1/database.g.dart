@@ -3,12 +3,12 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
-class $TradeDatasTable extends TradeDatas
-    with TableInfo<$TradeDatasTable, TradeData> {
+class $DriftTradeDatasTable extends DriftTradeDatas
+    with TableInfo<$DriftTradeDatasTable, DriftTradeData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TradeDatasTable(this.attachedDatabase, [this._alias]);
+  $DriftTradeDatasTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -62,10 +62,8 @@ class $TradeDatasTable extends TradeDatas
       const VerificationMeta('urlText');
   @override
   late final GeneratedColumn<String> urlText = GeneratedColumn<String>(
-      'url_text', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+      'url_text', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _createdAtMeta =
       const VerificationMeta('createdAt');
   @override
@@ -82,12 +80,24 @@ class $TradeDatasTable extends TradeDatas
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
       clientDefault: () => DateTime.now());
+  static const VerificationMeta _entriedAtMeta =
+      const VerificationMeta('entriedAt');
+  @override
+  late final GeneratedColumn<DateTime> entriedAt = GeneratedColumn<DateTime>(
+      'entried_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _exitedAtMeta =
+      const VerificationMeta('exitedAt');
+  @override
+  late final GeneratedColumn<DateTime> exitedAt = GeneratedColumn<DateTime>(
+      'exited_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   static const VerificationMeta _tagsMeta = const VerificationMeta('tags');
   @override
   late final GeneratedColumnWithTypeConverter<List<String>?, String> tags =
       GeneratedColumn<String>('tags', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<List<String>?>($TradeDatasTable.$convertertagsn);
+          .withConverter<List<String>?>($DriftTradeDatasTable.$convertertagsn);
   static const VerificationMeta _imagePathBeforeMeta =
       const VerificationMeta('imagePathBefore');
   @override
@@ -137,6 +147,8 @@ class $TradeDatasTable extends TradeDatas
         urlText,
         createdAt,
         updatedAt,
+        entriedAt,
+        exitedAt,
         tags,
         imagePathBefore,
         imagePathAfter,
@@ -149,9 +161,9 @@ class $TradeDatasTable extends TradeDatas
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'trade_datas';
+  static const String $name = 'drift_trade_datas';
   @override
-  VerificationContext validateIntegrity(Insertable<TradeData> instance,
+  VerificationContext validateIntegrity(Insertable<DriftTradeData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -193,8 +205,6 @@ class $TradeDatasTable extends TradeDatas
     if (data.containsKey('url_text')) {
       context.handle(_urlTextMeta,
           urlText.isAcceptableOrUnknown(data['url_text']!, _urlTextMeta));
-    } else if (isInserting) {
-      context.missing(_urlTextMeta);
     }
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
@@ -203,6 +213,14 @@ class $TradeDatasTable extends TradeDatas
     if (data.containsKey('updated_at')) {
       context.handle(_updatedAtMeta,
           updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('entried_at')) {
+      context.handle(_entriedAtMeta,
+          entriedAt.isAcceptableOrUnknown(data['entried_at']!, _entriedAtMeta));
+    }
+    if (data.containsKey('exited_at')) {
+      context.handle(_exitedAtMeta,
+          exitedAt.isAcceptableOrUnknown(data['exited_at']!, _exitedAtMeta));
     }
     context.handle(_tagsMeta, const VerificationResult.success());
     if (data.containsKey('image_path_before')) {
@@ -245,9 +263,9 @@ class $TradeDatasTable extends TradeDatas
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  TradeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DriftTradeData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TradeData(
+    return DriftTradeData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       currencyPair: attachedDatabase.typeMapping
@@ -265,12 +283,16 @@ class $TradeDatasTable extends TradeDatas
       isBuy: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_buy'])!,
       urlText: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}url_text'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}url_text']),
       createdAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
       updatedAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
-      tags: $TradeDatasTable.$convertertagsn.fromSql(attachedDatabase
+      entriedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}entried_at']),
+      exitedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}exited_at']),
+      tags: $DriftTradeDatasTable.$convertertagsn.fromSql(attachedDatabase
           .typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}tags'])),
       imagePathBefore: attachedDatabase.typeMapping.read(
@@ -289,8 +311,8 @@ class $TradeDatasTable extends TradeDatas
   }
 
   @override
-  $TradeDatasTable createAlias(String alias) {
-    return $TradeDatasTable(attachedDatabase, alias);
+  $DriftTradeDatasTable createAlias(String alias) {
+    return $DriftTradeDatasTable(attachedDatabase, alias);
   }
 
   static TypeConverter<List<String>, String> $convertertags =
@@ -299,7 +321,7 @@ class $TradeDatasTable extends TradeDatas
       NullAwareTypeConverter.wrap($convertertags);
 }
 
-class TradeData extends DataClass implements Insertable<TradeData> {
+class DriftTradeData extends DataClass implements Insertable<DriftTradeData> {
   final int id;
   final String? currencyPair;
   final String? title;
@@ -308,9 +330,11 @@ class TradeData extends DataClass implements Insertable<TradeData> {
   final double? money;
   final double? lot;
   final bool isBuy;
-  final String urlText;
+  final String? urlText;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final DateTime? entriedAt;
+  final DateTime? exitedAt;
   final List<String>? tags;
   final String? imagePathBefore;
   final String? imagePathAfter;
@@ -318,7 +342,7 @@ class TradeData extends DataClass implements Insertable<TradeData> {
   final double? endPrice;
   final double? startPriceResult;
   final double? endPriceResult;
-  const TradeData(
+  const DriftTradeData(
       {required this.id,
       this.currencyPair,
       this.title,
@@ -327,9 +351,11 @@ class TradeData extends DataClass implements Insertable<TradeData> {
       this.money,
       this.lot,
       required this.isBuy,
-      required this.urlText,
+      this.urlText,
       required this.createdAt,
       required this.updatedAt,
+      this.entriedAt,
+      this.exitedAt,
       this.tags,
       this.imagePathBefore,
       this.imagePathAfter,
@@ -360,12 +386,20 @@ class TradeData extends DataClass implements Insertable<TradeData> {
       map['lot'] = Variable<double>(lot);
     }
     map['is_buy'] = Variable<bool>(isBuy);
-    map['url_text'] = Variable<String>(urlText);
+    if (!nullToAbsent || urlText != null) {
+      map['url_text'] = Variable<String>(urlText);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || entriedAt != null) {
+      map['entried_at'] = Variable<DateTime>(entriedAt);
+    }
+    if (!nullToAbsent || exitedAt != null) {
+      map['exited_at'] = Variable<DateTime>(exitedAt);
+    }
     if (!nullToAbsent || tags != null) {
       map['tags'] =
-          Variable<String>($TradeDatasTable.$convertertagsn.toSql(tags));
+          Variable<String>($DriftTradeDatasTable.$convertertagsn.toSql(tags));
     }
     if (!nullToAbsent || imagePathBefore != null) {
       map['image_path_before'] = Variable<String>(imagePathBefore);
@@ -388,8 +422,8 @@ class TradeData extends DataClass implements Insertable<TradeData> {
     return map;
   }
 
-  TradeDatasCompanion toCompanion(bool nullToAbsent) {
-    return TradeDatasCompanion(
+  DriftTradeDatasCompanion toCompanion(bool nullToAbsent) {
+    return DriftTradeDatasCompanion(
       id: Value(id),
       currencyPair: currencyPair == null && nullToAbsent
           ? const Value.absent()
@@ -404,9 +438,17 @@ class TradeData extends DataClass implements Insertable<TradeData> {
           money == null && nullToAbsent ? const Value.absent() : Value(money),
       lot: lot == null && nullToAbsent ? const Value.absent() : Value(lot),
       isBuy: Value(isBuy),
-      urlText: Value(urlText),
+      urlText: urlText == null && nullToAbsent
+          ? const Value.absent()
+          : Value(urlText),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
+      entriedAt: entriedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(entriedAt),
+      exitedAt: exitedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(exitedAt),
       tags: tags == null && nullToAbsent ? const Value.absent() : Value(tags),
       imagePathBefore: imagePathBefore == null && nullToAbsent
           ? const Value.absent()
@@ -429,10 +471,10 @@ class TradeData extends DataClass implements Insertable<TradeData> {
     );
   }
 
-  factory TradeData.fromJson(Map<String, dynamic> json,
+  factory DriftTradeData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TradeData(
+    return DriftTradeData(
       id: serializer.fromJson<int>(json['id']),
       currencyPair: serializer.fromJson<String?>(json['currencyPair']),
       title: serializer.fromJson<String?>(json['title']),
@@ -441,9 +483,11 @@ class TradeData extends DataClass implements Insertable<TradeData> {
       money: serializer.fromJson<double?>(json['money']),
       lot: serializer.fromJson<double?>(json['lot']),
       isBuy: serializer.fromJson<bool>(json['isBuy']),
-      urlText: serializer.fromJson<String>(json['urlText']),
+      urlText: serializer.fromJson<String?>(json['urlText']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      entriedAt: serializer.fromJson<DateTime?>(json['entriedAt']),
+      exitedAt: serializer.fromJson<DateTime?>(json['exitedAt']),
       tags: serializer.fromJson<List<String>?>(json['tags']),
       imagePathBefore: serializer.fromJson<String?>(json['imagePathBefore']),
       imagePathAfter: serializer.fromJson<String?>(json['imagePathAfter']),
@@ -465,9 +509,11 @@ class TradeData extends DataClass implements Insertable<TradeData> {
       'money': serializer.toJson<double?>(money),
       'lot': serializer.toJson<double?>(lot),
       'isBuy': serializer.toJson<bool>(isBuy),
-      'urlText': serializer.toJson<String>(urlText),
+      'urlText': serializer.toJson<String?>(urlText),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'entriedAt': serializer.toJson<DateTime?>(entriedAt),
+      'exitedAt': serializer.toJson<DateTime?>(exitedAt),
       'tags': serializer.toJson<List<String>?>(tags),
       'imagePathBefore': serializer.toJson<String?>(imagePathBefore),
       'imagePathAfter': serializer.toJson<String?>(imagePathAfter),
@@ -478,7 +524,7 @@ class TradeData extends DataClass implements Insertable<TradeData> {
     };
   }
 
-  TradeData copyWith(
+  DriftTradeData copyWith(
           {int? id,
           Value<String?> currencyPair = const Value.absent(),
           Value<String?> title = const Value.absent(),
@@ -487,9 +533,11 @@ class TradeData extends DataClass implements Insertable<TradeData> {
           Value<double?> money = const Value.absent(),
           Value<double?> lot = const Value.absent(),
           bool? isBuy,
-          String? urlText,
+          Value<String?> urlText = const Value.absent(),
           DateTime? createdAt,
           DateTime? updatedAt,
+          Value<DateTime?> entriedAt = const Value.absent(),
+          Value<DateTime?> exitedAt = const Value.absent(),
           Value<List<String>?> tags = const Value.absent(),
           Value<String?> imagePathBefore = const Value.absent(),
           Value<String?> imagePathAfter = const Value.absent(),
@@ -497,7 +545,7 @@ class TradeData extends DataClass implements Insertable<TradeData> {
           Value<double?> endPrice = const Value.absent(),
           Value<double?> startPriceResult = const Value.absent(),
           Value<double?> endPriceResult = const Value.absent()}) =>
-      TradeData(
+      DriftTradeData(
         id: id ?? this.id,
         currencyPair:
             currencyPair.present ? currencyPair.value : this.currencyPair,
@@ -507,9 +555,11 @@ class TradeData extends DataClass implements Insertable<TradeData> {
         money: money.present ? money.value : this.money,
         lot: lot.present ? lot.value : this.lot,
         isBuy: isBuy ?? this.isBuy,
-        urlText: urlText ?? this.urlText,
+        urlText: urlText.present ? urlText.value : this.urlText,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        entriedAt: entriedAt.present ? entriedAt.value : this.entriedAt,
+        exitedAt: exitedAt.present ? exitedAt.value : this.exitedAt,
         tags: tags.present ? tags.value : this.tags,
         imagePathBefore: imagePathBefore.present
             ? imagePathBefore.value
@@ -526,7 +576,7 @@ class TradeData extends DataClass implements Insertable<TradeData> {
       );
   @override
   String toString() {
-    return (StringBuffer('TradeData(')
+    return (StringBuffer('DriftTradeData(')
           ..write('id: $id, ')
           ..write('currencyPair: $currencyPair, ')
           ..write('title: $title, ')
@@ -538,6 +588,8 @@ class TradeData extends DataClass implements Insertable<TradeData> {
           ..write('urlText: $urlText, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
+          ..write('entriedAt: $entriedAt, ')
+          ..write('exitedAt: $exitedAt, ')
           ..write('tags: $tags, ')
           ..write('imagePathBefore: $imagePathBefore, ')
           ..write('imagePathAfter: $imagePathAfter, ')
@@ -562,6 +614,8 @@ class TradeData extends DataClass implements Insertable<TradeData> {
       urlText,
       createdAt,
       updatedAt,
+      entriedAt,
+      exitedAt,
       tags,
       imagePathBefore,
       imagePathAfter,
@@ -572,7 +626,7 @@ class TradeData extends DataClass implements Insertable<TradeData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TradeData &&
+      (other is DriftTradeData &&
           other.id == this.id &&
           other.currencyPair == this.currencyPair &&
           other.title == this.title &&
@@ -584,6 +638,8 @@ class TradeData extends DataClass implements Insertable<TradeData> {
           other.urlText == this.urlText &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
+          other.entriedAt == this.entriedAt &&
+          other.exitedAt == this.exitedAt &&
           other.tags == this.tags &&
           other.imagePathBefore == this.imagePathBefore &&
           other.imagePathAfter == this.imagePathAfter &&
@@ -593,7 +649,7 @@ class TradeData extends DataClass implements Insertable<TradeData> {
           other.endPriceResult == this.endPriceResult);
 }
 
-class TradeDatasCompanion extends UpdateCompanion<TradeData> {
+class DriftTradeDatasCompanion extends UpdateCompanion<DriftTradeData> {
   final Value<int> id;
   final Value<String?> currencyPair;
   final Value<String?> title;
@@ -602,9 +658,11 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
   final Value<double?> money;
   final Value<double?> lot;
   final Value<bool> isBuy;
-  final Value<String> urlText;
+  final Value<String?> urlText;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
+  final Value<DateTime?> entriedAt;
+  final Value<DateTime?> exitedAt;
   final Value<List<String>?> tags;
   final Value<String?> imagePathBefore;
   final Value<String?> imagePathAfter;
@@ -612,7 +670,7 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
   final Value<double?> endPrice;
   final Value<double?> startPriceResult;
   final Value<double?> endPriceResult;
-  const TradeDatasCompanion({
+  const DriftTradeDatasCompanion({
     this.id = const Value.absent(),
     this.currencyPair = const Value.absent(),
     this.title = const Value.absent(),
@@ -624,6 +682,8 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
     this.urlText = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.entriedAt = const Value.absent(),
+    this.exitedAt = const Value.absent(),
     this.tags = const Value.absent(),
     this.imagePathBefore = const Value.absent(),
     this.imagePathAfter = const Value.absent(),
@@ -632,7 +692,7 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
     this.startPriceResult = const Value.absent(),
     this.endPriceResult = const Value.absent(),
   });
-  TradeDatasCompanion.insert({
+  DriftTradeDatasCompanion.insert({
     this.id = const Value.absent(),
     this.currencyPair = const Value.absent(),
     this.title = const Value.absent(),
@@ -641,9 +701,11 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
     this.money = const Value.absent(),
     this.lot = const Value.absent(),
     required bool isBuy,
-    required String urlText,
+    this.urlText = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.entriedAt = const Value.absent(),
+    this.exitedAt = const Value.absent(),
     this.tags = const Value.absent(),
     this.imagePathBefore = const Value.absent(),
     this.imagePathAfter = const Value.absent(),
@@ -651,9 +713,8 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
     this.endPrice = const Value.absent(),
     this.startPriceResult = const Value.absent(),
     this.endPriceResult = const Value.absent(),
-  })  : isBuy = Value(isBuy),
-        urlText = Value(urlText);
-  static Insertable<TradeData> custom({
+  }) : isBuy = Value(isBuy);
+  static Insertable<DriftTradeData> custom({
     Expression<int>? id,
     Expression<String>? currencyPair,
     Expression<String>? title,
@@ -665,6 +726,8 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
     Expression<String>? urlText,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
+    Expression<DateTime>? entriedAt,
+    Expression<DateTime>? exitedAt,
     Expression<String>? tags,
     Expression<String>? imagePathBefore,
     Expression<String>? imagePathAfter,
@@ -685,6 +748,8 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
       if (urlText != null) 'url_text': urlText,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
+      if (entriedAt != null) 'entried_at': entriedAt,
+      if (exitedAt != null) 'exited_at': exitedAt,
       if (tags != null) 'tags': tags,
       if (imagePathBefore != null) 'image_path_before': imagePathBefore,
       if (imagePathAfter != null) 'image_path_after': imagePathAfter,
@@ -695,7 +760,7 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
     });
   }
 
-  TradeDatasCompanion copyWith(
+  DriftTradeDatasCompanion copyWith(
       {Value<int>? id,
       Value<String?>? currencyPair,
       Value<String?>? title,
@@ -704,9 +769,11 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
       Value<double?>? money,
       Value<double?>? lot,
       Value<bool>? isBuy,
-      Value<String>? urlText,
+      Value<String?>? urlText,
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt,
+      Value<DateTime?>? entriedAt,
+      Value<DateTime?>? exitedAt,
       Value<List<String>?>? tags,
       Value<String?>? imagePathBefore,
       Value<String?>? imagePathAfter,
@@ -714,7 +781,7 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
       Value<double?>? endPrice,
       Value<double?>? startPriceResult,
       Value<double?>? endPriceResult}) {
-    return TradeDatasCompanion(
+    return DriftTradeDatasCompanion(
       id: id ?? this.id,
       currencyPair: currencyPair ?? this.currencyPair,
       title: title ?? this.title,
@@ -726,6 +793,8 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
       urlText: urlText ?? this.urlText,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      entriedAt: entriedAt ?? this.entriedAt,
+      exitedAt: exitedAt ?? this.exitedAt,
       tags: tags ?? this.tags,
       imagePathBefore: imagePathBefore ?? this.imagePathBefore,
       imagePathAfter: imagePathAfter ?? this.imagePathAfter,
@@ -772,9 +841,15 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
+    if (entriedAt.present) {
+      map['entried_at'] = Variable<DateTime>(entriedAt.value);
+    }
+    if (exitedAt.present) {
+      map['exited_at'] = Variable<DateTime>(exitedAt.value);
+    }
     if (tags.present) {
-      map['tags'] =
-          Variable<String>($TradeDatasTable.$convertertagsn.toSql(tags.value));
+      map['tags'] = Variable<String>(
+          $DriftTradeDatasTable.$convertertagsn.toSql(tags.value));
     }
     if (imagePathBefore.present) {
       map['image_path_before'] = Variable<String>(imagePathBefore.value);
@@ -799,7 +874,7 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
 
   @override
   String toString() {
-    return (StringBuffer('TradeDatasCompanion(')
+    return (StringBuffer('DriftTradeDatasCompanion(')
           ..write('id: $id, ')
           ..write('currencyPair: $currencyPair, ')
           ..write('title: $title, ')
@@ -811,6 +886,8 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
           ..write('urlText: $urlText, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
+          ..write('entriedAt: $entriedAt, ')
+          ..write('exitedAt: $exitedAt, ')
           ..write('tags: $tags, ')
           ..write('imagePathBefore: $imagePathBefore, ')
           ..write('imagePathAfter: $imagePathAfter, ')
@@ -823,12 +900,12 @@ class TradeDatasCompanion extends UpdateCompanion<TradeData> {
   }
 }
 
-class $TradeTagsTable extends TradeTags
-    with TableInfo<$TradeTagsTable, TradeTag> {
+class $DriftTradeTagsTable extends DriftTradeTags
+    with TableInfo<$DriftTradeTagsTable, DriftTradeTag> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TradeTagsTable(this.attachedDatabase, [this._alias]);
+  $DriftTradeTagsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -876,9 +953,9 @@ class $TradeTagsTable extends TradeTags
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'trade_tags';
+  static const String $name = 'drift_trade_tags';
   @override
-  VerificationContext validateIntegrity(Insertable<TradeTag> instance,
+  VerificationContext validateIntegrity(Insertable<DriftTradeTag> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -909,9 +986,9 @@ class $TradeTagsTable extends TradeTags
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  TradeTag map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DriftTradeTag map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TradeTag(
+    return DriftTradeTag(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       tagName: attachedDatabase.typeMapping
@@ -926,18 +1003,18 @@ class $TradeTagsTable extends TradeTags
   }
 
   @override
-  $TradeTagsTable createAlias(String alias) {
-    return $TradeTagsTable(attachedDatabase, alias);
+  $DriftTradeTagsTable createAlias(String alias) {
+    return $DriftTradeTagsTable(attachedDatabase, alias);
   }
 }
 
-class TradeTag extends DataClass implements Insertable<TradeTag> {
+class DriftTradeTag extends DataClass implements Insertable<DriftTradeTag> {
   final int id;
   final String tagName;
   final DateTime createdAt;
   final int useCount;
   final String genre;
-  const TradeTag(
+  const DriftTradeTag(
       {required this.id,
       required this.tagName,
       required this.createdAt,
@@ -954,8 +1031,8 @@ class TradeTag extends DataClass implements Insertable<TradeTag> {
     return map;
   }
 
-  TradeTagsCompanion toCompanion(bool nullToAbsent) {
-    return TradeTagsCompanion(
+  DriftTradeTagsCompanion toCompanion(bool nullToAbsent) {
+    return DriftTradeTagsCompanion(
       id: Value(id),
       tagName: Value(tagName),
       createdAt: Value(createdAt),
@@ -964,10 +1041,10 @@ class TradeTag extends DataClass implements Insertable<TradeTag> {
     );
   }
 
-  factory TradeTag.fromJson(Map<String, dynamic> json,
+  factory DriftTradeTag.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TradeTag(
+    return DriftTradeTag(
       id: serializer.fromJson<int>(json['id']),
       tagName: serializer.fromJson<String>(json['tagName']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -987,13 +1064,13 @@ class TradeTag extends DataClass implements Insertable<TradeTag> {
     };
   }
 
-  TradeTag copyWith(
+  DriftTradeTag copyWith(
           {int? id,
           String? tagName,
           DateTime? createdAt,
           int? useCount,
           String? genre}) =>
-      TradeTag(
+      DriftTradeTag(
         id: id ?? this.id,
         tagName: tagName ?? this.tagName,
         createdAt: createdAt ?? this.createdAt,
@@ -1002,7 +1079,7 @@ class TradeTag extends DataClass implements Insertable<TradeTag> {
       );
   @override
   String toString() {
-    return (StringBuffer('TradeTag(')
+    return (StringBuffer('DriftTradeTag(')
           ..write('id: $id, ')
           ..write('tagName: $tagName, ')
           ..write('createdAt: $createdAt, ')
@@ -1017,7 +1094,7 @@ class TradeTag extends DataClass implements Insertable<TradeTag> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TradeTag &&
+      (other is DriftTradeTag &&
           other.id == this.id &&
           other.tagName == this.tagName &&
           other.createdAt == this.createdAt &&
@@ -1025,27 +1102,27 @@ class TradeTag extends DataClass implements Insertable<TradeTag> {
           other.genre == this.genre);
 }
 
-class TradeTagsCompanion extends UpdateCompanion<TradeTag> {
+class DriftTradeTagsCompanion extends UpdateCompanion<DriftTradeTag> {
   final Value<int> id;
   final Value<String> tagName;
   final Value<DateTime> createdAt;
   final Value<int> useCount;
   final Value<String> genre;
-  const TradeTagsCompanion({
+  const DriftTradeTagsCompanion({
     this.id = const Value.absent(),
     this.tagName = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.useCount = const Value.absent(),
     this.genre = const Value.absent(),
   });
-  TradeTagsCompanion.insert({
+  DriftTradeTagsCompanion.insert({
     this.id = const Value.absent(),
     required String tagName,
     this.createdAt = const Value.absent(),
     this.useCount = const Value.absent(),
     this.genre = const Value.absent(),
   }) : tagName = Value(tagName);
-  static Insertable<TradeTag> custom({
+  static Insertable<DriftTradeTag> custom({
     Expression<int>? id,
     Expression<String>? tagName,
     Expression<DateTime>? createdAt,
@@ -1061,13 +1138,13 @@ class TradeTagsCompanion extends UpdateCompanion<TradeTag> {
     });
   }
 
-  TradeTagsCompanion copyWith(
+  DriftTradeTagsCompanion copyWith(
       {Value<int>? id,
       Value<String>? tagName,
       Value<DateTime>? createdAt,
       Value<int>? useCount,
       Value<String>? genre}) {
-    return TradeTagsCompanion(
+    return DriftTradeTagsCompanion(
       id: id ?? this.id,
       tagName: tagName ?? this.tagName,
       createdAt: createdAt ?? this.createdAt,
@@ -1099,7 +1176,7 @@ class TradeTagsCompanion extends UpdateCompanion<TradeTag> {
 
   @override
   String toString() {
-    return (StringBuffer('TradeTagsCompanion(')
+    return (StringBuffer('DriftTradeTagsCompanion(')
           ..write('id: $id, ')
           ..write('tagName: $tagName, ')
           ..write('createdAt: $createdAt, ')
@@ -1110,12 +1187,12 @@ class TradeTagsCompanion extends UpdateCompanion<TradeTag> {
   }
 }
 
-class $TaggedTradeDatasTable extends TaggedTradeDatas
-    with TableInfo<$TaggedTradeDatasTable, TaggedTradeData> {
+class $DriftTaggedTradeDatasTable extends DriftTaggedTradeDatas
+    with TableInfo<$DriftTaggedTradeDatasTable, DriftTaggedTradeData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TaggedTradeDatasTable(this.attachedDatabase, [this._alias]);
+  $DriftTaggedTradeDatasTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _tradeDataIdMeta =
       const VerificationMeta('tradeDataId');
   @override
@@ -1137,9 +1214,10 @@ class $TaggedTradeDatasTable extends TaggedTradeDatas
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'tagged_trade_datas';
+  static const String $name = 'drift_tagged_trade_datas';
   @override
-  VerificationContext validateIntegrity(Insertable<TaggedTradeData> instance,
+  VerificationContext validateIntegrity(
+      Insertable<DriftTaggedTradeData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1163,9 +1241,9 @@ class $TaggedTradeDatasTable extends TaggedTradeDatas
   @override
   Set<GeneratedColumn> get $primaryKey => {tradeDataId, tagId};
   @override
-  TaggedTradeData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DriftTaggedTradeData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TaggedTradeData(
+    return DriftTaggedTradeData(
       tradeDataId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}trade_data_id'])!,
       tagId: attachedDatabase.typeMapping
@@ -1174,15 +1252,16 @@ class $TaggedTradeDatasTable extends TaggedTradeDatas
   }
 
   @override
-  $TaggedTradeDatasTable createAlias(String alias) {
-    return $TaggedTradeDatasTable(attachedDatabase, alias);
+  $DriftTaggedTradeDatasTable createAlias(String alias) {
+    return $DriftTaggedTradeDatasTable(attachedDatabase, alias);
   }
 }
 
-class TaggedTradeData extends DataClass implements Insertable<TaggedTradeData> {
+class DriftTaggedTradeData extends DataClass
+    implements Insertable<DriftTaggedTradeData> {
   final int tradeDataId;
   final int tagId;
-  const TaggedTradeData({required this.tradeDataId, required this.tagId});
+  const DriftTaggedTradeData({required this.tradeDataId, required this.tagId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1191,17 +1270,17 @@ class TaggedTradeData extends DataClass implements Insertable<TaggedTradeData> {
     return map;
   }
 
-  TaggedTradeDatasCompanion toCompanion(bool nullToAbsent) {
-    return TaggedTradeDatasCompanion(
+  DriftTaggedTradeDatasCompanion toCompanion(bool nullToAbsent) {
+    return DriftTaggedTradeDatasCompanion(
       tradeDataId: Value(tradeDataId),
       tagId: Value(tagId),
     );
   }
 
-  factory TaggedTradeData.fromJson(Map<String, dynamic> json,
+  factory DriftTaggedTradeData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TaggedTradeData(
+    return DriftTaggedTradeData(
       tradeDataId: serializer.fromJson<int>(json['tradeDataId']),
       tagId: serializer.fromJson<int>(json['tagId']),
     );
@@ -1215,13 +1294,14 @@ class TaggedTradeData extends DataClass implements Insertable<TaggedTradeData> {
     };
   }
 
-  TaggedTradeData copyWith({int? tradeDataId, int? tagId}) => TaggedTradeData(
+  DriftTaggedTradeData copyWith({int? tradeDataId, int? tagId}) =>
+      DriftTaggedTradeData(
         tradeDataId: tradeDataId ?? this.tradeDataId,
         tagId: tagId ?? this.tagId,
       );
   @override
   String toString() {
-    return (StringBuffer('TaggedTradeData(')
+    return (StringBuffer('DriftTaggedTradeData(')
           ..write('tradeDataId: $tradeDataId, ')
           ..write('tagId: $tagId')
           ..write(')'))
@@ -1233,27 +1313,28 @@ class TaggedTradeData extends DataClass implements Insertable<TaggedTradeData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TaggedTradeData &&
+      (other is DriftTaggedTradeData &&
           other.tradeDataId == this.tradeDataId &&
           other.tagId == this.tagId);
 }
 
-class TaggedTradeDatasCompanion extends UpdateCompanion<TaggedTradeData> {
+class DriftTaggedTradeDatasCompanion
+    extends UpdateCompanion<DriftTaggedTradeData> {
   final Value<int> tradeDataId;
   final Value<int> tagId;
   final Value<int> rowid;
-  const TaggedTradeDatasCompanion({
+  const DriftTaggedTradeDatasCompanion({
     this.tradeDataId = const Value.absent(),
     this.tagId = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  TaggedTradeDatasCompanion.insert({
+  DriftTaggedTradeDatasCompanion.insert({
     required int tradeDataId,
     required int tagId,
     this.rowid = const Value.absent(),
   })  : tradeDataId = Value(tradeDataId),
         tagId = Value(tagId);
-  static Insertable<TaggedTradeData> custom({
+  static Insertable<DriftTaggedTradeData> custom({
     Expression<int>? tradeDataId,
     Expression<int>? tagId,
     Expression<int>? rowid,
@@ -1265,9 +1346,9 @@ class TaggedTradeDatasCompanion extends UpdateCompanion<TaggedTradeData> {
     });
   }
 
-  TaggedTradeDatasCompanion copyWith(
+  DriftTaggedTradeDatasCompanion copyWith(
       {Value<int>? tradeDataId, Value<int>? tagId, Value<int>? rowid}) {
-    return TaggedTradeDatasCompanion(
+    return DriftTaggedTradeDatasCompanion(
       tradeDataId: tradeDataId ?? this.tradeDataId,
       tagId: tagId ?? this.tagId,
       rowid: rowid ?? this.rowid,
@@ -1291,7 +1372,7 @@ class TaggedTradeDatasCompanion extends UpdateCompanion<TaggedTradeData> {
 
   @override
   String toString() {
-    return (StringBuffer('TaggedTradeDatasCompanion(')
+    return (StringBuffer('DriftTaggedTradeDatasCompanion(')
           ..write('tradeDataId: $tradeDataId, ')
           ..write('tagId: $tagId, ')
           ..write('rowid: $rowid')
@@ -1300,12 +1381,12 @@ class TaggedTradeDatasCompanion extends UpdateCompanion<TaggedTradeData> {
   }
 }
 
-class $TagAttributesTable extends TagAttributes
-    with TableInfo<$TagAttributesTable, TagAttribute> {
+class $DriftTagAttributesTable extends DriftTagAttributes
+    with TableInfo<$DriftTagAttributesTable, DriftTagAttribute> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TagAttributesTable(this.attachedDatabase, [this._alias]);
+  $DriftTagAttributesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -1334,9 +1415,9 @@ class $TagAttributesTable extends TagAttributes
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'tag_attributes';
+  static const String $name = 'drift_tag_attributes';
   @override
-  VerificationContext validateIntegrity(Insertable<TagAttribute> instance,
+  VerificationContext validateIntegrity(Insertable<DriftTagAttribute> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1361,9 +1442,9 @@ class $TagAttributesTable extends TagAttributes
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  TagAttribute map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DriftTagAttribute map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TagAttribute(
+    return DriftTagAttribute(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       name: attachedDatabase.typeMapping
@@ -1374,16 +1455,17 @@ class $TagAttributesTable extends TagAttributes
   }
 
   @override
-  $TagAttributesTable createAlias(String alias) {
-    return $TagAttributesTable(attachedDatabase, alias);
+  $DriftTagAttributesTable createAlias(String alias) {
+    return $DriftTagAttributesTable(attachedDatabase, alias);
   }
 }
 
-class TagAttribute extends DataClass implements Insertable<TagAttribute> {
+class DriftTagAttribute extends DataClass
+    implements Insertable<DriftTagAttribute> {
   final int id;
   final String name;
   final String dataType;
-  const TagAttribute(
+  const DriftTagAttribute(
       {required this.id, required this.name, required this.dataType});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1394,18 +1476,18 @@ class TagAttribute extends DataClass implements Insertable<TagAttribute> {
     return map;
   }
 
-  TagAttributesCompanion toCompanion(bool nullToAbsent) {
-    return TagAttributesCompanion(
+  DriftTagAttributesCompanion toCompanion(bool nullToAbsent) {
+    return DriftTagAttributesCompanion(
       id: Value(id),
       name: Value(name),
       dataType: Value(dataType),
     );
   }
 
-  factory TagAttribute.fromJson(Map<String, dynamic> json,
+  factory DriftTagAttribute.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TagAttribute(
+    return DriftTagAttribute(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       dataType: serializer.fromJson<String>(json['dataType']),
@@ -1421,15 +1503,15 @@ class TagAttribute extends DataClass implements Insertable<TagAttribute> {
     };
   }
 
-  TagAttribute copyWith({int? id, String? name, String? dataType}) =>
-      TagAttribute(
+  DriftTagAttribute copyWith({int? id, String? name, String? dataType}) =>
+      DriftTagAttribute(
         id: id ?? this.id,
         name: name ?? this.name,
         dataType: dataType ?? this.dataType,
       );
   @override
   String toString() {
-    return (StringBuffer('TagAttribute(')
+    return (StringBuffer('DriftTagAttribute(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('dataType: $dataType')
@@ -1442,28 +1524,28 @@ class TagAttribute extends DataClass implements Insertable<TagAttribute> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TagAttribute &&
+      (other is DriftTagAttribute &&
           other.id == this.id &&
           other.name == this.name &&
           other.dataType == this.dataType);
 }
 
-class TagAttributesCompanion extends UpdateCompanion<TagAttribute> {
+class DriftTagAttributesCompanion extends UpdateCompanion<DriftTagAttribute> {
   final Value<int> id;
   final Value<String> name;
   final Value<String> dataType;
-  const TagAttributesCompanion({
+  const DriftTagAttributesCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.dataType = const Value.absent(),
   });
-  TagAttributesCompanion.insert({
+  DriftTagAttributesCompanion.insert({
     this.id = const Value.absent(),
     required String name,
     required String dataType,
   })  : name = Value(name),
         dataType = Value(dataType);
-  static Insertable<TagAttribute> custom({
+  static Insertable<DriftTagAttribute> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? dataType,
@@ -1475,9 +1557,9 @@ class TagAttributesCompanion extends UpdateCompanion<TagAttribute> {
     });
   }
 
-  TagAttributesCompanion copyWith(
+  DriftTagAttributesCompanion copyWith(
       {Value<int>? id, Value<String>? name, Value<String>? dataType}) {
-    return TagAttributesCompanion(
+    return DriftTagAttributesCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       dataType: dataType ?? this.dataType,
@@ -1501,7 +1583,7 @@ class TagAttributesCompanion extends UpdateCompanion<TagAttribute> {
 
   @override
   String toString() {
-    return (StringBuffer('TagAttributesCompanion(')
+    return (StringBuffer('DriftTagAttributesCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('dataType: $dataType')
@@ -1510,12 +1592,12 @@ class TagAttributesCompanion extends UpdateCompanion<TagAttribute> {
   }
 }
 
-class $TagAttributeValuesTable extends TagAttributeValues
-    with TableInfo<$TagAttributeValuesTable, TagAttributeValue> {
+class $DriftTagAttributeValuesTable extends DriftTagAttributeValues
+    with TableInfo<$DriftTagAttributeValuesTable, DriftTagAttributeValue> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TagAttributeValuesTable(this.attachedDatabase, [this._alias]);
+  $DriftTagAttributeValuesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _tagIdMeta = const VerificationMeta('tagId');
   @override
   late final GeneratedColumn<int> tagId = GeneratedColumn<int>(
@@ -1542,9 +1624,10 @@ class $TagAttributeValuesTable extends TagAttributeValues
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'tag_attribute_values';
+  static const String $name = 'drift_tag_attribute_values';
   @override
-  VerificationContext validateIntegrity(Insertable<TagAttributeValue> instance,
+  VerificationContext validateIntegrity(
+      Insertable<DriftTagAttributeValue> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1574,9 +1657,9 @@ class $TagAttributeValuesTable extends TagAttributeValues
   @override
   Set<GeneratedColumn> get $primaryKey => {tagId, attributeId};
   @override
-  TagAttributeValue map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DriftTagAttributeValue map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TagAttributeValue(
+    return DriftTagAttributeValue(
       tagId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}tag_id'])!,
       attributeId: attachedDatabase.typeMapping
@@ -1587,17 +1670,17 @@ class $TagAttributeValuesTable extends TagAttributeValues
   }
 
   @override
-  $TagAttributeValuesTable createAlias(String alias) {
-    return $TagAttributeValuesTable(attachedDatabase, alias);
+  $DriftTagAttributeValuesTable createAlias(String alias) {
+    return $DriftTagAttributeValuesTable(attachedDatabase, alias);
   }
 }
 
-class TagAttributeValue extends DataClass
-    implements Insertable<TagAttributeValue> {
+class DriftTagAttributeValue extends DataClass
+    implements Insertable<DriftTagAttributeValue> {
   final int tagId;
   final int attributeId;
   final String value;
-  const TagAttributeValue(
+  const DriftTagAttributeValue(
       {required this.tagId, required this.attributeId, required this.value});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1608,18 +1691,18 @@ class TagAttributeValue extends DataClass
     return map;
   }
 
-  TagAttributeValuesCompanion toCompanion(bool nullToAbsent) {
-    return TagAttributeValuesCompanion(
+  DriftTagAttributeValuesCompanion toCompanion(bool nullToAbsent) {
+    return DriftTagAttributeValuesCompanion(
       tagId: Value(tagId),
       attributeId: Value(attributeId),
       value: Value(value),
     );
   }
 
-  factory TagAttributeValue.fromJson(Map<String, dynamic> json,
+  factory DriftTagAttributeValue.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TagAttributeValue(
+    return DriftTagAttributeValue(
       tagId: serializer.fromJson<int>(json['tagId']),
       attributeId: serializer.fromJson<int>(json['attributeId']),
       value: serializer.fromJson<String>(json['value']),
@@ -1635,15 +1718,16 @@ class TagAttributeValue extends DataClass
     };
   }
 
-  TagAttributeValue copyWith({int? tagId, int? attributeId, String? value}) =>
-      TagAttributeValue(
+  DriftTagAttributeValue copyWith(
+          {int? tagId, int? attributeId, String? value}) =>
+      DriftTagAttributeValue(
         tagId: tagId ?? this.tagId,
         attributeId: attributeId ?? this.attributeId,
         value: value ?? this.value,
       );
   @override
   String toString() {
-    return (StringBuffer('TagAttributeValue(')
+    return (StringBuffer('DriftTagAttributeValue(')
           ..write('tagId: $tagId, ')
           ..write('attributeId: $attributeId, ')
           ..write('value: $value')
@@ -1656,24 +1740,25 @@ class TagAttributeValue extends DataClass
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TagAttributeValue &&
+      (other is DriftTagAttributeValue &&
           other.tagId == this.tagId &&
           other.attributeId == this.attributeId &&
           other.value == this.value);
 }
 
-class TagAttributeValuesCompanion extends UpdateCompanion<TagAttributeValue> {
+class DriftTagAttributeValuesCompanion
+    extends UpdateCompanion<DriftTagAttributeValue> {
   final Value<int> tagId;
   final Value<int> attributeId;
   final Value<String> value;
   final Value<int> rowid;
-  const TagAttributeValuesCompanion({
+  const DriftTagAttributeValuesCompanion({
     this.tagId = const Value.absent(),
     this.attributeId = const Value.absent(),
     this.value = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  TagAttributeValuesCompanion.insert({
+  DriftTagAttributeValuesCompanion.insert({
     required int tagId,
     required int attributeId,
     required String value,
@@ -1681,7 +1766,7 @@ class TagAttributeValuesCompanion extends UpdateCompanion<TagAttributeValue> {
   })  : tagId = Value(tagId),
         attributeId = Value(attributeId),
         value = Value(value);
-  static Insertable<TagAttributeValue> custom({
+  static Insertable<DriftTagAttributeValue> custom({
     Expression<int>? tagId,
     Expression<int>? attributeId,
     Expression<String>? value,
@@ -1695,12 +1780,12 @@ class TagAttributeValuesCompanion extends UpdateCompanion<TagAttributeValue> {
     });
   }
 
-  TagAttributeValuesCompanion copyWith(
+  DriftTagAttributeValuesCompanion copyWith(
       {Value<int>? tagId,
       Value<int>? attributeId,
       Value<String>? value,
       Value<int>? rowid}) {
-    return TagAttributeValuesCompanion(
+    return DriftTagAttributeValuesCompanion(
       tagId: tagId ?? this.tagId,
       attributeId: attributeId ?? this.attributeId,
       value: value ?? this.value,
@@ -1728,7 +1813,7 @@ class TagAttributeValuesCompanion extends UpdateCompanion<TagAttributeValue> {
 
   @override
   String toString() {
-    return (StringBuffer('TagAttributeValuesCompanion(')
+    return (StringBuffer('DriftTagAttributeValuesCompanion(')
           ..write('tagId: $tagId, ')
           ..write('attributeId: $attributeId, ')
           ..write('value: $value, ')
@@ -1738,11 +1823,12 @@ class TagAttributeValuesCompanion extends UpdateCompanion<TagAttributeValue> {
   }
 }
 
-class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
+class $DriftSettingsTable extends DriftSettings
+    with TableInfo<$DriftSettingsTable, DriftSetting> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $SettingsTable(this.attachedDatabase, [this._alias]);
+  $DriftSettingsTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -1771,9 +1857,9 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'settings';
+  static const String $name = 'drift_settings';
   @override
-  VerificationContext validateIntegrity(Insertable<Setting> instance,
+  VerificationContext validateIntegrity(Insertable<DriftSetting> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1796,9 +1882,9 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   @override
   Set<GeneratedColumn> get $primaryKey => const {};
   @override
-  Setting map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DriftSetting map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Setting(
+    return DriftSetting(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       themeMode: attachedDatabase.typeMapping
@@ -1809,16 +1895,17 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   }
 
   @override
-  $SettingsTable createAlias(String alias) {
-    return $SettingsTable(attachedDatabase, alias);
+  $DriftSettingsTable createAlias(String alias) {
+    return $DriftSettingsTable(attachedDatabase, alias);
   }
 }
 
-class Setting extends DataClass implements Insertable<Setting> {
+class DriftSetting extends DataClass implements Insertable<DriftSetting> {
   final int id;
   final int? themeMode;
   final String databaseName;
-  const Setting({required this.id, this.themeMode, required this.databaseName});
+  const DriftSetting(
+      {required this.id, this.themeMode, required this.databaseName});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1830,8 +1917,8 @@ class Setting extends DataClass implements Insertable<Setting> {
     return map;
   }
 
-  SettingsCompanion toCompanion(bool nullToAbsent) {
-    return SettingsCompanion(
+  DriftSettingsCompanion toCompanion(bool nullToAbsent) {
+    return DriftSettingsCompanion(
       id: Value(id),
       themeMode: themeMode == null && nullToAbsent
           ? const Value.absent()
@@ -1840,10 +1927,10 @@ class Setting extends DataClass implements Insertable<Setting> {
     );
   }
 
-  factory Setting.fromJson(Map<String, dynamic> json,
+  factory DriftSetting.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Setting(
+    return DriftSetting(
       id: serializer.fromJson<int>(json['id']),
       themeMode: serializer.fromJson<int?>(json['themeMode']),
       databaseName: serializer.fromJson<String>(json['databaseName']),
@@ -1859,18 +1946,18 @@ class Setting extends DataClass implements Insertable<Setting> {
     };
   }
 
-  Setting copyWith(
+  DriftSetting copyWith(
           {int? id,
           Value<int?> themeMode = const Value.absent(),
           String? databaseName}) =>
-      Setting(
+      DriftSetting(
         id: id ?? this.id,
         themeMode: themeMode.present ? themeMode.value : this.themeMode,
         databaseName: databaseName ?? this.databaseName,
       );
   @override
   String toString() {
-    return (StringBuffer('Setting(')
+    return (StringBuffer('DriftSetting(')
           ..write('id: $id, ')
           ..write('themeMode: $themeMode, ')
           ..write('databaseName: $databaseName')
@@ -1883,30 +1970,30 @@ class Setting extends DataClass implements Insertable<Setting> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Setting &&
+      (other is DriftSetting &&
           other.id == this.id &&
           other.themeMode == this.themeMode &&
           other.databaseName == this.databaseName);
 }
 
-class SettingsCompanion extends UpdateCompanion<Setting> {
+class DriftSettingsCompanion extends UpdateCompanion<DriftSetting> {
   final Value<int> id;
   final Value<int?> themeMode;
   final Value<String> databaseName;
   final Value<int> rowid;
-  const SettingsCompanion({
+  const DriftSettingsCompanion({
     this.id = const Value.absent(),
     this.themeMode = const Value.absent(),
     this.databaseName = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  SettingsCompanion.insert({
+  DriftSettingsCompanion.insert({
     this.id = const Value.absent(),
     this.themeMode = const Value.absent(),
     this.databaseName = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  static Insertable<Setting> custom({
+  static Insertable<DriftSetting> custom({
     Expression<int>? id,
     Expression<int>? themeMode,
     Expression<String>? databaseName,
@@ -1920,12 +2007,12 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     });
   }
 
-  SettingsCompanion copyWith(
+  DriftSettingsCompanion copyWith(
       {Value<int>? id,
       Value<int?>? themeMode,
       Value<String>? databaseName,
       Value<int>? rowid}) {
-    return SettingsCompanion(
+    return DriftSettingsCompanion(
       id: id ?? this.id,
       themeMode: themeMode ?? this.themeMode,
       databaseName: databaseName ?? this.databaseName,
@@ -1953,7 +2040,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
 
   @override
   String toString() {
-    return (StringBuffer('SettingsCompanion(')
+    return (StringBuffer('DriftSettingsCompanion(')
           ..write('id: $id, ')
           ..write('themeMode: $themeMode, ')
           ..write('databaseName: $databaseName, ')
@@ -1963,32 +2050,249 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
   }
 }
 
+class $DriftTradingAssetDatasTable extends DriftTradingAssetDatas
+    with TableInfo<$DriftTradingAssetDatasTable, DriftTradingAssetData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DriftTradingAssetDatasTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+      'type', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [id, name, type];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'drift_trading_asset_datas';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<DriftTradingAssetData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DriftTradingAssetData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DriftTradingAssetData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name']),
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type']),
+    );
+  }
+
+  @override
+  $DriftTradingAssetDatasTable createAlias(String alias) {
+    return $DriftTradingAssetDatasTable(attachedDatabase, alias);
+  }
+}
+
+class DriftTradingAssetData extends DataClass
+    implements Insertable<DriftTradingAssetData> {
+  final int id;
+  final String? name;
+  final String? type;
+  const DriftTradingAssetData({required this.id, this.name, this.type});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
+    if (!nullToAbsent || type != null) {
+      map['type'] = Variable<String>(type);
+    }
+    return map;
+  }
+
+  DriftTradingAssetDatasCompanion toCompanion(bool nullToAbsent) {
+    return DriftTradingAssetDatasCompanion(
+      id: Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      type: type == null && nullToAbsent ? const Value.absent() : Value(type),
+    );
+  }
+
+  factory DriftTradingAssetData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DriftTradingAssetData(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String?>(json['name']),
+      type: serializer.fromJson<String?>(json['type']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String?>(name),
+      'type': serializer.toJson<String?>(type),
+    };
+  }
+
+  DriftTradingAssetData copyWith(
+          {int? id,
+          Value<String?> name = const Value.absent(),
+          Value<String?> type = const Value.absent()}) =>
+      DriftTradingAssetData(
+        id: id ?? this.id,
+        name: name.present ? name.value : this.name,
+        type: type.present ? type.value : this.type,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DriftTradingAssetData(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('type: $type')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, type);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DriftTradingAssetData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.type == this.type);
+}
+
+class DriftTradingAssetDatasCompanion
+    extends UpdateCompanion<DriftTradingAssetData> {
+  final Value<int> id;
+  final Value<String?> name;
+  final Value<String?> type;
+  const DriftTradingAssetDatasCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.type = const Value.absent(),
+  });
+  DriftTradingAssetDatasCompanion.insert({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.type = const Value.absent(),
+  });
+  static Insertable<DriftTradingAssetData> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? type,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (type != null) 'type': type,
+    });
+  }
+
+  DriftTradingAssetDatasCompanion copyWith(
+      {Value<int>? id, Value<String?>? name, Value<String?>? type}) {
+    return DriftTradingAssetDatasCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      type: type ?? this.type,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DriftTradingAssetDatasCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('type: $type')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(e);
   _$MyDatabaseManager get managers => _$MyDatabaseManager(this);
-  late final $TradeDatasTable tradeDatas = $TradeDatasTable(this);
-  late final $TradeTagsTable tradeTags = $TradeTagsTable(this);
-  late final $TaggedTradeDatasTable taggedTradeDatas =
-      $TaggedTradeDatasTable(this);
-  late final $TagAttributesTable tagAttributes = $TagAttributesTable(this);
-  late final $TagAttributeValuesTable tagAttributeValues =
-      $TagAttributeValuesTable(this);
-  late final $SettingsTable settings = $SettingsTable(this);
+  late final $DriftTradeDatasTable driftTradeDatas =
+      $DriftTradeDatasTable(this);
+  late final $DriftTradeTagsTable driftTradeTags = $DriftTradeTagsTable(this);
+  late final $DriftTaggedTradeDatasTable driftTaggedTradeDatas =
+      $DriftTaggedTradeDatasTable(this);
+  late final $DriftTagAttributesTable driftTagAttributes =
+      $DriftTagAttributesTable(this);
+  late final $DriftTagAttributeValuesTable driftTagAttributeValues =
+      $DriftTagAttributeValuesTable(this);
+  late final $DriftSettingsTable driftSettings = $DriftSettingsTable(this);
+  late final $DriftTradingAssetDatasTable driftTradingAssetDatas =
+      $DriftTradingAssetDatasTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
-        tradeDatas,
-        tradeTags,
-        taggedTradeDatas,
-        tagAttributes,
-        tagAttributeValues,
-        settings
+        driftTradeDatas,
+        driftTradeTags,
+        driftTaggedTradeDatas,
+        driftTagAttributes,
+        driftTagAttributeValues,
+        driftSettings,
+        driftTradingAssetDatas
       ];
 }
 
-typedef $$TradeDatasTableInsertCompanionBuilder = TradeDatasCompanion Function({
+typedef $$DriftTradeDatasTableInsertCompanionBuilder = DriftTradeDatasCompanion
+    Function({
   Value<int> id,
   Value<String?> currencyPair,
   Value<String?> title,
@@ -1997,9 +2301,11 @@ typedef $$TradeDatasTableInsertCompanionBuilder = TradeDatasCompanion Function({
   Value<double?> money,
   Value<double?> lot,
   required bool isBuy,
-  required String urlText,
+  Value<String?> urlText,
   Value<DateTime> createdAt,
   Value<DateTime> updatedAt,
+  Value<DateTime?> entriedAt,
+  Value<DateTime?> exitedAt,
   Value<List<String>?> tags,
   Value<String?> imagePathBefore,
   Value<String?> imagePathAfter,
@@ -2008,7 +2314,8 @@ typedef $$TradeDatasTableInsertCompanionBuilder = TradeDatasCompanion Function({
   Value<double?> startPriceResult,
   Value<double?> endPriceResult,
 });
-typedef $$TradeDatasTableUpdateCompanionBuilder = TradeDatasCompanion Function({
+typedef $$DriftTradeDatasTableUpdateCompanionBuilder = DriftTradeDatasCompanion
+    Function({
   Value<int> id,
   Value<String?> currencyPair,
   Value<String?> title,
@@ -2017,9 +2324,11 @@ typedef $$TradeDatasTableUpdateCompanionBuilder = TradeDatasCompanion Function({
   Value<double?> money,
   Value<double?> lot,
   Value<bool> isBuy,
-  Value<String> urlText,
+  Value<String?> urlText,
   Value<DateTime> createdAt,
   Value<DateTime> updatedAt,
+  Value<DateTime?> entriedAt,
+  Value<DateTime?> exitedAt,
   Value<List<String>?> tags,
   Value<String?> imagePathBefore,
   Value<String?> imagePathAfter,
@@ -2029,25 +2338,26 @@ typedef $$TradeDatasTableUpdateCompanionBuilder = TradeDatasCompanion Function({
   Value<double?> endPriceResult,
 });
 
-class $$TradeDatasTableTableManager extends RootTableManager<
+class $$DriftTradeDatasTableTableManager extends RootTableManager<
     _$MyDatabase,
-    $TradeDatasTable,
-    TradeData,
-    $$TradeDatasTableFilterComposer,
-    $$TradeDatasTableOrderingComposer,
-    $$TradeDatasTableProcessedTableManager,
-    $$TradeDatasTableInsertCompanionBuilder,
-    $$TradeDatasTableUpdateCompanionBuilder> {
-  $$TradeDatasTableTableManager(_$MyDatabase db, $TradeDatasTable table)
+    $DriftTradeDatasTable,
+    DriftTradeData,
+    $$DriftTradeDatasTableFilterComposer,
+    $$DriftTradeDatasTableOrderingComposer,
+    $$DriftTradeDatasTableProcessedTableManager,
+    $$DriftTradeDatasTableInsertCompanionBuilder,
+    $$DriftTradeDatasTableUpdateCompanionBuilder> {
+  $$DriftTradeDatasTableTableManager(
+      _$MyDatabase db, $DriftTradeDatasTable table)
       : super(TableManagerState(
           db: db,
           table: table,
           filteringComposer:
-              $$TradeDatasTableFilterComposer(ComposerState(db, table)),
+              $$DriftTradeDatasTableFilterComposer(ComposerState(db, table)),
           orderingComposer:
-              $$TradeDatasTableOrderingComposer(ComposerState(db, table)),
+              $$DriftTradeDatasTableOrderingComposer(ComposerState(db, table)),
           getChildManagerBuilder: (p) =>
-              $$TradeDatasTableProcessedTableManager(p),
+              $$DriftTradeDatasTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
             Value<int> id = const Value.absent(),
             Value<String?> currencyPair = const Value.absent(),
@@ -2057,9 +2367,11 @@ class $$TradeDatasTableTableManager extends RootTableManager<
             Value<double?> money = const Value.absent(),
             Value<double?> lot = const Value.absent(),
             Value<bool> isBuy = const Value.absent(),
-            Value<String> urlText = const Value.absent(),
+            Value<String?> urlText = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
             Value<DateTime> updatedAt = const Value.absent(),
+            Value<DateTime?> entriedAt = const Value.absent(),
+            Value<DateTime?> exitedAt = const Value.absent(),
             Value<List<String>?> tags = const Value.absent(),
             Value<String?> imagePathBefore = const Value.absent(),
             Value<String?> imagePathAfter = const Value.absent(),
@@ -2068,7 +2380,7 @@ class $$TradeDatasTableTableManager extends RootTableManager<
             Value<double?> startPriceResult = const Value.absent(),
             Value<double?> endPriceResult = const Value.absent(),
           }) =>
-              TradeDatasCompanion(
+              DriftTradeDatasCompanion(
             id: id,
             currencyPair: currencyPair,
             title: title,
@@ -2080,6 +2392,8 @@ class $$TradeDatasTableTableManager extends RootTableManager<
             urlText: urlText,
             createdAt: createdAt,
             updatedAt: updatedAt,
+            entriedAt: entriedAt,
+            exitedAt: exitedAt,
             tags: tags,
             imagePathBefore: imagePathBefore,
             imagePathAfter: imagePathAfter,
@@ -2097,9 +2411,11 @@ class $$TradeDatasTableTableManager extends RootTableManager<
             Value<double?> money = const Value.absent(),
             Value<double?> lot = const Value.absent(),
             required bool isBuy,
-            required String urlText,
+            Value<String?> urlText = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
             Value<DateTime> updatedAt = const Value.absent(),
+            Value<DateTime?> entriedAt = const Value.absent(),
+            Value<DateTime?> exitedAt = const Value.absent(),
             Value<List<String>?> tags = const Value.absent(),
             Value<String?> imagePathBefore = const Value.absent(),
             Value<String?> imagePathAfter = const Value.absent(),
@@ -2108,7 +2424,7 @@ class $$TradeDatasTableTableManager extends RootTableManager<
             Value<double?> startPriceResult = const Value.absent(),
             Value<double?> endPriceResult = const Value.absent(),
           }) =>
-              TradeDatasCompanion.insert(
+              DriftTradeDatasCompanion.insert(
             id: id,
             currencyPair: currencyPair,
             title: title,
@@ -2120,6 +2436,8 @@ class $$TradeDatasTableTableManager extends RootTableManager<
             urlText: urlText,
             createdAt: createdAt,
             updatedAt: updatedAt,
+            entriedAt: entriedAt,
+            exitedAt: exitedAt,
             tags: tags,
             imagePathBefore: imagePathBefore,
             imagePathAfter: imagePathAfter,
@@ -2131,21 +2449,21 @@ class $$TradeDatasTableTableManager extends RootTableManager<
         ));
 }
 
-class $$TradeDatasTableProcessedTableManager extends ProcessedTableManager<
+class $$DriftTradeDatasTableProcessedTableManager extends ProcessedTableManager<
     _$MyDatabase,
-    $TradeDatasTable,
-    TradeData,
-    $$TradeDatasTableFilterComposer,
-    $$TradeDatasTableOrderingComposer,
-    $$TradeDatasTableProcessedTableManager,
-    $$TradeDatasTableInsertCompanionBuilder,
-    $$TradeDatasTableUpdateCompanionBuilder> {
-  $$TradeDatasTableProcessedTableManager(super.$state);
+    $DriftTradeDatasTable,
+    DriftTradeData,
+    $$DriftTradeDatasTableFilterComposer,
+    $$DriftTradeDatasTableOrderingComposer,
+    $$DriftTradeDatasTableProcessedTableManager,
+    $$DriftTradeDatasTableInsertCompanionBuilder,
+    $$DriftTradeDatasTableUpdateCompanionBuilder> {
+  $$DriftTradeDatasTableProcessedTableManager(super.$state);
 }
 
-class $$TradeDatasTableFilterComposer
-    extends FilterComposer<_$MyDatabase, $TradeDatasTable> {
-  $$TradeDatasTableFilterComposer(super.$state);
+class $$DriftTradeDatasTableFilterComposer
+    extends FilterComposer<_$MyDatabase, $DriftTradeDatasTable> {
+  $$DriftTradeDatasTableFilterComposer(super.$state);
   ColumnFilters<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -2201,6 +2519,16 @@ class $$TradeDatasTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
+  ColumnFilters<DateTime> get entriedAt => $state.composableBuilder(
+      column: $state.table.entriedAt,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get exitedAt => $state.composableBuilder(
+      column: $state.table.exitedAt,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
   ColumnWithTypeConverterFilters<List<String>?, List<String>, String>
       get tags => $state.composableBuilder(
           column: $state.table.tags,
@@ -2239,9 +2567,9 @@ class $$TradeDatasTableFilterComposer
           ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
-class $$TradeDatasTableOrderingComposer
-    extends OrderingComposer<_$MyDatabase, $TradeDatasTable> {
-  $$TradeDatasTableOrderingComposer(super.$state);
+class $$DriftTradeDatasTableOrderingComposer
+    extends OrderingComposer<_$MyDatabase, $DriftTradeDatasTable> {
+  $$DriftTradeDatasTableOrderingComposer(super.$state);
   ColumnOrderings<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -2297,6 +2625,16 @@ class $$TradeDatasTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
+  ColumnOrderings<DateTime> get entriedAt => $state.composableBuilder(
+      column: $state.table.entriedAt,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get exitedAt => $state.composableBuilder(
+      column: $state.table.exitedAt,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
   ColumnOrderings<String> get tags => $state.composableBuilder(
       column: $state.table.tags,
       builder: (column, joinBuilders) =>
@@ -2333,14 +2671,16 @@ class $$TradeDatasTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $$TradeTagsTableInsertCompanionBuilder = TradeTagsCompanion Function({
+typedef $$DriftTradeTagsTableInsertCompanionBuilder = DriftTradeTagsCompanion
+    Function({
   Value<int> id,
   required String tagName,
   Value<DateTime> createdAt,
   Value<int> useCount,
   Value<String> genre,
 });
-typedef $$TradeTagsTableUpdateCompanionBuilder = TradeTagsCompanion Function({
+typedef $$DriftTradeTagsTableUpdateCompanionBuilder = DriftTradeTagsCompanion
+    Function({
   Value<int> id,
   Value<String> tagName,
   Value<DateTime> createdAt,
@@ -2348,25 +2688,25 @@ typedef $$TradeTagsTableUpdateCompanionBuilder = TradeTagsCompanion Function({
   Value<String> genre,
 });
 
-class $$TradeTagsTableTableManager extends RootTableManager<
+class $$DriftTradeTagsTableTableManager extends RootTableManager<
     _$MyDatabase,
-    $TradeTagsTable,
-    TradeTag,
-    $$TradeTagsTableFilterComposer,
-    $$TradeTagsTableOrderingComposer,
-    $$TradeTagsTableProcessedTableManager,
-    $$TradeTagsTableInsertCompanionBuilder,
-    $$TradeTagsTableUpdateCompanionBuilder> {
-  $$TradeTagsTableTableManager(_$MyDatabase db, $TradeTagsTable table)
+    $DriftTradeTagsTable,
+    DriftTradeTag,
+    $$DriftTradeTagsTableFilterComposer,
+    $$DriftTradeTagsTableOrderingComposer,
+    $$DriftTradeTagsTableProcessedTableManager,
+    $$DriftTradeTagsTableInsertCompanionBuilder,
+    $$DriftTradeTagsTableUpdateCompanionBuilder> {
+  $$DriftTradeTagsTableTableManager(_$MyDatabase db, $DriftTradeTagsTable table)
       : super(TableManagerState(
           db: db,
           table: table,
           filteringComposer:
-              $$TradeTagsTableFilterComposer(ComposerState(db, table)),
+              $$DriftTradeTagsTableFilterComposer(ComposerState(db, table)),
           orderingComposer:
-              $$TradeTagsTableOrderingComposer(ComposerState(db, table)),
+              $$DriftTradeTagsTableOrderingComposer(ComposerState(db, table)),
           getChildManagerBuilder: (p) =>
-              $$TradeTagsTableProcessedTableManager(p),
+              $$DriftTradeTagsTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
             Value<int> id = const Value.absent(),
             Value<String> tagName = const Value.absent(),
@@ -2374,7 +2714,7 @@ class $$TradeTagsTableTableManager extends RootTableManager<
             Value<int> useCount = const Value.absent(),
             Value<String> genre = const Value.absent(),
           }) =>
-              TradeTagsCompanion(
+              DriftTradeTagsCompanion(
             id: id,
             tagName: tagName,
             createdAt: createdAt,
@@ -2388,7 +2728,7 @@ class $$TradeTagsTableTableManager extends RootTableManager<
             Value<int> useCount = const Value.absent(),
             Value<String> genre = const Value.absent(),
           }) =>
-              TradeTagsCompanion.insert(
+              DriftTradeTagsCompanion.insert(
             id: id,
             tagName: tagName,
             createdAt: createdAt,
@@ -2398,21 +2738,21 @@ class $$TradeTagsTableTableManager extends RootTableManager<
         ));
 }
 
-class $$TradeTagsTableProcessedTableManager extends ProcessedTableManager<
+class $$DriftTradeTagsTableProcessedTableManager extends ProcessedTableManager<
     _$MyDatabase,
-    $TradeTagsTable,
-    TradeTag,
-    $$TradeTagsTableFilterComposer,
-    $$TradeTagsTableOrderingComposer,
-    $$TradeTagsTableProcessedTableManager,
-    $$TradeTagsTableInsertCompanionBuilder,
-    $$TradeTagsTableUpdateCompanionBuilder> {
-  $$TradeTagsTableProcessedTableManager(super.$state);
+    $DriftTradeTagsTable,
+    DriftTradeTag,
+    $$DriftTradeTagsTableFilterComposer,
+    $$DriftTradeTagsTableOrderingComposer,
+    $$DriftTradeTagsTableProcessedTableManager,
+    $$DriftTradeTagsTableInsertCompanionBuilder,
+    $$DriftTradeTagsTableUpdateCompanionBuilder> {
+  $$DriftTradeTagsTableProcessedTableManager(super.$state);
 }
 
-class $$TradeTagsTableFilterComposer
-    extends FilterComposer<_$MyDatabase, $TradeTagsTable> {
-  $$TradeTagsTableFilterComposer(super.$state);
+class $$DriftTradeTagsTableFilterComposer
+    extends FilterComposer<_$MyDatabase, $DriftTradeTagsTable> {
+  $$DriftTradeTagsTableFilterComposer(super.$state);
   ColumnFilters<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -2439,9 +2779,9 @@ class $$TradeTagsTableFilterComposer
           ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
-class $$TradeTagsTableOrderingComposer
-    extends OrderingComposer<_$MyDatabase, $TradeTagsTable> {
-  $$TradeTagsTableOrderingComposer(super.$state);
+class $$DriftTradeTagsTableOrderingComposer
+    extends OrderingComposer<_$MyDatabase, $DriftTradeTagsTable> {
+  $$DriftTradeTagsTableOrderingComposer(super.$state);
   ColumnOrderings<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -2468,45 +2808,45 @@ class $$TradeTagsTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $$TaggedTradeDatasTableInsertCompanionBuilder
-    = TaggedTradeDatasCompanion Function({
+typedef $$DriftTaggedTradeDatasTableInsertCompanionBuilder
+    = DriftTaggedTradeDatasCompanion Function({
   required int tradeDataId,
   required int tagId,
   Value<int> rowid,
 });
-typedef $$TaggedTradeDatasTableUpdateCompanionBuilder
-    = TaggedTradeDatasCompanion Function({
+typedef $$DriftTaggedTradeDatasTableUpdateCompanionBuilder
+    = DriftTaggedTradeDatasCompanion Function({
   Value<int> tradeDataId,
   Value<int> tagId,
   Value<int> rowid,
 });
 
-class $$TaggedTradeDatasTableTableManager extends RootTableManager<
+class $$DriftTaggedTradeDatasTableTableManager extends RootTableManager<
     _$MyDatabase,
-    $TaggedTradeDatasTable,
-    TaggedTradeData,
-    $$TaggedTradeDatasTableFilterComposer,
-    $$TaggedTradeDatasTableOrderingComposer,
-    $$TaggedTradeDatasTableProcessedTableManager,
-    $$TaggedTradeDatasTableInsertCompanionBuilder,
-    $$TaggedTradeDatasTableUpdateCompanionBuilder> {
-  $$TaggedTradeDatasTableTableManager(
-      _$MyDatabase db, $TaggedTradeDatasTable table)
+    $DriftTaggedTradeDatasTable,
+    DriftTaggedTradeData,
+    $$DriftTaggedTradeDatasTableFilterComposer,
+    $$DriftTaggedTradeDatasTableOrderingComposer,
+    $$DriftTaggedTradeDatasTableProcessedTableManager,
+    $$DriftTaggedTradeDatasTableInsertCompanionBuilder,
+    $$DriftTaggedTradeDatasTableUpdateCompanionBuilder> {
+  $$DriftTaggedTradeDatasTableTableManager(
+      _$MyDatabase db, $DriftTaggedTradeDatasTable table)
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $$TaggedTradeDatasTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$TaggedTradeDatasTableOrderingComposer(ComposerState(db, table)),
+          filteringComposer: $$DriftTaggedTradeDatasTableFilterComposer(
+              ComposerState(db, table)),
+          orderingComposer: $$DriftTaggedTradeDatasTableOrderingComposer(
+              ComposerState(db, table)),
           getChildManagerBuilder: (p) =>
-              $$TaggedTradeDatasTableProcessedTableManager(p),
+              $$DriftTaggedTradeDatasTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
             Value<int> tradeDataId = const Value.absent(),
             Value<int> tagId = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
-              TaggedTradeDatasCompanion(
+              DriftTaggedTradeDatasCompanion(
             tradeDataId: tradeDataId,
             tagId: tagId,
             rowid: rowid,
@@ -2516,7 +2856,7 @@ class $$TaggedTradeDatasTableTableManager extends RootTableManager<
             required int tagId,
             Value<int> rowid = const Value.absent(),
           }) =>
-              TaggedTradeDatasCompanion.insert(
+              DriftTaggedTradeDatasCompanion.insert(
             tradeDataId: tradeDataId,
             tagId: tagId,
             rowid: rowid,
@@ -2524,22 +2864,22 @@ class $$TaggedTradeDatasTableTableManager extends RootTableManager<
         ));
 }
 
-class $$TaggedTradeDatasTableProcessedTableManager
+class $$DriftTaggedTradeDatasTableProcessedTableManager
     extends ProcessedTableManager<
         _$MyDatabase,
-        $TaggedTradeDatasTable,
-        TaggedTradeData,
-        $$TaggedTradeDatasTableFilterComposer,
-        $$TaggedTradeDatasTableOrderingComposer,
-        $$TaggedTradeDatasTableProcessedTableManager,
-        $$TaggedTradeDatasTableInsertCompanionBuilder,
-        $$TaggedTradeDatasTableUpdateCompanionBuilder> {
-  $$TaggedTradeDatasTableProcessedTableManager(super.$state);
+        $DriftTaggedTradeDatasTable,
+        DriftTaggedTradeData,
+        $$DriftTaggedTradeDatasTableFilterComposer,
+        $$DriftTaggedTradeDatasTableOrderingComposer,
+        $$DriftTaggedTradeDatasTableProcessedTableManager,
+        $$DriftTaggedTradeDatasTableInsertCompanionBuilder,
+        $$DriftTaggedTradeDatasTableUpdateCompanionBuilder> {
+  $$DriftTaggedTradeDatasTableProcessedTableManager(super.$state);
 }
 
-class $$TaggedTradeDatasTableFilterComposer
-    extends FilterComposer<_$MyDatabase, $TaggedTradeDatasTable> {
-  $$TaggedTradeDatasTableFilterComposer(super.$state);
+class $$DriftTaggedTradeDatasTableFilterComposer
+    extends FilterComposer<_$MyDatabase, $DriftTaggedTradeDatasTable> {
+  $$DriftTaggedTradeDatasTableFilterComposer(super.$state);
   ColumnFilters<int> get tradeDataId => $state.composableBuilder(
       column: $state.table.tradeDataId,
       builder: (column, joinBuilders) =>
@@ -2551,9 +2891,9 @@ class $$TaggedTradeDatasTableFilterComposer
           ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
-class $$TaggedTradeDatasTableOrderingComposer
-    extends OrderingComposer<_$MyDatabase, $TaggedTradeDatasTable> {
-  $$TaggedTradeDatasTableOrderingComposer(super.$state);
+class $$DriftTaggedTradeDatasTableOrderingComposer
+    extends OrderingComposer<_$MyDatabase, $DriftTaggedTradeDatasTable> {
+  $$DriftTaggedTradeDatasTableOrderingComposer(super.$state);
   ColumnOrderings<int> get tradeDataId => $state.composableBuilder(
       column: $state.table.tradeDataId,
       builder: (column, joinBuilders) =>
@@ -2565,44 +2905,45 @@ class $$TaggedTradeDatasTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $$TagAttributesTableInsertCompanionBuilder = TagAttributesCompanion
-    Function({
+typedef $$DriftTagAttributesTableInsertCompanionBuilder
+    = DriftTagAttributesCompanion Function({
   Value<int> id,
   required String name,
   required String dataType,
 });
-typedef $$TagAttributesTableUpdateCompanionBuilder = TagAttributesCompanion
-    Function({
+typedef $$DriftTagAttributesTableUpdateCompanionBuilder
+    = DriftTagAttributesCompanion Function({
   Value<int> id,
   Value<String> name,
   Value<String> dataType,
 });
 
-class $$TagAttributesTableTableManager extends RootTableManager<
+class $$DriftTagAttributesTableTableManager extends RootTableManager<
     _$MyDatabase,
-    $TagAttributesTable,
-    TagAttribute,
-    $$TagAttributesTableFilterComposer,
-    $$TagAttributesTableOrderingComposer,
-    $$TagAttributesTableProcessedTableManager,
-    $$TagAttributesTableInsertCompanionBuilder,
-    $$TagAttributesTableUpdateCompanionBuilder> {
-  $$TagAttributesTableTableManager(_$MyDatabase db, $TagAttributesTable table)
+    $DriftTagAttributesTable,
+    DriftTagAttribute,
+    $$DriftTagAttributesTableFilterComposer,
+    $$DriftTagAttributesTableOrderingComposer,
+    $$DriftTagAttributesTableProcessedTableManager,
+    $$DriftTagAttributesTableInsertCompanionBuilder,
+    $$DriftTagAttributesTableUpdateCompanionBuilder> {
+  $$DriftTagAttributesTableTableManager(
+      _$MyDatabase db, $DriftTagAttributesTable table)
       : super(TableManagerState(
           db: db,
           table: table,
           filteringComposer:
-              $$TagAttributesTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$TagAttributesTableOrderingComposer(ComposerState(db, table)),
+              $$DriftTagAttributesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer: $$DriftTagAttributesTableOrderingComposer(
+              ComposerState(db, table)),
           getChildManagerBuilder: (p) =>
-              $$TagAttributesTableProcessedTableManager(p),
+              $$DriftTagAttributesTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
             Value<int> id = const Value.absent(),
             Value<String> name = const Value.absent(),
             Value<String> dataType = const Value.absent(),
           }) =>
-              TagAttributesCompanion(
+              DriftTagAttributesCompanion(
             id: id,
             name: name,
             dataType: dataType,
@@ -2612,7 +2953,7 @@ class $$TagAttributesTableTableManager extends RootTableManager<
             required String name,
             required String dataType,
           }) =>
-              TagAttributesCompanion.insert(
+              DriftTagAttributesCompanion.insert(
             id: id,
             name: name,
             dataType: dataType,
@@ -2620,21 +2961,22 @@ class $$TagAttributesTableTableManager extends RootTableManager<
         ));
 }
 
-class $$TagAttributesTableProcessedTableManager extends ProcessedTableManager<
-    _$MyDatabase,
-    $TagAttributesTable,
-    TagAttribute,
-    $$TagAttributesTableFilterComposer,
-    $$TagAttributesTableOrderingComposer,
-    $$TagAttributesTableProcessedTableManager,
-    $$TagAttributesTableInsertCompanionBuilder,
-    $$TagAttributesTableUpdateCompanionBuilder> {
-  $$TagAttributesTableProcessedTableManager(super.$state);
+class $$DriftTagAttributesTableProcessedTableManager
+    extends ProcessedTableManager<
+        _$MyDatabase,
+        $DriftTagAttributesTable,
+        DriftTagAttribute,
+        $$DriftTagAttributesTableFilterComposer,
+        $$DriftTagAttributesTableOrderingComposer,
+        $$DriftTagAttributesTableProcessedTableManager,
+        $$DriftTagAttributesTableInsertCompanionBuilder,
+        $$DriftTagAttributesTableUpdateCompanionBuilder> {
+  $$DriftTagAttributesTableProcessedTableManager(super.$state);
 }
 
-class $$TagAttributesTableFilterComposer
-    extends FilterComposer<_$MyDatabase, $TagAttributesTable> {
-  $$TagAttributesTableFilterComposer(super.$state);
+class $$DriftTagAttributesTableFilterComposer
+    extends FilterComposer<_$MyDatabase, $DriftTagAttributesTable> {
+  $$DriftTagAttributesTableFilterComposer(super.$state);
   ColumnFilters<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -2651,9 +2993,9 @@ class $$TagAttributesTableFilterComposer
           ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
-class $$TagAttributesTableOrderingComposer
-    extends OrderingComposer<_$MyDatabase, $TagAttributesTable> {
-  $$TagAttributesTableOrderingComposer(super.$state);
+class $$DriftTagAttributesTableOrderingComposer
+    extends OrderingComposer<_$MyDatabase, $DriftTagAttributesTable> {
+  $$DriftTagAttributesTableOrderingComposer(super.$state);
   ColumnOrderings<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -2670,48 +3012,48 @@ class $$TagAttributesTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $$TagAttributeValuesTableInsertCompanionBuilder
-    = TagAttributeValuesCompanion Function({
+typedef $$DriftTagAttributeValuesTableInsertCompanionBuilder
+    = DriftTagAttributeValuesCompanion Function({
   required int tagId,
   required int attributeId,
   required String value,
   Value<int> rowid,
 });
-typedef $$TagAttributeValuesTableUpdateCompanionBuilder
-    = TagAttributeValuesCompanion Function({
+typedef $$DriftTagAttributeValuesTableUpdateCompanionBuilder
+    = DriftTagAttributeValuesCompanion Function({
   Value<int> tagId,
   Value<int> attributeId,
   Value<String> value,
   Value<int> rowid,
 });
 
-class $$TagAttributeValuesTableTableManager extends RootTableManager<
+class $$DriftTagAttributeValuesTableTableManager extends RootTableManager<
     _$MyDatabase,
-    $TagAttributeValuesTable,
-    TagAttributeValue,
-    $$TagAttributeValuesTableFilterComposer,
-    $$TagAttributeValuesTableOrderingComposer,
-    $$TagAttributeValuesTableProcessedTableManager,
-    $$TagAttributeValuesTableInsertCompanionBuilder,
-    $$TagAttributeValuesTableUpdateCompanionBuilder> {
-  $$TagAttributeValuesTableTableManager(
-      _$MyDatabase db, $TagAttributeValuesTable table)
+    $DriftTagAttributeValuesTable,
+    DriftTagAttributeValue,
+    $$DriftTagAttributeValuesTableFilterComposer,
+    $$DriftTagAttributeValuesTableOrderingComposer,
+    $$DriftTagAttributeValuesTableProcessedTableManager,
+    $$DriftTagAttributeValuesTableInsertCompanionBuilder,
+    $$DriftTagAttributeValuesTableUpdateCompanionBuilder> {
+  $$DriftTagAttributeValuesTableTableManager(
+      _$MyDatabase db, $DriftTagAttributeValuesTable table)
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $$TagAttributeValuesTableFilterComposer(ComposerState(db, table)),
-          orderingComposer: $$TagAttributeValuesTableOrderingComposer(
+          filteringComposer: $$DriftTagAttributeValuesTableFilterComposer(
+              ComposerState(db, table)),
+          orderingComposer: $$DriftTagAttributeValuesTableOrderingComposer(
               ComposerState(db, table)),
           getChildManagerBuilder: (p) =>
-              $$TagAttributeValuesTableProcessedTableManager(p),
+              $$DriftTagAttributeValuesTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
             Value<int> tagId = const Value.absent(),
             Value<int> attributeId = const Value.absent(),
             Value<String> value = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
-              TagAttributeValuesCompanion(
+              DriftTagAttributeValuesCompanion(
             tagId: tagId,
             attributeId: attributeId,
             value: value,
@@ -2723,7 +3065,7 @@ class $$TagAttributeValuesTableTableManager extends RootTableManager<
             required String value,
             Value<int> rowid = const Value.absent(),
           }) =>
-              TagAttributeValuesCompanion.insert(
+              DriftTagAttributeValuesCompanion.insert(
             tagId: tagId,
             attributeId: attributeId,
             value: value,
@@ -2732,22 +3074,22 @@ class $$TagAttributeValuesTableTableManager extends RootTableManager<
         ));
 }
 
-class $$TagAttributeValuesTableProcessedTableManager
+class $$DriftTagAttributeValuesTableProcessedTableManager
     extends ProcessedTableManager<
         _$MyDatabase,
-        $TagAttributeValuesTable,
-        TagAttributeValue,
-        $$TagAttributeValuesTableFilterComposer,
-        $$TagAttributeValuesTableOrderingComposer,
-        $$TagAttributeValuesTableProcessedTableManager,
-        $$TagAttributeValuesTableInsertCompanionBuilder,
-        $$TagAttributeValuesTableUpdateCompanionBuilder> {
-  $$TagAttributeValuesTableProcessedTableManager(super.$state);
+        $DriftTagAttributeValuesTable,
+        DriftTagAttributeValue,
+        $$DriftTagAttributeValuesTableFilterComposer,
+        $$DriftTagAttributeValuesTableOrderingComposer,
+        $$DriftTagAttributeValuesTableProcessedTableManager,
+        $$DriftTagAttributeValuesTableInsertCompanionBuilder,
+        $$DriftTagAttributeValuesTableUpdateCompanionBuilder> {
+  $$DriftTagAttributeValuesTableProcessedTableManager(super.$state);
 }
 
-class $$TagAttributeValuesTableFilterComposer
-    extends FilterComposer<_$MyDatabase, $TagAttributeValuesTable> {
-  $$TagAttributeValuesTableFilterComposer(super.$state);
+class $$DriftTagAttributeValuesTableFilterComposer
+    extends FilterComposer<_$MyDatabase, $DriftTagAttributeValuesTable> {
+  $$DriftTagAttributeValuesTableFilterComposer(super.$state);
   ColumnFilters<int> get tagId => $state.composableBuilder(
       column: $state.table.tagId,
       builder: (column, joinBuilders) =>
@@ -2764,9 +3106,9 @@ class $$TagAttributeValuesTableFilterComposer
           ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
-class $$TagAttributeValuesTableOrderingComposer
-    extends OrderingComposer<_$MyDatabase, $TagAttributeValuesTable> {
-  $$TagAttributeValuesTableOrderingComposer(super.$state);
+class $$DriftTagAttributeValuesTableOrderingComposer
+    extends OrderingComposer<_$MyDatabase, $DriftTagAttributeValuesTable> {
+  $$DriftTagAttributeValuesTableOrderingComposer(super.$state);
   ColumnOrderings<int> get tagId => $state.composableBuilder(
       column: $state.table.tagId,
       builder: (column, joinBuilders) =>
@@ -2783,45 +3125,47 @@ class $$TagAttributeValuesTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $$SettingsTableInsertCompanionBuilder = SettingsCompanion Function({
+typedef $$DriftSettingsTableInsertCompanionBuilder = DriftSettingsCompanion
+    Function({
   Value<int> id,
   Value<int?> themeMode,
   Value<String> databaseName,
   Value<int> rowid,
 });
-typedef $$SettingsTableUpdateCompanionBuilder = SettingsCompanion Function({
+typedef $$DriftSettingsTableUpdateCompanionBuilder = DriftSettingsCompanion
+    Function({
   Value<int> id,
   Value<int?> themeMode,
   Value<String> databaseName,
   Value<int> rowid,
 });
 
-class $$SettingsTableTableManager extends RootTableManager<
+class $$DriftSettingsTableTableManager extends RootTableManager<
     _$MyDatabase,
-    $SettingsTable,
-    Setting,
-    $$SettingsTableFilterComposer,
-    $$SettingsTableOrderingComposer,
-    $$SettingsTableProcessedTableManager,
-    $$SettingsTableInsertCompanionBuilder,
-    $$SettingsTableUpdateCompanionBuilder> {
-  $$SettingsTableTableManager(_$MyDatabase db, $SettingsTable table)
+    $DriftSettingsTable,
+    DriftSetting,
+    $$DriftSettingsTableFilterComposer,
+    $$DriftSettingsTableOrderingComposer,
+    $$DriftSettingsTableProcessedTableManager,
+    $$DriftSettingsTableInsertCompanionBuilder,
+    $$DriftSettingsTableUpdateCompanionBuilder> {
+  $$DriftSettingsTableTableManager(_$MyDatabase db, $DriftSettingsTable table)
       : super(TableManagerState(
           db: db,
           table: table,
           filteringComposer:
-              $$SettingsTableFilterComposer(ComposerState(db, table)),
+              $$DriftSettingsTableFilterComposer(ComposerState(db, table)),
           orderingComposer:
-              $$SettingsTableOrderingComposer(ComposerState(db, table)),
+              $$DriftSettingsTableOrderingComposer(ComposerState(db, table)),
           getChildManagerBuilder: (p) =>
-              $$SettingsTableProcessedTableManager(p),
+              $$DriftSettingsTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
             Value<int> id = const Value.absent(),
             Value<int?> themeMode = const Value.absent(),
             Value<String> databaseName = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
-              SettingsCompanion(
+              DriftSettingsCompanion(
             id: id,
             themeMode: themeMode,
             databaseName: databaseName,
@@ -2833,7 +3177,7 @@ class $$SettingsTableTableManager extends RootTableManager<
             Value<String> databaseName = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
-              SettingsCompanion.insert(
+              DriftSettingsCompanion.insert(
             id: id,
             themeMode: themeMode,
             databaseName: databaseName,
@@ -2842,21 +3186,21 @@ class $$SettingsTableTableManager extends RootTableManager<
         ));
 }
 
-class $$SettingsTableProcessedTableManager extends ProcessedTableManager<
+class $$DriftSettingsTableProcessedTableManager extends ProcessedTableManager<
     _$MyDatabase,
-    $SettingsTable,
-    Setting,
-    $$SettingsTableFilterComposer,
-    $$SettingsTableOrderingComposer,
-    $$SettingsTableProcessedTableManager,
-    $$SettingsTableInsertCompanionBuilder,
-    $$SettingsTableUpdateCompanionBuilder> {
-  $$SettingsTableProcessedTableManager(super.$state);
+    $DriftSettingsTable,
+    DriftSetting,
+    $$DriftSettingsTableFilterComposer,
+    $$DriftSettingsTableOrderingComposer,
+    $$DriftSettingsTableProcessedTableManager,
+    $$DriftSettingsTableInsertCompanionBuilder,
+    $$DriftSettingsTableUpdateCompanionBuilder> {
+  $$DriftSettingsTableProcessedTableManager(super.$state);
 }
 
-class $$SettingsTableFilterComposer
-    extends FilterComposer<_$MyDatabase, $SettingsTable> {
-  $$SettingsTableFilterComposer(super.$state);
+class $$DriftSettingsTableFilterComposer
+    extends FilterComposer<_$MyDatabase, $DriftSettingsTable> {
+  $$DriftSettingsTableFilterComposer(super.$state);
   ColumnFilters<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -2873,9 +3217,9 @@ class $$SettingsTableFilterComposer
           ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
-class $$SettingsTableOrderingComposer
-    extends OrderingComposer<_$MyDatabase, $SettingsTable> {
-  $$SettingsTableOrderingComposer(super.$state);
+class $$DriftSettingsTableOrderingComposer
+    extends OrderingComposer<_$MyDatabase, $DriftSettingsTable> {
+  $$DriftSettingsTableOrderingComposer(super.$state);
   ColumnOrderings<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -2892,19 +3236,130 @@ class $$SettingsTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
+typedef $$DriftTradingAssetDatasTableInsertCompanionBuilder
+    = DriftTradingAssetDatasCompanion Function({
+  Value<int> id,
+  Value<String?> name,
+  Value<String?> type,
+});
+typedef $$DriftTradingAssetDatasTableUpdateCompanionBuilder
+    = DriftTradingAssetDatasCompanion Function({
+  Value<int> id,
+  Value<String?> name,
+  Value<String?> type,
+});
+
+class $$DriftTradingAssetDatasTableTableManager extends RootTableManager<
+    _$MyDatabase,
+    $DriftTradingAssetDatasTable,
+    DriftTradingAssetData,
+    $$DriftTradingAssetDatasTableFilterComposer,
+    $$DriftTradingAssetDatasTableOrderingComposer,
+    $$DriftTradingAssetDatasTableProcessedTableManager,
+    $$DriftTradingAssetDatasTableInsertCompanionBuilder,
+    $$DriftTradingAssetDatasTableUpdateCompanionBuilder> {
+  $$DriftTradingAssetDatasTableTableManager(
+      _$MyDatabase db, $DriftTradingAssetDatasTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer: $$DriftTradingAssetDatasTableFilterComposer(
+              ComposerState(db, table)),
+          orderingComposer: $$DriftTradingAssetDatasTableOrderingComposer(
+              ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$DriftTradingAssetDatasTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> name = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+          }) =>
+              DriftTradingAssetDatasCompanion(
+            id: id,
+            name: name,
+            type: type,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> name = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+          }) =>
+              DriftTradingAssetDatasCompanion.insert(
+            id: id,
+            name: name,
+            type: type,
+          ),
+        ));
+}
+
+class $$DriftTradingAssetDatasTableProcessedTableManager
+    extends ProcessedTableManager<
+        _$MyDatabase,
+        $DriftTradingAssetDatasTable,
+        DriftTradingAssetData,
+        $$DriftTradingAssetDatasTableFilterComposer,
+        $$DriftTradingAssetDatasTableOrderingComposer,
+        $$DriftTradingAssetDatasTableProcessedTableManager,
+        $$DriftTradingAssetDatasTableInsertCompanionBuilder,
+        $$DriftTradingAssetDatasTableUpdateCompanionBuilder> {
+  $$DriftTradingAssetDatasTableProcessedTableManager(super.$state);
+}
+
+class $$DriftTradingAssetDatasTableFilterComposer
+    extends FilterComposer<_$MyDatabase, $DriftTradingAssetDatasTable> {
+  $$DriftTradingAssetDatasTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get type => $state.composableBuilder(
+      column: $state.table.type,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$DriftTradingAssetDatasTableOrderingComposer
+    extends OrderingComposer<_$MyDatabase, $DriftTradingAssetDatasTable> {
+  $$DriftTradingAssetDatasTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get type => $state.composableBuilder(
+      column: $state.table.type,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
 class _$MyDatabaseManager {
   final _$MyDatabase _db;
   _$MyDatabaseManager(this._db);
-  $$TradeDatasTableTableManager get tradeDatas =>
-      $$TradeDatasTableTableManager(_db, _db.tradeDatas);
-  $$TradeTagsTableTableManager get tradeTags =>
-      $$TradeTagsTableTableManager(_db, _db.tradeTags);
-  $$TaggedTradeDatasTableTableManager get taggedTradeDatas =>
-      $$TaggedTradeDatasTableTableManager(_db, _db.taggedTradeDatas);
-  $$TagAttributesTableTableManager get tagAttributes =>
-      $$TagAttributesTableTableManager(_db, _db.tagAttributes);
-  $$TagAttributeValuesTableTableManager get tagAttributeValues =>
-      $$TagAttributeValuesTableTableManager(_db, _db.tagAttributeValues);
-  $$SettingsTableTableManager get settings =>
-      $$SettingsTableTableManager(_db, _db.settings);
+  $$DriftTradeDatasTableTableManager get driftTradeDatas =>
+      $$DriftTradeDatasTableTableManager(_db, _db.driftTradeDatas);
+  $$DriftTradeTagsTableTableManager get driftTradeTags =>
+      $$DriftTradeTagsTableTableManager(_db, _db.driftTradeTags);
+  $$DriftTaggedTradeDatasTableTableManager get driftTaggedTradeDatas =>
+      $$DriftTaggedTradeDatasTableTableManager(_db, _db.driftTaggedTradeDatas);
+  $$DriftTagAttributesTableTableManager get driftTagAttributes =>
+      $$DriftTagAttributesTableTableManager(_db, _db.driftTagAttributes);
+  $$DriftTagAttributeValuesTableTableManager get driftTagAttributeValues =>
+      $$DriftTagAttributeValuesTableTableManager(
+          _db, _db.driftTagAttributeValues);
+  $$DriftSettingsTableTableManager get driftSettings =>
+      $$DriftSettingsTableTableManager(_db, _db.driftSettings);
+  $$DriftTradingAssetDatasTableTableManager get driftTradingAssetDatas =>
+      $$DriftTradingAssetDatasTableTableManager(
+          _db, _db.driftTradingAssetDatas);
 }

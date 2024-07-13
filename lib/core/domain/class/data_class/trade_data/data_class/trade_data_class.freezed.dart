@@ -20,14 +20,16 @@ mixin _$TradeData {
   String get currencyPair => throw _privateConstructorUsedError; //概要
   String? get title => throw _privateConstructorUsedError; //前提
   String? get premise => throw _privateConstructorUsedError; //値幅
-  int get pips => throw _privateConstructorUsedError; //結果得られた金額
-  double get money => throw _privateConstructorUsedError; //取引数量
+  int? get pips => throw _privateConstructorUsedError; //結果得られた金額
+  double? get money => throw _privateConstructorUsedError; //取引数量
   double get lot => throw _privateConstructorUsedError; //買いか売りか
   bool get isBuy =>
       throw _privateConstructorUsedError; //urlは例えばtradingviewのurlを保存するためのもの
   String? get urlText => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime get updatedAt => throw _privateConstructorUsedError; //ここにトレードの条件を入れる
+  DateTime get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get entriedAt => throw _privateConstructorUsedError;
+  DateTime? get exitedAt => throw _privateConstructorUsedError; //ここにトレードの条件を入れる
   List<String>? get tags =>
       throw _privateConstructorUsedError; //トレードデータのサムネなど、画像のパスを入れる。ここはトレードをした際のもの
   String? get imagePathBefore =>
@@ -56,13 +58,15 @@ abstract class $TradeDataCopyWith<$Res> {
       String currencyPair,
       String? title,
       String? premise,
-      int pips,
-      double money,
+      int? pips,
+      double? money,
       double lot,
       bool isBuy,
       String? urlText,
       DateTime createdAt,
       DateTime updatedAt,
+      DateTime? entriedAt,
+      DateTime? exitedAt,
       List<String>? tags,
       String? imagePathBefore,
       String? imagePathAfter,
@@ -89,13 +93,15 @@ class _$TradeDataCopyWithImpl<$Res, $Val extends TradeData>
     Object? currencyPair = null,
     Object? title = freezed,
     Object? premise = freezed,
-    Object? pips = null,
-    Object? money = null,
+    Object? pips = freezed,
+    Object? money = freezed,
     Object? lot = null,
     Object? isBuy = null,
     Object? urlText = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
+    Object? entriedAt = freezed,
+    Object? exitedAt = freezed,
     Object? tags = freezed,
     Object? imagePathBefore = freezed,
     Object? imagePathAfter = freezed,
@@ -121,14 +127,14 @@ class _$TradeDataCopyWithImpl<$Res, $Val extends TradeData>
           ? _value.premise
           : premise // ignore: cast_nullable_to_non_nullable
               as String?,
-      pips: null == pips
+      pips: freezed == pips
           ? _value.pips
           : pips // ignore: cast_nullable_to_non_nullable
-              as int,
-      money: null == money
+              as int?,
+      money: freezed == money
           ? _value.money
           : money // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       lot: null == lot
           ? _value.lot
           : lot // ignore: cast_nullable_to_non_nullable
@@ -149,6 +155,14 @@ class _$TradeDataCopyWithImpl<$Res, $Val extends TradeData>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      entriedAt: freezed == entriedAt
+          ? _value.entriedAt
+          : entriedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      exitedAt: freezed == exitedAt
+          ? _value.exitedAt
+          : exitedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       tags: freezed == tags
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
@@ -194,13 +208,15 @@ abstract class _$$TradeDataImplCopyWith<$Res>
       String currencyPair,
       String? title,
       String? premise,
-      int pips,
-      double money,
+      int? pips,
+      double? money,
       double lot,
       bool isBuy,
       String? urlText,
       DateTime createdAt,
       DateTime updatedAt,
+      DateTime? entriedAt,
+      DateTime? exitedAt,
       List<String>? tags,
       String? imagePathBefore,
       String? imagePathAfter,
@@ -225,13 +241,15 @@ class __$$TradeDataImplCopyWithImpl<$Res>
     Object? currencyPair = null,
     Object? title = freezed,
     Object? premise = freezed,
-    Object? pips = null,
-    Object? money = null,
+    Object? pips = freezed,
+    Object? money = freezed,
     Object? lot = null,
     Object? isBuy = null,
     Object? urlText = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
+    Object? entriedAt = freezed,
+    Object? exitedAt = freezed,
     Object? tags = freezed,
     Object? imagePathBefore = freezed,
     Object? imagePathAfter = freezed,
@@ -257,14 +275,14 @@ class __$$TradeDataImplCopyWithImpl<$Res>
           ? _value.premise
           : premise // ignore: cast_nullable_to_non_nullable
               as String?,
-      pips: null == pips
+      pips: freezed == pips
           ? _value.pips
           : pips // ignore: cast_nullable_to_non_nullable
-              as int,
-      money: null == money
+              as int?,
+      money: freezed == money
           ? _value.money
           : money // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       lot: null == lot
           ? _value.lot
           : lot // ignore: cast_nullable_to_non_nullable
@@ -285,6 +303,14 @@ class __$$TradeDataImplCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      entriedAt: freezed == entriedAt
+          ? _value.entriedAt
+          : entriedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      exitedAt: freezed == exitedAt
+          ? _value.exitedAt
+          : exitedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       tags: freezed == tags
           ? _value._tags
           : tags // ignore: cast_nullable_to_non_nullable
@@ -332,6 +358,8 @@ class _$TradeDataImpl implements _TradeData {
       required this.urlText,
       required this.createdAt,
       required this.updatedAt,
+      required this.entriedAt,
+      required this.exitedAt,
       required final List<String>? tags,
       required this.imagePathBefore,
       required this.imagePathAfter,
@@ -354,10 +382,10 @@ class _$TradeDataImpl implements _TradeData {
   final String? premise;
 //値幅
   @override
-  final int pips;
+  final int? pips;
 //結果得られた金額
   @override
-  final double money;
+  final double? money;
 //取引数量
   @override
   final double lot;
@@ -371,6 +399,10 @@ class _$TradeDataImpl implements _TradeData {
   final DateTime createdAt;
   @override
   final DateTime updatedAt;
+  @override
+  final DateTime? entriedAt;
+  @override
+  final DateTime? exitedAt;
 //ここにトレードの条件を入れる
   final List<String>? _tags;
 //ここにトレードの条件を入れる
@@ -406,7 +438,7 @@ class _$TradeDataImpl implements _TradeData {
 
   @override
   String toString() {
-    return 'TradeData(id: $id, currencyPair: $currencyPair, title: $title, premise: $premise, pips: $pips, money: $money, lot: $lot, isBuy: $isBuy, urlText: $urlText, createdAt: $createdAt, updatedAt: $updatedAt, tags: $tags, imagePathBefore: $imagePathBefore, imagePathAfter: $imagePathAfter, startPrice: $startPrice, endPrice: $endPrice, startPriceResult: $startPriceResult, endPriceResult: $endPriceResult)';
+    return 'TradeData(id: $id, currencyPair: $currencyPair, title: $title, premise: $premise, pips: $pips, money: $money, lot: $lot, isBuy: $isBuy, urlText: $urlText, createdAt: $createdAt, updatedAt: $updatedAt, entriedAt: $entriedAt, exitedAt: $exitedAt, tags: $tags, imagePathBefore: $imagePathBefore, imagePathAfter: $imagePathAfter, startPrice: $startPrice, endPrice: $endPrice, startPriceResult: $startPriceResult, endPriceResult: $endPriceResult)';
   }
 
   @override
@@ -428,6 +460,10 @@ class _$TradeDataImpl implements _TradeData {
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
+            (identical(other.entriedAt, entriedAt) ||
+                other.entriedAt == entriedAt) &&
+            (identical(other.exitedAt, exitedAt) ||
+                other.exitedAt == exitedAt) &&
             const DeepCollectionEquality().equals(other._tags, _tags) &&
             (identical(other.imagePathBefore, imagePathBefore) ||
                 other.imagePathBefore == imagePathBefore) &&
@@ -444,26 +480,29 @@ class _$TradeDataImpl implements _TradeData {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      currencyPair,
-      title,
-      premise,
-      pips,
-      money,
-      lot,
-      isBuy,
-      urlText,
-      createdAt,
-      updatedAt,
-      const DeepCollectionEquality().hash(_tags),
-      imagePathBefore,
-      imagePathAfter,
-      startPrice,
-      endPrice,
-      startPriceResult,
-      endPriceResult);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        id,
+        currencyPair,
+        title,
+        premise,
+        pips,
+        money,
+        lot,
+        isBuy,
+        urlText,
+        createdAt,
+        updatedAt,
+        entriedAt,
+        exitedAt,
+        const DeepCollectionEquality().hash(_tags),
+        imagePathBefore,
+        imagePathAfter,
+        startPrice,
+        endPrice,
+        startPriceResult,
+        endPriceResult
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -478,13 +517,15 @@ abstract class _TradeData implements TradeData {
       required final String currencyPair,
       required final String? title,
       required final String? premise,
-      required final int pips,
-      required final double money,
+      required final int? pips,
+      required final double? money,
       required final double lot,
       required final bool isBuy,
       required final String? urlText,
       required final DateTime createdAt,
       required final DateTime updatedAt,
+      required final DateTime? entriedAt,
+      required final DateTime? exitedAt,
       required final List<String>? tags,
       required final String? imagePathBefore,
       required final String? imagePathAfter,
@@ -502,9 +543,9 @@ abstract class _TradeData implements TradeData {
   @override //前提
   String? get premise;
   @override //値幅
-  int get pips;
+  int? get pips;
   @override //結果得られた金額
-  double get money;
+  double? get money;
   @override //取引数量
   double get lot;
   @override //買いか売りか
@@ -515,6 +556,10 @@ abstract class _TradeData implements TradeData {
   DateTime get createdAt;
   @override
   DateTime get updatedAt;
+  @override
+  DateTime? get entriedAt;
+  @override
+  DateTime? get exitedAt;
   @override //ここにトレードの条件を入れる
   List<String>? get tags;
   @override //トレードデータのサムネなど、画像のパスを入れる。ここはトレードをした際のもの
