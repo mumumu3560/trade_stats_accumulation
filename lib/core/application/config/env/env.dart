@@ -2,10 +2,8 @@ import "package:envied/envied.dart";
 
 part "env.g.dart";
 
-@Envied(path: 'lib/env/.env')
+@Envied(path: 'lib/core/application/config/env/.env')
 abstract class Env {
-
-
 
   @EnviedField(varName: 'LIST_BANNER', obfuscate: true)
   static String b1 = _Env.b1;
