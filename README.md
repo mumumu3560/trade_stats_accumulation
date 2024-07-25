@@ -1,9 +1,21 @@
 # trade_stats_accumulation
 
-FXや株などにおけるトレードの根拠家勝率などを保存するためのツール。
+FXや株などにおけるトレードの根拠や勝率などを保存するためのツール。
 
 DB→Drift、Supabaseを使ってみるのもあり
 
 アーキテクチャはわからなくて、以下のオニオンアーキテクチャを参考にしたがまだしっくりこない。
 https://www.youtube.com/watch?v=UMpInO2giz4
+
 どちらかというとfeatures寄りだが
+page→components→pageを分解したもののフォルダ→ui、logic、riverpodのようにする？
+
+coreの部分はすべてに共通する部分なのでpresentationから分離する。例えばdb_adminやthemeは全体に共通することなのでこちらに分けるのでよいと思う。
+
+環境変数やlocaleに関してもconfigでcoreに入れるのはいいと思う。
+
+domainもまあいいかな？
+
+ただdatabaseに関しては分からない。tableに関してはinfraの中に入れていいと思うが、extensionsで関数を定義しているが、それはinfraの外に出した方がいい？
+
+
