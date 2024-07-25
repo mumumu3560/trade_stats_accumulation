@@ -53,7 +53,7 @@ class AnalysisFilter extends HookConsumerWidget {
 
 
         SizedBox(height: 10),
-        Text('タグ:'),
+        Text('ジャンル:'),
         DropdownButton<String>(
           isExpanded: true,
           value: filterState.selectedGenre,
