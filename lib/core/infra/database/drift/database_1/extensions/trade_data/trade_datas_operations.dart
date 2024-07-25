@@ -40,14 +40,14 @@ extension DriftTradeDatasOperations on MyDatabase{
 
 
   Future<List<DriftTradeData>> getFilteredDriftTradeDatas({
-  String? currencyPair,
-  List<String>? tags,
-  bool useAndForTags = false,
-  String? premise,
-  bool? isBuy,
-  DateTime? startDate,
-  DateTime? endDate,
-}) {
+    String? currencyPair,
+    List<String>? tags,
+    bool useAndForTags = false,
+    String? premise,
+    bool? isBuy,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) {
   return (select(driftTradeDatas)
     ..where((tbl) {
       var predicates = <Expression<bool>>[];
@@ -137,6 +137,8 @@ Future<Map<String, dynamic>> getTradeStatsInDateRange(DateTime start, DateTime e
           tags: Value(data.tags),
           imagePathBefore: Value(data.imagePathBefore),
           imagePathAfter: Value(data.imagePathAfter),
+          entryPrice: Value(data.entryPrice),
+          exitPrice: Value(data.exitPrice),
           startPrice: Value(data.startPrice),
           endPrice: Value(data.endPrice),
           startPriceResult: Value(data.startPriceResult),

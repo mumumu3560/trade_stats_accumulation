@@ -37,5 +37,28 @@ extension TagsOperations on MyDatabase{
   Future<List<DriftTradeTag>> searchTagsByName(String query) {
     return (select(driftTradeTags)..where((t) => t.tagName.like('%$query%'))).get();
   }
+
+  // ユニークなジャンルのリストを取得
+  Future<List<String>> getDistinctGenres() {
+    return (selectOnly(driftTradeTags)
+      ..addColumns([driftTradeTags.genre])
+      ..groupBy([driftTradeTags.genre]))
+      .map((row) => row.read(driftTradeTags.genre)!)
+      .get();
+  }
+  
+  /*
+  // タグの使用回数を増やす
+  Future<void> incrementTagUseCount(int tagId) {
+    return (update(driftTradeTags)..where((t) => t.id.equals(tagId)))
+      .write(DriftTradeTagsCompanion(useCount: Variable.increment(1)));
+  }
+   */
+
+  Future<DriftTradeTag?> getTagByNormalizedName(String normalizedName) {
+  return (select(driftTradeTags)
+    ..where((t) => t.tagName.lower().equals(normalizedName)))
+    .getSingleOrNull();
+}
   
 }

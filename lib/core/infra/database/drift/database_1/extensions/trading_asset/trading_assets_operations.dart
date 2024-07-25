@@ -1,4 +1,4 @@
-
+//ここではtradeの対象となる金融商品の名前とそのタイプを保存するテーブルに対する捜査を行う。
 
 import 'package:drift/drift.dart';
 import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/database.dart';
