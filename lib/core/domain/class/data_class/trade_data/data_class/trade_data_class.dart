@@ -1,3 +1,5 @@
+//trade_data_class.dart
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'trade_data_class.freezed.dart';
@@ -57,6 +59,12 @@ class TradeData with _$TradeData {
 
     //さらに予想と結果を入れておきたい。
     //元々どこまで予想していたか、どこまで結果が出たかを入れておく
+
+    //取引の開始地点
+    required double? entryPrice,
+
+    //確定後の価格
+    required double? exitPrice,
 
     //予想の開始地点
     required double? startPrice,  

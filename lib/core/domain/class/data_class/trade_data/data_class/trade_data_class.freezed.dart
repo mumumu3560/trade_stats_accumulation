@@ -37,7 +37,9 @@ mixin _$TradeData {
   String? get imagePathAfter =>
       throw _privateConstructorUsedError; //さらに予想と結果を入れておきたい。
 //元々どこまで予想していたか、どこまで結果が出たかを入れておく
-//予想の開始地点
+//取引の開始地点
+  double? get entryPrice => throw _privateConstructorUsedError; //確定後の価格
+  double? get exitPrice => throw _privateConstructorUsedError; //予想の開始地点
   double? get startPrice => throw _privateConstructorUsedError; //予想の終了地点
   double? get endPrice => throw _privateConstructorUsedError; //結果の開始地点
   double? get startPriceResult => throw _privateConstructorUsedError; //結果の終了地点
@@ -70,6 +72,8 @@ abstract class $TradeDataCopyWith<$Res> {
       List<String>? tags,
       String? imagePathBefore,
       String? imagePathAfter,
+      double? entryPrice,
+      double? exitPrice,
       double? startPrice,
       double? endPrice,
       double? startPriceResult,
@@ -105,6 +109,8 @@ class _$TradeDataCopyWithImpl<$Res, $Val extends TradeData>
     Object? tags = freezed,
     Object? imagePathBefore = freezed,
     Object? imagePathAfter = freezed,
+    Object? entryPrice = freezed,
+    Object? exitPrice = freezed,
     Object? startPrice = freezed,
     Object? endPrice = freezed,
     Object? startPriceResult = freezed,
@@ -175,6 +181,14 @@ class _$TradeDataCopyWithImpl<$Res, $Val extends TradeData>
           ? _value.imagePathAfter
           : imagePathAfter // ignore: cast_nullable_to_non_nullable
               as String?,
+      entryPrice: freezed == entryPrice
+          ? _value.entryPrice
+          : entryPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
+      exitPrice: freezed == exitPrice
+          ? _value.exitPrice
+          : exitPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
       startPrice: freezed == startPrice
           ? _value.startPrice
           : startPrice // ignore: cast_nullable_to_non_nullable
@@ -220,6 +234,8 @@ abstract class _$$TradeDataImplCopyWith<$Res>
       List<String>? tags,
       String? imagePathBefore,
       String? imagePathAfter,
+      double? entryPrice,
+      double? exitPrice,
       double? startPrice,
       double? endPrice,
       double? startPriceResult,
@@ -253,6 +269,8 @@ class __$$TradeDataImplCopyWithImpl<$Res>
     Object? tags = freezed,
     Object? imagePathBefore = freezed,
     Object? imagePathAfter = freezed,
+    Object? entryPrice = freezed,
+    Object? exitPrice = freezed,
     Object? startPrice = freezed,
     Object? endPrice = freezed,
     Object? startPriceResult = freezed,
@@ -323,6 +341,14 @@ class __$$TradeDataImplCopyWithImpl<$Res>
           ? _value.imagePathAfter
           : imagePathAfter // ignore: cast_nullable_to_non_nullable
               as String?,
+      entryPrice: freezed == entryPrice
+          ? _value.entryPrice
+          : entryPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
+      exitPrice: freezed == exitPrice
+          ? _value.exitPrice
+          : exitPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
       startPrice: freezed == startPrice
           ? _value.startPrice
           : startPrice // ignore: cast_nullable_to_non_nullable
@@ -363,6 +389,8 @@ class _$TradeDataImpl implements _TradeData {
       required final List<String>? tags,
       required this.imagePathBefore,
       required this.imagePathAfter,
+      required this.entryPrice,
+      required this.exitPrice,
       required this.startPrice,
       required this.endPrice,
       required this.startPriceResult,
@@ -423,6 +451,12 @@ class _$TradeDataImpl implements _TradeData {
   final String? imagePathAfter;
 //さらに予想と結果を入れておきたい。
 //元々どこまで予想していたか、どこまで結果が出たかを入れておく
+//取引の開始地点
+  @override
+  final double? entryPrice;
+//確定後の価格
+  @override
+  final double? exitPrice;
 //予想の開始地点
   @override
   final double? startPrice;
@@ -438,7 +472,7 @@ class _$TradeDataImpl implements _TradeData {
 
   @override
   String toString() {
-    return 'TradeData(id: $id, currencyPair: $currencyPair, title: $title, premise: $premise, pips: $pips, money: $money, lot: $lot, isBuy: $isBuy, urlText: $urlText, createdAt: $createdAt, updatedAt: $updatedAt, entriedAt: $entriedAt, exitedAt: $exitedAt, tags: $tags, imagePathBefore: $imagePathBefore, imagePathAfter: $imagePathAfter, startPrice: $startPrice, endPrice: $endPrice, startPriceResult: $startPriceResult, endPriceResult: $endPriceResult)';
+    return 'TradeData(id: $id, currencyPair: $currencyPair, title: $title, premise: $premise, pips: $pips, money: $money, lot: $lot, isBuy: $isBuy, urlText: $urlText, createdAt: $createdAt, updatedAt: $updatedAt, entriedAt: $entriedAt, exitedAt: $exitedAt, tags: $tags, imagePathBefore: $imagePathBefore, imagePathAfter: $imagePathAfter, entryPrice: $entryPrice, exitPrice: $exitPrice, startPrice: $startPrice, endPrice: $endPrice, startPriceResult: $startPriceResult, endPriceResult: $endPriceResult)';
   }
 
   @override
@@ -469,6 +503,10 @@ class _$TradeDataImpl implements _TradeData {
                 other.imagePathBefore == imagePathBefore) &&
             (identical(other.imagePathAfter, imagePathAfter) ||
                 other.imagePathAfter == imagePathAfter) &&
+            (identical(other.entryPrice, entryPrice) ||
+                other.entryPrice == entryPrice) &&
+            (identical(other.exitPrice, exitPrice) ||
+                other.exitPrice == exitPrice) &&
             (identical(other.startPrice, startPrice) ||
                 other.startPrice == startPrice) &&
             (identical(other.endPrice, endPrice) ||
@@ -498,6 +536,8 @@ class _$TradeDataImpl implements _TradeData {
         const DeepCollectionEquality().hash(_tags),
         imagePathBefore,
         imagePathAfter,
+        entryPrice,
+        exitPrice,
         startPrice,
         endPrice,
         startPriceResult,
@@ -529,6 +569,8 @@ abstract class _TradeData implements TradeData {
       required final List<String>? tags,
       required final String? imagePathBefore,
       required final String? imagePathAfter,
+      required final double? entryPrice,
+      required final double? exitPrice,
       required final double? startPrice,
       required final double? endPrice,
       required final double? startPriceResult,
@@ -568,7 +610,11 @@ abstract class _TradeData implements TradeData {
   String? get imagePathAfter;
   @override //さらに予想と結果を入れておきたい。
 //元々どこまで予想していたか、どこまで結果が出たかを入れておく
-//予想の開始地点
+//取引の開始地点
+  double? get entryPrice;
+  @override //確定後の価格
+  double? get exitPrice;
+  @override //予想の開始地点
   double? get startPrice;
   @override //予想の終了地点
   double? get endPrice;
