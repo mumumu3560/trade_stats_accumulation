@@ -92,9 +92,11 @@ extension DriftTradeDatasOperations on MyDatabase{
     return (delete(driftTradeDatas)..where((tbl) => tbl.id.equals(id))).go();
   }
 
+  /*
   Future<bool> updateTradeData(DriftTradeData data) {
     return update(driftTradeDatas).replace(data);
   }
+   */
 
 
   Future<DriftTradeData?> getTradeDataById(int id) {
@@ -216,6 +218,8 @@ Future<Map<String, dynamic>> getTradeStatsInDateRange(DateTime start, DateTime e
           tags: Value(data.tags),
           imagePathBefore: Value(data.imagePathBefore),
           imagePathAfter: Value(data.imagePathAfter),
+          entryPrice: Value(data.entryPrice),
+          exitPrice: Value(data.exitPrice),
           startPrice: Value(data.startPrice),
           endPrice: Value(data.endPrice),
           startPriceResult: Value(data.startPriceResult),
@@ -238,7 +242,57 @@ Future<Map<String, dynamic>> getTradeStatsInDateRange(DateTime start, DateTime e
     });
   }
 
+  Future<bool> updateTradeData(int id, DriftTradeData data) async {
+  return transaction(() async {
+    // TradeDataの更新
+    final updatedRows = await (update(driftTradeDatas)..where((t) => t.id.equals(id)))
+      .write(
+        DriftTradeDatasCompanion(
+          currencyPair: Value(data.currencyPair),
+          title: Value(data.title),
+          premise: Value(data.premise),
+          pips: Value(data.pips),
+          money: Value(data.money),
+          lot: Value(data.lot),
+          isBuy: Value(data.isBuy),
+          urlText: Value(data.urlText),
+          updatedAt: Value(DateTime.now()),
+          tags: Value(data.tags),
+          imagePathBefore: Value(data.imagePathBefore),
+          imagePathAfter: Value(data.imagePathAfter),
+          entryPrice: Value(data.entryPrice),
+          exitPrice: Value(data.exitPrice),
+          startPrice: Value(data.startPrice),
+          endPrice: Value(data.endPrice),
+          startPriceResult: Value(data.startPriceResult),
+          endPriceResult: Value(data.endPriceResult),
+          entriedAt: Value(data.entriedAt),
+          exitedAt: Value(data.exitedAt),
+        ),
+      );
 
+    if (updatedRows > 0) {
+      // 既存のタグ関連を削除
+      await (delete(driftTaggedTradeDatas)..where((t) => t.tradeDataId.equals(id))).go();
+
+      // 新しいタグの処理
+      if (data.tags != null) {
+        for (String tagName in data.tags!) {
+          await _insertOrUpdateTag(tagName);
+          await _associateTagWithTradeData(id, tagName);
+        }
+      }
+
+      return true;
+    }
+
+    return false;
+  });
+}
+
+
+  //ここではタグに関する処理を行う
+  //具体的には、タグが存在しない場合は新しいタグを挿入し、存在する場合は使用回数を増やす
   Future<void> _insertOrUpdateTag(String tagName, {String genre = "分類なし"}) async {
     final existingTag = await (select(driftTradeTags)..where((t) => t.tagName.equals(tagName))).getSingleOrNull();
     
@@ -259,7 +313,8 @@ Future<Map<String, dynamic>> getTradeStatsInDateRange(DateTime start, DateTime e
   }
 
 
-
+  //ここではタグとトレードデータを紐づける
+  //具体的には、タグのIDを取得し、それを使ってタグ付きトレードデータを挿入する
   Future<void> _associateTagWithTradeData(int tradeDataId, String tagName) async {
     final tag = await (select(driftTradeTags)..where((t) => t.tagName.equals(tagName))).getSingle();
     
@@ -274,23 +329,31 @@ Future<Map<String, dynamic>> getTradeStatsInDateRange(DateTime start, DateTime e
 
 
   // タグ属性を追加または更新する関数
-  Future<void> addOrUpdateTagAttribute(String tagName, String attributeName, String dataType) async {
+  Future<int> addOrUpdateTagAttribute(String tagName, String attributeName, String dataType) async {
     final existingAttribute = await (select(driftTagAttributes)
       ..where((a) => a.name.equals(attributeName)))
       .getSingleOrNull();
 
     if (existingAttribute == null) {
-      await into(driftTagAttributes).insert(
+      int attributeId = await into(driftTagAttributes).insert(
         DriftTagAttributesCompanion.insert(
           name: attributeName,
           dataType: dataType,
         ),
       );
+
+      return attributeId;
+
+
     } else {
-      await (update(driftTagAttributes)..where((a) => a.name.equals(attributeName)))
+      int attributeId = await (update(driftTagAttributes)..where((a) => a.name.equals(attributeName)))
         .write(DriftTagAttributesCompanion(dataType: Value(dataType)));
+      
+      return attributeId;
     }
   }
+
+  //ジャンルとタグを紐づける
 
 
 
@@ -401,9 +464,45 @@ Future<List<DriftTagAttributeValue>> getDriftTagAttributeValues(int tagId) {
 extension TagsOperations on MyDatabase{
   
   // 新しいタグを追加
-  Future<int> insertTag(DriftTradeTag tag) {
-    return into(driftTradeTags).insert(tag);
+  Future<int> insertTag(DriftTradeTag tag) async{
+    final insertedId = await into(driftTradeTags).insert(
+      DriftTradeTagsCompanion.insert(
+        tagName: tag.tagName,
+        genre: Value(tag.genre),
+        createdAt: Value(tag.createdAt),
+        useCount: Value(tag.useCount),
+      ),
+    );
+
+    return insertedId;
   }
+
+  /*
+  final insertedId = await into(driftTradeDatas).insert(
+        DriftTradeDatasCompanion.insert(
+          currencyPair: Value(data.currencyPair),
+          title: Value(data.title),
+          premise: Value(data.premise),
+          pips: Value(data.pips),
+          money: Value(data.money),
+          lot: Value(data.lot),
+          isBuy: data.isBuy,
+          urlText: Value(data.urlText),
+          createdAt: Value(data.createdAt),
+          updatedAt: Value(data.updatedAt),
+          tags: Value(data.tags),
+          imagePathBefore: Value(data.imagePathBefore),
+          imagePathAfter: Value(data.imagePathAfter),
+          startPrice: Value(data.startPrice),
+          endPrice: Value(data.endPrice),
+          startPriceResult: Value(data.startPriceResult),
+          endPriceResult: Value(data.endPriceResult),
+          entriedAt: Value(data.entriedAt),
+          exitedAt: Value(data.exitedAt),
+          
+        ),
+      );
+   */
 
   // タグを更新
   Future<bool> updateTag(DriftTradeTag tag) {
@@ -433,6 +532,29 @@ extension TagsOperations on MyDatabase{
   Future<List<DriftTradeTag>> searchTagsByName(String query) {
     return (select(driftTradeTags)..where((t) => t.tagName.like('%$query%'))).get();
   }
+
+  // ユニークなジャンルのリストを取得
+  Future<List<String>> getDistinctGenres() {
+    return (selectOnly(driftTradeTags)
+      ..addColumns([driftTradeTags.genre])
+      ..groupBy([driftTradeTags.genre]))
+      .map((row) => row.read(driftTradeTags.genre)!)
+      .get();
+  }
+  
+  /*
+  // タグの使用回数を増やす
+  Future<void> incrementTagUseCount(int tagId) {
+    return (update(driftTradeTags)..where((t) => t.id.equals(tagId)))
+      .write(DriftTradeTagsCompanion(useCount: Variable.increment(1)));
+  }
+   */
+
+  Future<DriftTradeTag?> getTagByNormalizedName(String normalizedName) {
+  return (select(driftTradeTags)
+    ..where((t) => t.tagName.lower().equals(normalizedName)))
+    .getSingleOrNull();
+}
   
 }
 
