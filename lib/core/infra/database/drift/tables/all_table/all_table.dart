@@ -2,8 +2,10 @@
 //all_table.dart
 import 'package:drift/drift.dart';
 
-import 'package:trade_stats_accumulation/core/infra/database/drift/type_converter.dart';
+import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/type_converter.dart';
 
+
+//トレードデータを保存するテーブル
 class DriftTradeDatas extends Table {
   IntColumn get id => integer().autoIncrement()();
 
@@ -51,6 +53,12 @@ class DriftTradeDatas extends Table {
   // 画像のパス用のカラムを追加
   TextColumn get imagePathAfter => text().nullable()();
 
+  //エントリー時の価格
+  RealColumn get entryPrice => real().nullable()();
+
+  //決済後の価格
+  RealColumn get exitPrice => real().nullable()();
+
   //予想の開始地点
   RealColumn get startPrice => real().nullable()();
 
@@ -68,7 +76,7 @@ class DriftTradeDatas extends Table {
 
 
 
-
+//トレード商品のデータを保存するテーブル
 class DriftTradingAssetDatas extends Table {
   IntColumn get id => integer().autoIncrement()();
 
@@ -82,7 +90,7 @@ class DriftTradingAssetDatas extends Table {
 
 
 
-
+//設定保存テーブル
 class DriftSettings extends Table {
   IntColumn get id => integer().unique().clientDefault(() => 0 ) ();
   //IntColumn get id => integer().autoIncrement()();
@@ -94,7 +102,7 @@ class DriftSettings extends Table {
 
 
 
-
+//タグとタグの属性を紐づけるテーブル
 class DriftTagAttributeValues extends Table {
   //IntColumn get id => integer().autoIncrement()();
   IntColumn get tagId => integer().customConstraint('REFERENCES tags(id) ON DELETE CASCADE')();
@@ -107,7 +115,7 @@ class DriftTagAttributeValues extends Table {
 
 
 
-
+//タグの属性のみを保存するテーブル
 class DriftTagAttributes extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().unique()();
@@ -117,7 +125,7 @@ class DriftTagAttributes extends Table {
 
 
 
-
+//トレードデータとタグを紐づけるテーブル
 class DriftTaggedTradeDatas extends Table {
   IntColumn get tradeDataId => integer().customConstraint('REFERENCES trade_datas(id) ON DELETE CASCADE')();
   IntColumn get tagId => integer().customConstraint('REFERENCES tags(id) ON DELETE CASCADE')();
@@ -128,7 +136,7 @@ class DriftTaggedTradeDatas extends Table {
 
 
 
-
+//タグを保存するテーブル
 class DriftTradeTags extends Table {
   IntColumn get id => integer().autoIncrement()(); 
   //schema 15?

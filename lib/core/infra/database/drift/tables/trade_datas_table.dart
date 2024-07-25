@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:trade_stats_accumulation/core/infra/database/drift/type_converter.dart';
+import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/type_converter.dart';
 
 class DriftTradeDatas extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -47,6 +47,12 @@ class DriftTradeDatas extends Table {
 
   // 画像のパス用のカラムを追加
   TextColumn get imagePathAfter => text().nullable()();
+
+  //取引の開始地点
+  RealColumn get entryPrice => real().nullable()();
+
+  //決済後の価格
+  RealColumn get exitPrice => real().nullable()();
 
   //予想の開始地点
   RealColumn get startPrice => real().nullable()();
