@@ -110,6 +110,18 @@ class $DriftTradeDatasTable extends DriftTradeDatas
   late final GeneratedColumn<String> imagePathAfter = GeneratedColumn<String>(
       'image_path_after', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _entryPriceMeta =
+      const VerificationMeta('entryPrice');
+  @override
+  late final GeneratedColumn<double> entryPrice = GeneratedColumn<double>(
+      'entry_price', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _exitPriceMeta =
+      const VerificationMeta('exitPrice');
+  @override
+  late final GeneratedColumn<double> exitPrice = GeneratedColumn<double>(
+      'exit_price', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
   static const VerificationMeta _startPriceMeta =
       const VerificationMeta('startPrice');
   @override
@@ -152,6 +164,8 @@ class $DriftTradeDatasTable extends DriftTradeDatas
         tags,
         imagePathBefore,
         imagePathAfter,
+        entryPrice,
+        exitPrice,
         startPrice,
         endPrice,
         startPriceResult,
@@ -235,6 +249,16 @@ class $DriftTradeDatasTable extends DriftTradeDatas
           imagePathAfter.isAcceptableOrUnknown(
               data['image_path_after']!, _imagePathAfterMeta));
     }
+    if (data.containsKey('entry_price')) {
+      context.handle(
+          _entryPriceMeta,
+          entryPrice.isAcceptableOrUnknown(
+              data['entry_price']!, _entryPriceMeta));
+    }
+    if (data.containsKey('exit_price')) {
+      context.handle(_exitPriceMeta,
+          exitPrice.isAcceptableOrUnknown(data['exit_price']!, _exitPriceMeta));
+    }
     if (data.containsKey('start_price')) {
       context.handle(
           _startPriceMeta,
@@ -299,6 +323,10 @@ class $DriftTradeDatasTable extends DriftTradeDatas
           DriftSqlType.string, data['${effectivePrefix}image_path_before']),
       imagePathAfter: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}image_path_after']),
+      entryPrice: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}entry_price']),
+      exitPrice: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}exit_price']),
       startPrice: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}start_price']),
       endPrice: attachedDatabase.typeMapping
@@ -338,6 +366,8 @@ class DriftTradeData extends DataClass implements Insertable<DriftTradeData> {
   final List<String>? tags;
   final String? imagePathBefore;
   final String? imagePathAfter;
+  final double? entryPrice;
+  final double? exitPrice;
   final double? startPrice;
   final double? endPrice;
   final double? startPriceResult;
@@ -359,6 +389,8 @@ class DriftTradeData extends DataClass implements Insertable<DriftTradeData> {
       this.tags,
       this.imagePathBefore,
       this.imagePathAfter,
+      this.entryPrice,
+      this.exitPrice,
       this.startPrice,
       this.endPrice,
       this.startPriceResult,
@@ -406,6 +438,12 @@ class DriftTradeData extends DataClass implements Insertable<DriftTradeData> {
     }
     if (!nullToAbsent || imagePathAfter != null) {
       map['image_path_after'] = Variable<String>(imagePathAfter);
+    }
+    if (!nullToAbsent || entryPrice != null) {
+      map['entry_price'] = Variable<double>(entryPrice);
+    }
+    if (!nullToAbsent || exitPrice != null) {
+      map['exit_price'] = Variable<double>(exitPrice);
     }
     if (!nullToAbsent || startPrice != null) {
       map['start_price'] = Variable<double>(startPrice);
@@ -456,6 +494,12 @@ class DriftTradeData extends DataClass implements Insertable<DriftTradeData> {
       imagePathAfter: imagePathAfter == null && nullToAbsent
           ? const Value.absent()
           : Value(imagePathAfter),
+      entryPrice: entryPrice == null && nullToAbsent
+          ? const Value.absent()
+          : Value(entryPrice),
+      exitPrice: exitPrice == null && nullToAbsent
+          ? const Value.absent()
+          : Value(exitPrice),
       startPrice: startPrice == null && nullToAbsent
           ? const Value.absent()
           : Value(startPrice),
@@ -491,6 +535,8 @@ class DriftTradeData extends DataClass implements Insertable<DriftTradeData> {
       tags: serializer.fromJson<List<String>?>(json['tags']),
       imagePathBefore: serializer.fromJson<String?>(json['imagePathBefore']),
       imagePathAfter: serializer.fromJson<String?>(json['imagePathAfter']),
+      entryPrice: serializer.fromJson<double?>(json['entryPrice']),
+      exitPrice: serializer.fromJson<double?>(json['exitPrice']),
       startPrice: serializer.fromJson<double?>(json['startPrice']),
       endPrice: serializer.fromJson<double?>(json['endPrice']),
       startPriceResult: serializer.fromJson<double?>(json['startPriceResult']),
@@ -517,6 +563,8 @@ class DriftTradeData extends DataClass implements Insertable<DriftTradeData> {
       'tags': serializer.toJson<List<String>?>(tags),
       'imagePathBefore': serializer.toJson<String?>(imagePathBefore),
       'imagePathAfter': serializer.toJson<String?>(imagePathAfter),
+      'entryPrice': serializer.toJson<double?>(entryPrice),
+      'exitPrice': serializer.toJson<double?>(exitPrice),
       'startPrice': serializer.toJson<double?>(startPrice),
       'endPrice': serializer.toJson<double?>(endPrice),
       'startPriceResult': serializer.toJson<double?>(startPriceResult),
@@ -541,6 +589,8 @@ class DriftTradeData extends DataClass implements Insertable<DriftTradeData> {
           Value<List<String>?> tags = const Value.absent(),
           Value<String?> imagePathBefore = const Value.absent(),
           Value<String?> imagePathAfter = const Value.absent(),
+          Value<double?> entryPrice = const Value.absent(),
+          Value<double?> exitPrice = const Value.absent(),
           Value<double?> startPrice = const Value.absent(),
           Value<double?> endPrice = const Value.absent(),
           Value<double?> startPriceResult = const Value.absent(),
@@ -566,6 +616,8 @@ class DriftTradeData extends DataClass implements Insertable<DriftTradeData> {
             : this.imagePathBefore,
         imagePathAfter:
             imagePathAfter.present ? imagePathAfter.value : this.imagePathAfter,
+        entryPrice: entryPrice.present ? entryPrice.value : this.entryPrice,
+        exitPrice: exitPrice.present ? exitPrice.value : this.exitPrice,
         startPrice: startPrice.present ? startPrice.value : this.startPrice,
         endPrice: endPrice.present ? endPrice.value : this.endPrice,
         startPriceResult: startPriceResult.present
@@ -593,6 +645,8 @@ class DriftTradeData extends DataClass implements Insertable<DriftTradeData> {
           ..write('tags: $tags, ')
           ..write('imagePathBefore: $imagePathBefore, ')
           ..write('imagePathAfter: $imagePathAfter, ')
+          ..write('entryPrice: $entryPrice, ')
+          ..write('exitPrice: $exitPrice, ')
           ..write('startPrice: $startPrice, ')
           ..write('endPrice: $endPrice, ')
           ..write('startPriceResult: $startPriceResult, ')
@@ -602,27 +656,30 @@ class DriftTradeData extends DataClass implements Insertable<DriftTradeData> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      currencyPair,
-      title,
-      premise,
-      pips,
-      money,
-      lot,
-      isBuy,
-      urlText,
-      createdAt,
-      updatedAt,
-      entriedAt,
-      exitedAt,
-      tags,
-      imagePathBefore,
-      imagePathAfter,
-      startPrice,
-      endPrice,
-      startPriceResult,
-      endPriceResult);
+  int get hashCode => Object.hashAll([
+        id,
+        currencyPair,
+        title,
+        premise,
+        pips,
+        money,
+        lot,
+        isBuy,
+        urlText,
+        createdAt,
+        updatedAt,
+        entriedAt,
+        exitedAt,
+        tags,
+        imagePathBefore,
+        imagePathAfter,
+        entryPrice,
+        exitPrice,
+        startPrice,
+        endPrice,
+        startPriceResult,
+        endPriceResult
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -643,6 +700,8 @@ class DriftTradeData extends DataClass implements Insertable<DriftTradeData> {
           other.tags == this.tags &&
           other.imagePathBefore == this.imagePathBefore &&
           other.imagePathAfter == this.imagePathAfter &&
+          other.entryPrice == this.entryPrice &&
+          other.exitPrice == this.exitPrice &&
           other.startPrice == this.startPrice &&
           other.endPrice == this.endPrice &&
           other.startPriceResult == this.startPriceResult &&
@@ -666,6 +725,8 @@ class DriftTradeDatasCompanion extends UpdateCompanion<DriftTradeData> {
   final Value<List<String>?> tags;
   final Value<String?> imagePathBefore;
   final Value<String?> imagePathAfter;
+  final Value<double?> entryPrice;
+  final Value<double?> exitPrice;
   final Value<double?> startPrice;
   final Value<double?> endPrice;
   final Value<double?> startPriceResult;
@@ -687,6 +748,8 @@ class DriftTradeDatasCompanion extends UpdateCompanion<DriftTradeData> {
     this.tags = const Value.absent(),
     this.imagePathBefore = const Value.absent(),
     this.imagePathAfter = const Value.absent(),
+    this.entryPrice = const Value.absent(),
+    this.exitPrice = const Value.absent(),
     this.startPrice = const Value.absent(),
     this.endPrice = const Value.absent(),
     this.startPriceResult = const Value.absent(),
@@ -709,6 +772,8 @@ class DriftTradeDatasCompanion extends UpdateCompanion<DriftTradeData> {
     this.tags = const Value.absent(),
     this.imagePathBefore = const Value.absent(),
     this.imagePathAfter = const Value.absent(),
+    this.entryPrice = const Value.absent(),
+    this.exitPrice = const Value.absent(),
     this.startPrice = const Value.absent(),
     this.endPrice = const Value.absent(),
     this.startPriceResult = const Value.absent(),
@@ -731,6 +796,8 @@ class DriftTradeDatasCompanion extends UpdateCompanion<DriftTradeData> {
     Expression<String>? tags,
     Expression<String>? imagePathBefore,
     Expression<String>? imagePathAfter,
+    Expression<double>? entryPrice,
+    Expression<double>? exitPrice,
     Expression<double>? startPrice,
     Expression<double>? endPrice,
     Expression<double>? startPriceResult,
@@ -753,6 +820,8 @@ class DriftTradeDatasCompanion extends UpdateCompanion<DriftTradeData> {
       if (tags != null) 'tags': tags,
       if (imagePathBefore != null) 'image_path_before': imagePathBefore,
       if (imagePathAfter != null) 'image_path_after': imagePathAfter,
+      if (entryPrice != null) 'entry_price': entryPrice,
+      if (exitPrice != null) 'exit_price': exitPrice,
       if (startPrice != null) 'start_price': startPrice,
       if (endPrice != null) 'end_price': endPrice,
       if (startPriceResult != null) 'start_price_result': startPriceResult,
@@ -777,6 +846,8 @@ class DriftTradeDatasCompanion extends UpdateCompanion<DriftTradeData> {
       Value<List<String>?>? tags,
       Value<String?>? imagePathBefore,
       Value<String?>? imagePathAfter,
+      Value<double?>? entryPrice,
+      Value<double?>? exitPrice,
       Value<double?>? startPrice,
       Value<double?>? endPrice,
       Value<double?>? startPriceResult,
@@ -798,6 +869,8 @@ class DriftTradeDatasCompanion extends UpdateCompanion<DriftTradeData> {
       tags: tags ?? this.tags,
       imagePathBefore: imagePathBefore ?? this.imagePathBefore,
       imagePathAfter: imagePathAfter ?? this.imagePathAfter,
+      entryPrice: entryPrice ?? this.entryPrice,
+      exitPrice: exitPrice ?? this.exitPrice,
       startPrice: startPrice ?? this.startPrice,
       endPrice: endPrice ?? this.endPrice,
       startPriceResult: startPriceResult ?? this.startPriceResult,
@@ -857,6 +930,12 @@ class DriftTradeDatasCompanion extends UpdateCompanion<DriftTradeData> {
     if (imagePathAfter.present) {
       map['image_path_after'] = Variable<String>(imagePathAfter.value);
     }
+    if (entryPrice.present) {
+      map['entry_price'] = Variable<double>(entryPrice.value);
+    }
+    if (exitPrice.present) {
+      map['exit_price'] = Variable<double>(exitPrice.value);
+    }
     if (startPrice.present) {
       map['start_price'] = Variable<double>(startPrice.value);
     }
@@ -891,6 +970,8 @@ class DriftTradeDatasCompanion extends UpdateCompanion<DriftTradeData> {
           ..write('tags: $tags, ')
           ..write('imagePathBefore: $imagePathBefore, ')
           ..write('imagePathAfter: $imagePathAfter, ')
+          ..write('entryPrice: $entryPrice, ')
+          ..write('exitPrice: $exitPrice, ')
           ..write('startPrice: $startPrice, ')
           ..write('endPrice: $endPrice, ')
           ..write('startPriceResult: $startPriceResult, ')
@@ -2311,6 +2392,8 @@ typedef $$DriftTradeDatasTableInsertCompanionBuilder = DriftTradeDatasCompanion
   Value<List<String>?> tags,
   Value<String?> imagePathBefore,
   Value<String?> imagePathAfter,
+  Value<double?> entryPrice,
+  Value<double?> exitPrice,
   Value<double?> startPrice,
   Value<double?> endPrice,
   Value<double?> startPriceResult,
@@ -2334,6 +2417,8 @@ typedef $$DriftTradeDatasTableUpdateCompanionBuilder = DriftTradeDatasCompanion
   Value<List<String>?> tags,
   Value<String?> imagePathBefore,
   Value<String?> imagePathAfter,
+  Value<double?> entryPrice,
+  Value<double?> exitPrice,
   Value<double?> startPrice,
   Value<double?> endPrice,
   Value<double?> startPriceResult,
@@ -2377,6 +2462,8 @@ class $$DriftTradeDatasTableTableManager extends RootTableManager<
             Value<List<String>?> tags = const Value.absent(),
             Value<String?> imagePathBefore = const Value.absent(),
             Value<String?> imagePathAfter = const Value.absent(),
+            Value<double?> entryPrice = const Value.absent(),
+            Value<double?> exitPrice = const Value.absent(),
             Value<double?> startPrice = const Value.absent(),
             Value<double?> endPrice = const Value.absent(),
             Value<double?> startPriceResult = const Value.absent(),
@@ -2399,6 +2486,8 @@ class $$DriftTradeDatasTableTableManager extends RootTableManager<
             tags: tags,
             imagePathBefore: imagePathBefore,
             imagePathAfter: imagePathAfter,
+            entryPrice: entryPrice,
+            exitPrice: exitPrice,
             startPrice: startPrice,
             endPrice: endPrice,
             startPriceResult: startPriceResult,
@@ -2421,6 +2510,8 @@ class $$DriftTradeDatasTableTableManager extends RootTableManager<
             Value<List<String>?> tags = const Value.absent(),
             Value<String?> imagePathBefore = const Value.absent(),
             Value<String?> imagePathAfter = const Value.absent(),
+            Value<double?> entryPrice = const Value.absent(),
+            Value<double?> exitPrice = const Value.absent(),
             Value<double?> startPrice = const Value.absent(),
             Value<double?> endPrice = const Value.absent(),
             Value<double?> startPriceResult = const Value.absent(),
@@ -2443,6 +2534,8 @@ class $$DriftTradeDatasTableTableManager extends RootTableManager<
             tags: tags,
             imagePathBefore: imagePathBefore,
             imagePathAfter: imagePathAfter,
+            entryPrice: entryPrice,
+            exitPrice: exitPrice,
             startPrice: startPrice,
             endPrice: endPrice,
             startPriceResult: startPriceResult,
@@ -2548,6 +2641,16 @@ class $$DriftTradeDatasTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
+  ColumnFilters<double> get entryPrice => $state.composableBuilder(
+      column: $state.table.entryPrice,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get exitPrice => $state.composableBuilder(
+      column: $state.table.exitPrice,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
   ColumnFilters<double> get startPrice => $state.composableBuilder(
       column: $state.table.startPrice,
       builder: (column, joinBuilders) =>
@@ -2649,6 +2752,16 @@ class $$DriftTradeDatasTableOrderingComposer
 
   ColumnOrderings<String> get imagePathAfter => $state.composableBuilder(
       column: $state.table.imagePathAfter,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get entryPrice => $state.composableBuilder(
+      column: $state.table.entryPrice,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get exitPrice => $state.composableBuilder(
+      column: $state.table.exitPrice,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
