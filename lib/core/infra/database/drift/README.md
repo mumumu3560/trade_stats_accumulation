@@ -1,0 +1,9 @@
+# Driftの実装について
+
+database_1ではDBの根本的なところを実装する。
+
+
+repositoriesは今のところ使わないがcore/application/interfacesの部分で具体的な実装を書く予定。
+coreの方では使うDBに依らない処理を実装し、こっちで具体的な処理を実装する予定。
+
+tablesには具体的なDBテーブルを実装。
