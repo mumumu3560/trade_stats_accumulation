@@ -9,10 +9,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-import 'package:trade_stats_accumulation/presentation/theme/dark_theme.dart';
-import 'package:trade_stats_accumulation/presentation/theme/theme.dart';
+import 'package:trade_stats_accumulation/features/theme/dark_theme.dart';
+import 'package:trade_stats_accumulation/features/theme/theme.dart';
 import 'package:trade_stats_accumulation/core/application/config/locale/language/i18n/strings.g.dart';
-import 'package:trade_stats_accumulation/presentation/pages/home_page/home_page.dart';
+import 'package:trade_stats_accumulation/features/pages/home_page/home_page.dart';
 import 'package:trade_stats_accumulation/core/application/riverpod/language/language.dart';
 import 'package:trade_stats_accumulation/core/application/riverpod/theme/theme.dart';
 import 'package:trade_stats_accumulation/utils/various.dart';
@@ -26,6 +26,10 @@ Future<void> main() async {
 
 
   LocaleSettings.useDeviceLocale();
+
+
+  //TODO Admob 
+  MobileAds.instance.initialize();
 
 
 
