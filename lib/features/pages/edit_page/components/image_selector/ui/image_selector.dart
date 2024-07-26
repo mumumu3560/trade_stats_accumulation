@@ -56,7 +56,7 @@ class ImageSelector extends HookWidget {
         SizedBox(height: 8),
         if (imagePath.value != null) ...[
           SizedBox(
-            width: SizeConfig.blockSizeHorizontal! * 30,
+            width: SizeConfig.blockSizeHorizontal! * 70,
             height: SizeConfig.blockSizeVertical! * 50,
             child: _buildImageWidget(imagePath.value!),
           ),
