@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:trade_stats_accumulation/core/application/config/money/admob/inline_adaptive_banner.dart';
 import 'package:trade_stats_accumulation/core/application/riverpod/db_admin/db_admin.dart';
 import 'package:trade_stats_accumulation/core/application/riverpod/theme/theme.dart';
 import 'package:trade_stats_accumulation/core/domain/class/data_class/trade_data/data_class/trade_data_class.dart';
@@ -10,6 +11,8 @@ import 'package:trade_stats_accumulation/features/pages/add_page/add_page.dart';
 import 'package:trade_stats_accumulation/features/pages/detail_page/detail_page.dart';
 import 'package:trade_stats_accumulation/features/pages/home_page/components/drawers/drawer.dart';
 import 'package:intl/intl.dart';
+import 'package:trade_stats_accumulation/utils/custom_floating_button.dart';
+import 'package:trade_stats_accumulation/utils/various.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,24 +30,43 @@ class HomePage extends HookConsumerWidget {
         backgroundColor: isDarkMode ? Color(0xFF1E1E1E) : Colors.white,
       ),
       drawer: HomePageDrawer(),
-      body: StreamBuilder<List<DriftTradeData>>(
-        stream: dbAdmin.watchAllTradeDatas(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('データがありません', style: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black54)));
-          }
-          final tradeDatas = snapshot.data!;
-          return ListView.builder(
-            itemCount: tradeDatas.length,
-            itemBuilder: (context, index) {
-              final trade = tradeDatas[index];
-              return _buildTradeCard(context, trade, isDarkMode);
-            },
-          );
-        },
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<List<DriftTradeData>>(
+              stream: dbAdmin.watchAllTradeDatas(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('データがありません', style: TextStyle(color: isDarkMode ? Colors.white70 : Colors.black54)));
+                }
+                final tradeDatas = snapshot.data!;
+                return ListView.builder(
+                  itemCount: tradeDatas.length,
+                  itemBuilder: (context, index) {
+                    final trade = tradeDatas[index];
+                    return _buildTradeCard(context, trade, isDarkMode);
+                  },
+                );
+              },
+            ),
+          ),
+
+          SizedBox(height: SizeConfig.blockSizeVertical!*2,),
+
+          //TODO Admob
+          Container(
+            color: Colors.white,
+            height: SizeConfig.blockSizeVertical! * 10,
+
+            child: InlineAdaptiveAdBanner(
+              requestId: "HOME", 
+              adHeight: SizeConfig.blockSizeVertical!.toInt() * 10,
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -54,6 +76,8 @@ class HomePage extends HookConsumerWidget {
         child: const Icon(Icons.add),
         backgroundColor: isDarkMode ? Color(0xFF4A4A4A) : Colors.blue,
       ),
+
+      floatingActionButtonLocation: CustomizeFloatingLocation(FloatingActionButtonLocation.endDocked, 0, -80),
       backgroundColor: isDarkMode ? Color(0xFF121212) : Color(0xFFF5F5F5),
     );
   }
