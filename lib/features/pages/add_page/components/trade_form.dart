@@ -1,15 +1,17 @@
+//trade_form.dartファイルの内容
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/database.dart';
 import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/extensions/all_extension.dart';
+import 'package:trade_stats_accumulation/features/pages/add_page/components/asset_selector/ui/asset_selector.dart';
+import 'package:trade_stats_accumulation/features/pages/add_page/components/date_time_picker/ui/date_time_picker.dart';
 import 'package:trade_stats_accumulation/features/pages/add_page/components/image_selector/ui/image_selector.dart';
+import 'package:trade_stats_accumulation/features/pages/add_page/components/price_range_input/ui/price_range_input.dart';
+import 'package:trade_stats_accumulation/features/pages/add_page/components/tag_selector/ui/tag_selector.dart';
+import 'package:trade_stats_accumulation/features/pages/edit_page/components/entry_type_selector/ui/entry_type_selector.dart';
 import 'package:trade_stats_accumulation/utils/image_select.dart';
-import 'asset_selector/ui/asset_selector.dart';
-import 'entry_type_selector/ui/entry_type_selector.dart';
-import 'tag_selector/ui/tag_selector.dart';
-import 'date_time_picker/ui/date_time_picker.dart';
-import 'price_range_input/ui/price_range_input.dart';
 
 class TradeForm extends HookConsumerWidget {
   final MyDatabase dbAdmin;

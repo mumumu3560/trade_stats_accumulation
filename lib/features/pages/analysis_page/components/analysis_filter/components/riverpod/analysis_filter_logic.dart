@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:trade_stats_accumulation/core/application/riverpod/db_admin/db_admin.dart';
+import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/database.dart';
 import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/extensions/all_extension.dart';
 import 'package:trade_stats_accumulation/features/pages/analysis_page/components/analysis_filter/components/state/analysis_filter_state.dart';
 
@@ -31,6 +32,14 @@ class AnalysisFilterNotifier extends _$AnalysisFilterNotifier {
       selectedGenre: genre,
       filteredTags: filteredTags,
     );
+  }
+
+  /*
+  
+   */
+  void updateAsset(DriftTradingAssetData? asset) {
+    state = state.copyWith(selectedAsset: asset);
+
   }
 
   void updateUseAndForTags(bool value) {

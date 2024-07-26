@@ -7,7 +7,7 @@ part of 'analysis_filter_logic.dart';
 // **************************************************************************
 
 String _$analysisFilterNotifierHash() =>
-    r'077b1b8cc730d3a542febe6262aa9f9ad73b4067';
+    r'd7c7501345bd004af246c197d0fc820ae1534fca';
 
 /// See also [AnalysisFilterNotifier].
 @ProviderFor(AnalysisFilterNotifier)

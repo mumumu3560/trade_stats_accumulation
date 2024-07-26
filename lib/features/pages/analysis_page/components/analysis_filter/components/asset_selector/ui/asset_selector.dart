@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:trade_stats_accumulation/core/application/riverpod/theme/theme.dart';
-import 'package:trade_stats_accumulation/features/pages/add_page/components/asset_selector/riverpod/asset_selector_logic.dart';
 import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/database.dart';
+import 'package:trade_stats_accumulation/features/pages/analysis_page/components/analysis_filter/components/asset_selector/riverpod/asset_selector_logic.dart';
 
 class AssetSelector extends HookConsumerWidget {
-  //ここでtrade_form.dartファイルに変更を伝える。
+  
   final void Function(DriftTradingAssetData?) onAssetSelected;
 
   const AssetSelector({super.key, required this.onAssetSelected});
@@ -153,89 +153,10 @@ class AssetSelector extends HookConsumerWidget {
               style: TextStyle(fontStyle: FontStyle.italic),
             ),
           ),
-        SizedBox(height: 16),
-        ElevatedButton(
-          onPressed: () => _showAddAssetDialog(context, ref),
-          child: Text("新しい取引商品を追加"),
-        ),
+
       ],
     );
   }
 
-  void _showAddAssetDialog(BuildContext context, WidgetRef ref) {
-    final nameController = TextEditingController();
-    final typeController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
-    final notifier = ref.read(assetSelectorNotifierProvider.notifier);
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("新しい取引商品を追加"),
-          content: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: nameController,
-                  decoration: InputDecoration(labelText: "商品名 (スペースは無視されます)"),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return "商品名を入力してください";
-                    }
-                    if (value.trim().length > 10) {
-                      return "商品名は10文字以内にしてください";
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: typeController,
-                  decoration: InputDecoration(labelText: "タイプ (新規作成可能)"),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return "タイプを入力してください";
-                    }
-                    if (value.trim().length > 10) {
-                      return "タイプは10文字以内にしてください";
-                    }
-                    return null;
-                  },
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: Text("キャンセル"),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            TextButton(
-              child: Text("追加"),
-              onPressed: () async {
-                if (formKey.currentState!.validate()) {
-                  final result = await notifier.addNewAsset(
-                    nameController.text.trim(),
-                    typeController.text.trim(),
-                  );
-                  if (result) {
-                    Navigator.of(context).pop();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("新しい取引商品を追加しました")),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("この商品名は既に登録されています")),
-                    );
-                  }
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
