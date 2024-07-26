@@ -1,0 +1,3 @@
+# domainについて
+
+ここではclassやfeaturesなどを置いておこうと考えていたが、featuresについては、presentaionの中に、実装しようと考えている。classは全体で使うものだと考えているのでここに処理を書く

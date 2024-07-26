@@ -1,0 +1,3 @@
+# application内のriverpodについて
+
+このページでは全体で使うようなriverpodを置いておく。

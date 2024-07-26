@@ -1,4 +1,4 @@
-import 'package:trade_stats_accumulation/language/i18n/strings.g.dart';
+import 'package:trade_stats_accumulation/core/application/config/locale/language/i18n/strings.g.dart';
 import 'package:flutter/material.dart';
 
 //https://qiita.com/kokogento/items/87aaf0a0fbc192e51504

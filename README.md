@@ -1,16 +1,21 @@
 # trade_stats_accumulation
 
-A new Flutter project.
+FXや株などにおけるトレードの根拠や勝率などを保存するためのツール。
 
-## Getting Started
+DB→Drift、Supabaseを使ってみるのもあり
 
-This project is a starting point for a Flutter application.
+アーキテクチャはわからなくて、以下のオニオンアーキテクチャを参考にしたがまだしっくりこない。
+https://www.youtube.com/watch?v=UMpInO2giz4
 
-A few resources to get you started if this is your first Flutter project:
+どちらかというとfeatures寄りだが
+page→components→pageを分解したもののフォルダ→ui、logic、riverpodのようにする？
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+coreの部分はすべてに共通する部分なのでpresentationから分離する。例えばdb_adminやthemeは全体に共通することなのでこちらに分けるのでよいと思う。
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+環境変数やlocaleに関してもconfigでcoreに入れるのはいいと思う。
+
+domainもまあいいかな？
+
+ただdatabaseに関しては分からない。tableに関してはinfraの中に入れていいと思うが、extensionsで関数を定義しているが、それはinfraの外に出した方がいい？
+
+
