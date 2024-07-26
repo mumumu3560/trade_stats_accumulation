@@ -14,7 +14,7 @@ class HomePageDrawer extends ConsumerWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            child: Text("TradeEvaluator"),
+            child: Text("QuantivoTrade"),
           ),
           ListTile(
             title: Text("ホーム"),
