@@ -65,12 +65,17 @@ class AdaptiveAdBanner extends StatelessWidget {
 
   static Map<String, String> adUnits = {
 
-    "BOOKMARK": Env.b1,
+    "HOME": Env.b1,
+
     "ADD": Env.b2,
-    "EDIT": Env.b3,
-    "TAG": Env.b4,
-    "IMPORT": Env.b5,
-    "SETTING": Env.b6,
+
+    "DETAIL": Env.b3,
+
+    "EDIT": Env.b4,
+
+    "ANALYSIS": Env.b5,
+
+
   };
 
   final VoidCallback? onLoaded;
