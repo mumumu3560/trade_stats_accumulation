@@ -18,6 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AnalysisFilterState {
   List<DriftTradeTag> get allTags => throw _privateConstructorUsedError;
   List<DriftTradeTag> get filteredTags => throw _privateConstructorUsedError;
+  DriftTradingAssetData? get selectedAsset =>
+      throw _privateConstructorUsedError;
   List<String> get genres => throw _privateConstructorUsedError;
   String? get selectedGenre => throw _privateConstructorUsedError;
   List<String> get selectedTags => throw _privateConstructorUsedError;
@@ -38,6 +40,7 @@ abstract class $AnalysisFilterStateCopyWith<$Res> {
   $Res call(
       {List<DriftTradeTag> allTags,
       List<DriftTradeTag> filteredTags,
+      DriftTradingAssetData? selectedAsset,
       List<String> genres,
       String? selectedGenre,
       List<String> selectedTags,
@@ -60,6 +63,7 @@ class _$AnalysisFilterStateCopyWithImpl<$Res, $Val extends AnalysisFilterState>
   $Res call({
     Object? allTags = null,
     Object? filteredTags = null,
+    Object? selectedAsset = freezed,
     Object? genres = null,
     Object? selectedGenre = freezed,
     Object? selectedTags = null,
@@ -75,6 +79,10 @@ class _$AnalysisFilterStateCopyWithImpl<$Res, $Val extends AnalysisFilterState>
           ? _value.filteredTags
           : filteredTags // ignore: cast_nullable_to_non_nullable
               as List<DriftTradeTag>,
+      selectedAsset: freezed == selectedAsset
+          ? _value.selectedAsset
+          : selectedAsset // ignore: cast_nullable_to_non_nullable
+              as DriftTradingAssetData?,
       genres: null == genres
           ? _value.genres
           : genres // ignore: cast_nullable_to_non_nullable
@@ -110,6 +118,7 @@ abstract class _$$AnalysisFilterStateImplCopyWith<$Res>
   $Res call(
       {List<DriftTradeTag> allTags,
       List<DriftTradeTag> filteredTags,
+      DriftTradingAssetData? selectedAsset,
       List<String> genres,
       String? selectedGenre,
       List<String> selectedTags,
@@ -130,6 +139,7 @@ class __$$AnalysisFilterStateImplCopyWithImpl<$Res>
   $Res call({
     Object? allTags = null,
     Object? filteredTags = null,
+    Object? selectedAsset = freezed,
     Object? genres = null,
     Object? selectedGenre = freezed,
     Object? selectedTags = null,
@@ -145,6 +155,10 @@ class __$$AnalysisFilterStateImplCopyWithImpl<$Res>
           ? _value._filteredTags
           : filteredTags // ignore: cast_nullable_to_non_nullable
               as List<DriftTradeTag>,
+      selectedAsset: freezed == selectedAsset
+          ? _value.selectedAsset
+          : selectedAsset // ignore: cast_nullable_to_non_nullable
+              as DriftTradingAssetData?,
       genres: null == genres
           ? _value._genres
           : genres // ignore: cast_nullable_to_non_nullable
@@ -175,6 +189,7 @@ class _$AnalysisFilterStateImpl implements _AnalysisFilterState {
   _$AnalysisFilterStateImpl(
       {required final List<DriftTradeTag> allTags,
       required final List<DriftTradeTag> filteredTags,
+      required this.selectedAsset,
       required final List<String> genres,
       this.selectedGenre,
       final List<String> selectedTags = const [],
@@ -201,6 +216,8 @@ class _$AnalysisFilterStateImpl implements _AnalysisFilterState {
     return EqualUnmodifiableListView(_filteredTags);
   }
 
+  @override
+  final DriftTradingAssetData? selectedAsset;
   final List<String> _genres;
   @override
   List<String> get genres {
@@ -229,7 +246,7 @@ class _$AnalysisFilterStateImpl implements _AnalysisFilterState {
 
   @override
   String toString() {
-    return 'AnalysisFilterState(allTags: $allTags, filteredTags: $filteredTags, genres: $genres, selectedGenre: $selectedGenre, selectedTags: $selectedTags, isBuy: $isBuy, useAndForTags: $useAndForTags)';
+    return 'AnalysisFilterState(allTags: $allTags, filteredTags: $filteredTags, selectedAsset: $selectedAsset, genres: $genres, selectedGenre: $selectedGenre, selectedTags: $selectedTags, isBuy: $isBuy, useAndForTags: $useAndForTags)';
   }
 
   @override
@@ -240,6 +257,8 @@ class _$AnalysisFilterStateImpl implements _AnalysisFilterState {
             const DeepCollectionEquality().equals(other._allTags, _allTags) &&
             const DeepCollectionEquality()
                 .equals(other._filteredTags, _filteredTags) &&
+            (identical(other.selectedAsset, selectedAsset) ||
+                other.selectedAsset == selectedAsset) &&
             const DeepCollectionEquality().equals(other._genres, _genres) &&
             (identical(other.selectedGenre, selectedGenre) ||
                 other.selectedGenre == selectedGenre) &&
@@ -255,6 +274,7 @@ class _$AnalysisFilterStateImpl implements _AnalysisFilterState {
       runtimeType,
       const DeepCollectionEquality().hash(_allTags),
       const DeepCollectionEquality().hash(_filteredTags),
+      selectedAsset,
       const DeepCollectionEquality().hash(_genres),
       selectedGenre,
       const DeepCollectionEquality().hash(_selectedTags),
@@ -273,6 +293,7 @@ abstract class _AnalysisFilterState implements AnalysisFilterState {
   factory _AnalysisFilterState(
       {required final List<DriftTradeTag> allTags,
       required final List<DriftTradeTag> filteredTags,
+      required final DriftTradingAssetData? selectedAsset,
       required final List<String> genres,
       final String? selectedGenre,
       final List<String> selectedTags,
@@ -283,6 +304,8 @@ abstract class _AnalysisFilterState implements AnalysisFilterState {
   List<DriftTradeTag> get allTags;
   @override
   List<DriftTradeTag> get filteredTags;
+  @override
+  DriftTradingAssetData? get selectedAsset;
   @override
   List<String> get genres;
   @override
