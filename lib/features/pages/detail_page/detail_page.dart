@@ -5,9 +5,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:trade_stats_accumulation/core/application/config/money/admob/inline_adaptive_banner.dart';
 import 'package:trade_stats_accumulation/core/application/riverpod/theme/theme.dart';
 import 'package:trade_stats_accumulation/core/domain/class/data_class/trade_data/data_class/trade_data_class.dart';
 import 'package:trade_stats_accumulation/features/pages/edit_page/edit_page.dart';
+import 'package:trade_stats_accumulation/utils/custom_floating_button.dart';
+import 'package:trade_stats_accumulation/utils/various.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailPage extends HookConsumerWidget {
@@ -20,20 +23,38 @@ class DetailPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeNotifierProvider);
-    print("tradeData is $tradeData");
     double profit = 0;
 
     if(tradeData.entryPrice != null && tradeData.exitPrice != null){
       
       profit = (tradeData.exitPrice! - tradeData.entryPrice!) * tradeData.lot;
-      print("profit: ${tradeData.exitPrice! - tradeData.entryPrice!}");
     }
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          _buildSliverAppBar(context, tradeData, profit, ref),
-          SliverToBoxAdapter(
-            child: _buildBody(context, ref),
+      body: Column(
+        children: [
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                _buildSliverAppBar(context, tradeData, profit, ref),
+                SliverToBoxAdapter(
+                  child: _buildBody(context, ref),
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(height: SizeConfig.blockSizeVertical! * 2),
+
+          SizedBox(height: 16),
+
+          Container(
+            color: Colors.white,
+            height: SizeConfig.blockSizeVertical! * 10,
+
+            child: InlineAdaptiveAdBanner(
+              requestId: "DETAIL", 
+              adHeight: SizeConfig.blockSizeVertical!.toInt() * 10,
+            ),
           ),
         ],
       ),
@@ -51,6 +72,7 @@ class DetailPage extends HookConsumerWidget {
         //編集ボタン
         child: Icon(Icons.edit),
       ),
+      floatingActionButtonLocation: CustomizeFloatingLocation(FloatingActionButtonLocation.endDocked, 0, -80),
     );
   }
 
@@ -93,10 +115,12 @@ class DetailPage extends HookConsumerWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        /*
         Icon(
           isProfit ? Icons.arrow_upward : Icons.arrow_downward,
           size: 48,
         ),
+         */
         SizedBox(height: 8),
         Text(
           "${profitLoss.abs().toStringAsFixed(2)}",
@@ -217,102 +241,6 @@ class DetailPage extends HookConsumerWidget {
 
 
 
-/*
-
-
-  // オプション1: シンプルなカードデザイン
-  Widget _buildEntryTypeItem(BuildContext context, bool isBuy) {
-    final color = isBuy ? Colors.green : Colors.red;
-    final icon = isBuy ? Icons.arrow_upward : Icons.arrow_downward;
-    final label = isBuy ? "買い" : "売り";
-
-    return Column(
-      children: [
-        Icon(icon, color: color, size: 28),
-        SizedBox(height: 8),
-        Text("エントリー", style: TextStyle(fontSize: 12, color: Colors.grey)),
-        SizedBox(height: 4),
-        Card(
-          color: color.withOpacity(0.1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide(color: color, width: 1),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            child: Text(
-              label,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // オプション2: チップデザイン
-  Widget _buildEntryTypeItemChip(BuildContext context, bool isBuy) {
-    final color = isBuy ? Colors.green : Colors.red;
-    final icon = isBuy ? Icons.arrow_upward : Icons.arrow_downward;
-    final label = isBuy ? "買い" : "売り";
-
-    return Column(
-      children: [
-        Icon(icon, color: color, size: 28),
-        SizedBox(height: 8),
-        Text("エントリー", style: TextStyle(fontSize: 12, color: Colors.grey)),
-        SizedBox(height: 4),
-        Chip(
-          avatar: CircleAvatar(
-            backgroundColor: color,
-            child: Icon(icon, color: Colors.white, size: 16),
-          ),
-          label: Text(
-            label,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-          ),
-          backgroundColor: color.withOpacity(0.1),
-        ),
-      ],
-    );
-  }
-
-  // オプション3: カスタムペイントを使用した円形デザイン
-  Widget _buildEntryTypeItemCircle(BuildContext context, bool isBuy) {
-    final color = isBuy ? Colors.green : Colors.red;
-    final icon = isBuy ? Icons.arrow_upward : Icons.arrow_downward;
-    final label = isBuy ? "買い" : "売り";
-
-    return Column(
-      children: [
-        CustomPaint(
-          size: Size(60, 60),
-          painter: CirclePainter(color),
-          child: Center(
-            child: Icon(icon, color: Colors.white, size: 28),
-          ),
-        ),
-        SizedBox(height: 8),
-        Text("エントリー", style: TextStyle(fontSize: 12, color: Colors.grey)),
-        SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: color,
-          ),
-        ),
-      ],
-    );
-  } */
 
   Widget _buildOverviewItem(BuildContext context, String label, String value, IconData icon) {
     return Column(
@@ -372,6 +300,7 @@ class DetailPage extends HookConsumerWidget {
   }
 
   Widget _buildPriceInfoSection(BuildContext context) {
+    final ColorScheme colorScheme = _getColorScheme(Theme.of(context).brightness == Brightness.dark);
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -381,7 +310,6 @@ class DetailPage extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("価格情報", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-
             SizedBox(height: 16,),
             _entryPriceInfo(context, "エントリー価格", tradeData.entryPrice),
             SizedBox(height: 16),
@@ -391,55 +319,129 @@ class DetailPage extends HookConsumerWidget {
             SizedBox(height: 16),
             _buildPriceInfoRow(context, "実際のSL/TP価格", tradeData.startPriceResult, tradeData.endPriceResult),
             SizedBox(height: 16),
-            _buildRiskRewardRatio(context),
-          
+            _buildRiskRewardRatio(context, colorScheme),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildRiskRewardRatio(BuildContext context) {
+  Widget _buildRiskRewardRatio(BuildContext context, ColorScheme colorScheme) {
     String plannedRatio = _calculateRiskRewardRatio(tradeData.entryPrice, tradeData.startPrice, tradeData.endPrice);
     String actualRatio = _calculateRiskRewardRatio(tradeData.entryPrice, tradeData.startPriceResult, tradeData.endPriceResult);
+
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("リスクリワード比", 
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: colorScheme.textPrimary)),
+            SizedBox(height: 16),
+            _buildRatioCard(context, "予想", plannedRatio, colorScheme),
+            SizedBox(height: 16),
+            _buildRatioCard(context, "実際", actualRatio, colorScheme),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRatioCard(BuildContext context, String label, String ratio, ColorScheme colorScheme) {
+    final List<String> parts = ratio.split(':');
+    final double risk = double.parse(parts[0].trim());
+    final double reward = double.parse(parts[1].trim());
+    final double total = risk + reward;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("リスクリワード比", style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(label, 
+          style: TextStyle(fontWeight: FontWeight.bold, color: colorScheme.textSecondary)),
         SizedBox(height: 8),
         Row(
           children: [
             Expanded(
-              child: _buildRatioCard(context, "予想", plannedRatio),
+              flex: 7,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: (risk / total * 100).round(),
+                      child: Container(
+                        height: 24,
+                        color: colorScheme.negative.withOpacity(0.7),
+                      ),
+                    ),
+                    Expanded(
+                      flex: (reward / total * 100).round(),
+                      child: Container(
+                        height: 24,
+                        color: colorScheme.positive,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             SizedBox(width: 16),
+            /*
             Expanded(
-              child: _buildRatioCard(context, "実際", actualRatio),
+              flex: 3,
+              child: Text(
+                ratio,
+                style: TextStyle(
+                  fontSize: 16, 
+                  fontWeight: FontWeight.bold, 
+                  color: colorScheme.textPrimary
+                ),
+              ),
             ),
+             */
           ],
+        ),
+        Text(
+          ratio,
+          style: TextStyle(
+            fontSize: 16, 
+            fontWeight: FontWeight.bold, 
+            color: colorScheme.textPrimary
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildRatioCard(BuildContext context, String label, String ratio) {
-    return Card(
-      color: Theme.of(context).primaryColor.withOpacity(0.1),
-      child: ListTile(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 4),
-            Text(
-              ratio,
-              style: TextStyle(fontSize: 18),
-            ),
-          ],
-        ),
-      ),
-    );
+  ColorScheme _getColorScheme(bool isDarkMode) {
+    if (isDarkMode) {
+      return ColorScheme(
+        background: Color(0xFF1C1C1E),
+        surface: Color(0xFF2C2C2E),
+        primary: Color(0xFF0A84FF),
+        secondary: Color(0xFF5E5CE6),
+        accent: Color(0xFFFFD60A),
+        textPrimary: Colors.white,
+        textSecondary: Colors.white70,
+        positive: Color(0xFF30D158),
+        negative: Color(0xFFFF453A),
+      );
+    } else {
+      return ColorScheme(
+        background: Colors.white,
+        surface: Color(0xFFF2F2F7),
+        primary: Color(0xFF007AFF),
+        secondary: Color(0xFF5856D6),
+        accent: Color(0xFFFFCC00),
+        textPrimary: Colors.black,
+        textSecondary: Colors.black54,
+        positive: Color(0xFF34C759),
+        negative: Color(0xFFFF3B30),
+      );
+    }
   }
 
   String _calculateRiskRewardRatio(double? entry, double? sl, double? tp) {
@@ -683,4 +685,30 @@ class CirclePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+
+
+class ColorScheme {
+  final Color background;
+  final Color surface;
+  final Color primary;
+  final Color secondary;
+  final Color accent;
+  final Color textPrimary;
+  final Color textSecondary;
+  final Color positive;
+  final Color negative;
+
+  ColorScheme({
+    required this.background,
+    required this.surface,
+    required this.primary,
+    required this.secondary,
+    required this.accent,
+    required this.textPrimary,
+    required this.textSecondary,
+    required this.positive,
+    required this.negative,
+  });
 }
