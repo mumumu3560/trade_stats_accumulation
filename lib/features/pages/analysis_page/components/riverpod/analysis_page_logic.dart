@@ -17,11 +17,13 @@ class AnalysisPageNotifier extends _$AnalysisPageNotifier {
     
     final filterState = ref.read(analysisFilterNotifierProvider);
     final resultNotifier = ref.read(analysisResultNotifierProvider.notifier);
+
     
     await resultNotifier.performAnalysis(
       filterState.isBuy,
       filterState.selectedTags,
       filterState.useAndForTags,
+      filterState.selectedAsset,
     );
     
     state = state.copyWith(isLoading: false);

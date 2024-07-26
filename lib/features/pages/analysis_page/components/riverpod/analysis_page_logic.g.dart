@@ -7,7 +7,7 @@ part of 'analysis_page_logic.dart';
 // **************************************************************************
 
 String _$analysisPageNotifierHash() =>
-    r'04fe3fe74ab4470b549ab3395ec3bfcf593ffd6e';
+    r'd50b747b81a3703e6863e9b2073b5f45b26a1b3f';
 
 /// See also [AnalysisPageNotifier].
 @ProviderFor(AnalysisPageNotifier)
