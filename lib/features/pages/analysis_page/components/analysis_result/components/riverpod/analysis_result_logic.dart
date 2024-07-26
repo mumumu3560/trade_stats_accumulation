@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:trade_stats_accumulation/core/application/riverpod/db_admin/db_admin.dart';
+import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/database.dart';
 import 'package:trade_stats_accumulation/core/infra/database/drift/database_1/extensions/all_extension.dart';
 import 'package:trade_stats_accumulation/features/pages/analysis_page/components/analysis_result/components/state/analysis_result_state.dart';
 
@@ -12,13 +13,14 @@ class AnalysisResultNotifier extends _$AnalysisResultNotifier {
     return AnalysisResultState.initial();
   }
 
-  Future<void> performAnalysis(bool isBuy, List<String> selectedTags, bool useAndForTags) async {
+  Future<void> performAnalysis(bool isBuy, List<String> selectedTags, bool useAndForTags, DriftTradingAssetData? selectedAsset) async {
     final db = ref.read(dbAdminNotifierProvider);
     //ここでフィルターする
     final filteredTrades = await db.getFilteredDriftTradeDatas(
       isBuy: isBuy,
       tags: selectedTags,
       useAndForTags: useAndForTags,
+      currencyPair: selectedAsset?.name ,
     );
 
     final winningTrades = filteredTrades.where((trade) => (trade.pips ?? 0) > 0).toList();

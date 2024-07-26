@@ -7,7 +7,7 @@ part of 'analysis_result_logic.dart';
 // **************************************************************************
 
 String _$analysisResultNotifierHash() =>
-    r'19de47ae4f8f5ae52c23ba156b47094d02094f52';
+    r'54279d9edbc1b810c57314156f2fbc1ed3e7ab19';
 
 /// See also [AnalysisResultNotifier].
 @ProviderFor(AnalysisResultNotifier)
