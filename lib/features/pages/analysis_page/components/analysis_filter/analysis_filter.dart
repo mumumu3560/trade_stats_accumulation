@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:trade_stats_accumulation/features/pages/analysis_page/components/analysis_filter/components/asset_selector/ui/asset_selector.dart';
 import 'package:trade_stats_accumulation/features/pages/analysis_page/components/analysis_filter/components/riverpod/analysis_filter_logic.dart';
+
 class AnalysisFilter extends HookConsumerWidget {
   const AnalysisFilter({super.key});
 
@@ -10,6 +11,7 @@ class AnalysisFilter extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final filterState = ref.watch(analysisFilterNotifierProvider);
     final filterNotifier = ref.read(analysisFilterNotifierProvider.notifier);
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     useEffect(() {
       filterNotifier.initialize();
@@ -19,24 +21,44 @@ class AnalysisFilter extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('フィルター',),
-        SizedBox(height: 10),
+        Text('フィルター', ),
+        SizedBox(height: 16),
+
+        /*
+        
+         */
+        AssetSelector(onAssetSelected: (asset) {
+          filterNotifier.updateAsset(asset);
+        }),
+
+        SizedBox(height: 16),
         Row(
           children: [
-            Text('取引タイプ: '),
+            Text('取引タイプ: ', ),
+            SizedBox(width: 10),
             ToggleButtons(
-              children: [Icon(Icons.arrow_upward), Icon(Icons.arrow_downward)],
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text('BUY', style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text('SELL', style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+              ],
               isSelected: [filterState.isBuy, !filterState.isBuy],
               onPressed: (index) => filterNotifier.updateIsBuy(index == 0),
+              color: isDarkMode ? Colors.white70 : Colors.black87,
+              selectedColor: Colors.white,
+              fillColor: isDarkMode ? Colors.blueGrey[700] : Colors.blue,
+              borderRadius: BorderRadius.circular(8),
             ),
           ],
         ),
-        SizedBox(height: 10),
-
-        Text("検索するタグ: "),
-
-
-
+        SizedBox(height: 16),
+        Text("選択したタグ:", ),
+        SizedBox(height: 8),
         Wrap( 
           spacing: 8,
           children: filterState.selectedTags.map((tag) => Chip(
@@ -46,15 +68,14 @@ class AnalysisFilter extends HookConsumerWidget {
               updatedTags.remove(tag);
               filterNotifier.updateSelectedTags(updatedTags);
             },
+            backgroundColor: isDarkMode ? Colors.blueGrey[700] : Colors.blue[100],
+            labelStyle: TextStyle(color: isDarkMode ? Colors.white : Colors.black87),
           )).toList(),
-
         ),
-
-
-
-        SizedBox(height: 10),
-        Text('ジャンル:'),
-        DropdownButton<String>(
+        SizedBox(height: 16),
+        Text('ジャンル:', ),
+        SizedBox(height: 8),
+        DropdownButtonFormField<String>(
           isExpanded: true,
           value: filterState.selectedGenre,
           hint: Text("ジャンルで絞り込み"),
@@ -66,7 +87,13 @@ class AnalysisFilter extends HookConsumerWidget {
             )),
           ],
           onChanged: (genre) => filterNotifier.selectGenre(genre),
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          ),
         ),
+        SizedBox(height: 16),
+        Text('利用可能なタグ:', ),
         SizedBox(height: 8),
         Wrap(
           spacing: 8,
@@ -82,16 +109,21 @@ class AnalysisFilter extends HookConsumerWidget {
               }
               filterNotifier.updateSelectedTags(updatedTags);
             },
+            selectedColor: isDarkMode ? Colors.blueGrey[700] : Colors.blue[100],
+            checkmarkColor: isDarkMode ? Colors.white : Colors.blue,
           )).toList(),
         ),
-
-        SizedBox(height: 10),
-
-        //ここでAnd検索のチェックボックスを追加
-        Text('And検索'),
-        Checkbox(
-          value: filterState.useAndForTags,
-          onChanged: (value) => filterNotifier.updateUseAndForTags(value!),
+        SizedBox(height: 16),
+        Row(
+          children: [
+            Text('AND検索:', ),
+            SizedBox(width: 8),
+            Switch(
+              value: filterState.useAndForTags,
+              onChanged: (value) => filterNotifier.updateUseAndForTags(value),
+              activeColor: isDarkMode ? Colors.blueGrey[700] : Colors.blue,
+            ),
+          ],
         ),
       ],
     );
